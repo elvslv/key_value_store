@@ -5,7 +5,7 @@
 #include "Message.h"
 #include "JoinReqMessage.h"
 #include "JoinRepMessage.h"
-#include "../build/gen/membership_protocol/Message.pb.h"
+#include "../build/gen/Message.pb.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
 #include "Events.h"

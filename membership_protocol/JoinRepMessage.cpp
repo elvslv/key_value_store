@@ -1,6 +1,6 @@
 #include <sstream>
 #include "JoinRepMessage.h"
-#include "../build/gen/membership_protocol/Message.pb.h"
+#include "../build/gen/Message.pb.h"
 
 namespace membership_protocol
 {
