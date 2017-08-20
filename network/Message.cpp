@@ -7,4 +7,10 @@ namespace network
         size(0)
     {
     }
+
+    Message::Message(char* data, unsigned int sz):
+        content(data),
+        size(sz)
+    {
+    }
 }

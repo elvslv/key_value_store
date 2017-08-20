@@ -1,3 +1,5 @@
+.DS_Store
+
 # Prerequisites
 *.d
 
@@ -45,3 +47,4 @@ compile_commands.json
 CTestTestfile.cmake
 *.cmake
 
+build/

@@ -1,0 +1,7 @@
+syntax = "proto3";
+package gen;
+
+message Address {
+    repeated uint32 addr = 1;
+	uint32 port = 2;
+}
