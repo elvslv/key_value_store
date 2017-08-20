@@ -3,5 +3,6 @@ project(KEY_VALUE_STORE)
 
 set(CMAKE_CXX_FLAGS "-Wall -g -std=c++11")
 add_subdirectory(network)
+add_subdirectory(membership_protocol)
 
 add_executable(main main.cpp)
