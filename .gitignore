@@ -47,4 +47,4 @@ compile_commands.json
 CTestTestfile.cmake
 *.cmake
 
-build/
+build/**/*.pb.*
