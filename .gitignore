@@ -35,6 +35,7 @@
 
 main
 
+# cmake
 CMake
 CMakeCache.txt
 CMakeFiles
@@ -47,4 +48,10 @@ compile_commands.json
 CTestTestfile.cmake
 *.cmake
 
+# protobuf
 build/**/*.pb.*
+
+# google test
+tests/googletest*
+gmock*.pc
+gtest*.pc

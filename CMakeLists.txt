@@ -7,5 +7,6 @@ add_subdirectory(network)
 add_subdirectory(membership_protocol)
 add_subdirectory(utils)
 add_subdirectory(build/gen)
+add_subdirectory(tests)
 
 add_executable(main main.cpp)
