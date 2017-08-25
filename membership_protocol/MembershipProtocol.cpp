@@ -2,10 +2,11 @@
 
 namespace membership_protocol
 {
-    MembershipProtocol::MembershipProtocol(const network::Address& addr): 
+    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger): 
         node(addr),
         members(),
-        network(addr)
+        network(addr),
+        logger(logger)
     {
     }
 
@@ -14,14 +15,11 @@ namespace membership_protocol
         return members;
     }
 
-    void MembershipProtocol::sendMessage(std::unique_ptr<Message> message, std::unique_ptr<Address> destAddress)
+    void MembershipProtocol::sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress)
     {
-        int msgSize;
-        char* msg = message->serialize(msgSize);
-        log("Sending message", message->toString());
+        auto msg = message->serialize();
+        log("Sending message", msg.content.get());
 
-        emulNet->ENsend(std::make_unique<Address>(memberNode->addr), std::move(destAddress), msg, msgSize);
-
-        free(msg);
+        network.send(destAddress, msg);
     }
 }

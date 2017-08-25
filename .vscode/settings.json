@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "__mutex_base": "cpp",
+        "sstream": "cpp",
+        "__config": "cpp",
+        "cstddef": "cpp",
+        "exception": "cpp",
+        "initializer_list": "cpp",
+        "new": "cpp",
+        "stdexcept": "cpp",
+        "typeinfo": "cpp",
+        "iterator": "cpp",
+        "cmath": "cpp",
+        "ctime": "cpp",
+        "__locale": "cpp",
+        "chrono": "cpp"
+    }
+}
