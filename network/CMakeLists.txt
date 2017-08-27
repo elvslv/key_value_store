@@ -1,8 +1,5 @@
-include_directories(${KEY_VALUE_STORE_SOURCE_DIR}/network)
-link_directories(${KEY_VALUE_STORE_BINARY_DIR}/network)
+set(network_src_files Address EmulNet Message Network Queue)
 
-set(PROGRAMS Address EmulNet Message Network Queue)
-
-foreach(program ${PROGRAMS})
-  add_library(${program} ${program}.cpp)
-endforeach(program)
+foreach(network_src_file ${network_src_files})
+  target_sources(key_value_store_lib PRIVATE "network/${network_src_file}.cpp")
+endforeach(network_src_file)

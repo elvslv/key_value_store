@@ -11,27 +11,13 @@ namespace utils
     {
     }
 
-    void Log::log_(const network::Address& node, const std::string& str)
+    void Log::log_(const std::string& str)
     {
         std::stringstream ss;
-        ss << node.toString() << " [" << utils::Time::getCurrentTime() << "] " << str << std::endl;
+        ss << "[" << utils::Time::getCurrentTime() << "] " << str << std::endl;
 
         std::lock_guard<std::mutex> lock(mutex);
         output << ss.str();
         output.flush();
-    }
-
-    void Log::logNodeAdd(const network::Address& thisNode, const network::Address& addedAddr) 
-    {
-        std::stringstream ss;
-        ss << "Node " << addedAddr.toString() << " joined at time " << utils::Time::getCurrentTime();
-        log(thisNode, ss.str());
-    }
-
-    void Log::logNodeRemove(const network::Address& thisNode, const network::Address& removedAddr) 
-    {
-        std::stringstream ss;
-        ss << "Node " << removedAddr.toString() << " joined at time " << utils::Time::getCurrentTime();
-        log(thisNode, ss.str());
     }
 }

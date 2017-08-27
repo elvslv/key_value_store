@@ -1,8 +1,5 @@
-include_directories(${KEY_VALUE_STORE_SOURCE_DIR}/utils)
-link_directories(${KEY_VALUE_STORE_BINARY_DIR}/utils)
+set(utils_src_files TimeUtils Log)
 
-set(PROGRAMS Log TimeUtils)
-
-foreach(program ${PROGRAMS})
-  add_library(${program} ${program}.cpp)
-endforeach(program)
+foreach(util_src_file ${utils_src_files})
+  target_sources(key_value_store_lib PRIVATE "utils/${util_src_file}.cpp")
+endforeach(util_src_file)

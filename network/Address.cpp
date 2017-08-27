@@ -3,7 +3,7 @@
 
 namespace network
 {
-    Address::Address(const gen::Address& addr)
+    /*Address::Address(const gen::Address& addr)
     {
         assert(addr.addr_size() == 4);
         for (int i = 0; i < 4; ++i)
@@ -25,7 +25,7 @@ namespace network
         addr->set_port(port);
 
         return std::unique_ptr<gen::Address>(addr);
-    }
+    }*/
 
     std::string Address::toString() const
     {

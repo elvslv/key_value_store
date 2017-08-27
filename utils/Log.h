@@ -3,7 +3,7 @@
 #include <fstream>
 #include <mutex>
 #include <sstream>
-#include "../network/Address.h"
+#include "TimeUtils.h"
 
 namespace utils
 {
@@ -12,16 +12,13 @@ namespace utils
     public:
         Log();
 
-        void logNodeAdd(const network::Address&, const network::Address&);
-        void logNodeRemove(const network::Address&, const network::Address&);
-
         template <typename T, typename ... args >
-        void log(const network::Address& node, T current, args... next )
+        void log(T current, args... next )
         {
             std::stringstream ss;
             construct_log_line(ss, current, next...);
             
-            log_(node, ss.str());
+            log_(ss.str());
         }
     private:
         template <typename T >
@@ -34,10 +31,10 @@ namespace utils
         void construct_log_line(std::stringstream& ss, T current, args... next )
         {
             ss << current << ' ';
-            log_(ss, next... );
+            construct_log_line(ss, next... );
         }
 
-        void log_(const network::Address& node, const std::string& str);
+        void log_(const std::string& str);
 
         const std::string DBG_LOG = "dbg.log";
 

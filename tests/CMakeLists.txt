@@ -15,13 +15,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_BINARY_DIR}/tests/googletest-src"
                  "${CMAKE_BINARY_DIR}/tests/googletest-build")
  
-# The gtest/gmock targets carry header search path
-# dependencies automatically when using CMake 2.8.11 or
-# later. Otherwise we have to add them here ourselves.
-if(CMAKE_VERSION VERSION_LESS 2.8.11)
-  include_directories("${gtest_SOURCE_DIR}/include"
-                      "${gmock_SOURCE_DIR}/include")
-endif()
+include_directories("${gtest_SOURCE_DIR}/include"
+                    "${gmock_SOURCE_DIR}/include")
  
-# Now simply link your own targets against gtest, gmock,
-# etc. as appropriate
+add_executable(key_value_store_tests "utils/CMakeLists.txt")
+target_link_libraries(key_value_store_tests key_value_store_lib gtest_main)
+add_subdirectory(utils)
