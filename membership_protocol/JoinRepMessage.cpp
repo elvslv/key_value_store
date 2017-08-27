@@ -1,6 +1,7 @@
 #include <sstream>
 #include "JoinRepMessage.h"
-#include "../build/gen/Message.pb.h"
+#include "../proto/Message.pb.h"
+#include "../proto/ProtobufFactory.h"
 
 namespace membership_protocol
 {
@@ -36,7 +37,7 @@ namespace membership_protocol
 
         for (int i = 0; i < memberList.size(); ++i)
         {
-            auto address = memberList[i].getAddress().serialize();
+            auto address = protobuf::ProtobufFactory::serialize<network::Address, std::unique_ptr<gen::Address> >(memberList[i].getAddress());
         
             auto entity = new gen::Node;
             entity->set_allocated_address(address.release());

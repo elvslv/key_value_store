@@ -3,7 +3,7 @@ project(KEY_VALUE_STORE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}, membership_protocol, network, utils)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}, membership_protocol, network, utils, proto)
 set(CMAKE_CXX_FLAGS "-Wall -g -std=c++14")
 
 add_library(key_value_store_lib "")
@@ -15,6 +15,7 @@ target_link_libraries(app key_value_store_lib)
 
 add_subdirectory(network)
 add_subdirectory(utils)
+add_subdirectory(membership_protocol)
 add_subdirectory(proto)
 
 target_link_libraries(app proto ${PROTOBUF_LIBRARY})

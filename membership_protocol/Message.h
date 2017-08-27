@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <memory>
-#include "../build/gen/Message.pb.h"
+#include "../proto/Message.pb.h"
 #include "../network/Address.h"
 #include "../network/Message.h"
 

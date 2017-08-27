@@ -5,7 +5,8 @@
 #include "Message.h"
 #include "JoinReqMessage.h"
 #include "JoinRepMessage.h"
-#include "../build/gen/Message.pb.h"
+#include "../proto/Message.pb.h"
+#include "../proto/ProtobufFactory.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
 #include "Events.h"
@@ -33,8 +34,8 @@ namespace membership_protocol
         gen::Message message;
         message.ParseFromArray(networkMessage.content.get(), networkMessage.size);
 
-        network::Address srcAddress(message.sourceaddress());
-        network::Address destAddress(message.destinationaddress());
+       auto srcAddress = protobuf::ProtobufFactory::deserialize<gen::Address, network::Address>(message.sourceaddress());
+       auto destAddress = protobuf::ProtobufFactory::deserialize<gen::Address, network::Address>(message.destinationaddress());
 
         switch (message.messagetype())
         {

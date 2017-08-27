@@ -1,31 +1,51 @@
+#include <cassert>
 #include <sstream>
 #include "Address.h"
 
 namespace network
 {
-    /*Address::Address(const gen::Address& addr)
+    Address::Address(const Address& other):
+        address(other.address),
+        port(other.port)
     {
-        assert(addr.addr_size() == 4);
-        for (int i = 0; i < 4; ++i)
-        {
-            address[i] = addr.addr(i);
-        }
-
-        port = addr.port();
     }
 
-    std::unique_ptr<gen::Address> Address::serialize() const
+    Address::Address(const std::string& addr)
     {
-        gen::Address* addr = new gen::Address;
-        for (auto it = address.begin(); it != address.end(); ++it)
+        int start = 0;
+        int end = 0;
+        int i = 0;
+        for (i = 0; i < 3; ++i)
         {
-            addr->add_addr(*it);
+            address[i] = parseNextNum(addr, '.', start, end);
         }
 
-        addr->set_port(port);
+        address[i] = parseNextNum(addr, ':', start, end);        
+        
+        port = std::stoi(addr.substr(start));
+    }
 
-        return std::unique_ptr<gen::Address>(addr);
-    }*/
+    Address::Address(const std::array<unsigned char, 4>& addr, unsigned short p):
+        address(addr),
+        port(p)
+    {
+    }
+
+    Address::Address(const gen::Address& addr)
+    {
+
+    }
+
+    int Address::parseNextNum(const std::string& addr, char delim, int& start, int& end)
+    {
+        end = addr.find(delim, start);
+        assert(end != std::string::npos);
+
+        int result = std::stoi(addr.substr(start, end));            
+        start = end + 1;
+
+        return result;
+    }
 
     std::string Address::toString() const
     {
