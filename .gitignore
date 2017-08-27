@@ -33,7 +33,8 @@
 *.out
 *.app
 
-main
+app
+tests/key_value_store_tests
 
 # cmake
 CMake
