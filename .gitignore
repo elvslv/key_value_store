@@ -35,6 +35,7 @@
 
 app
 tests/key_value_store_tests
+**/dbg.log
 
 # cmake
 CMake

@@ -15,6 +15,8 @@ namespace network
         Address(const gen::Address& addr);
         
         std::string toString() const;
+        std::unique_ptr<gen::Address> serialize() const;
+
         static int parseNextNum(const std::string& addr, char delim, int& start, int& end);
 
         std::array<unsigned char, 4> address;

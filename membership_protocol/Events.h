@@ -16,10 +16,10 @@ namespace membership_protocol
     public:
         Event(EventTypes type, const network::Address& addr, long t);
 
-        std::unique_ptr<gen::Event> serialize();
+        std::unique_ptr<gen::Event> serialize() const;
         EventTypes getEventType() const;
         const network::Address& getNodeAddress() const;
-        long getTimestamp();
+        long getTimestamp() const;
 
     private:
         static gen::EventTypes getProtobufEventsType(EventTypes eventType);

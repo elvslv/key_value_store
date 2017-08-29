@@ -10,15 +10,16 @@ add_library(key_value_store_lib "")
 include("network/CMakeLists.txt")
 include("utils/CMakeLists.txt")
 
-add_executable(app main.cpp)
-target_link_libraries(app key_value_store_lib)
+# add_executable(app main.cpp)
+# target_link_libraries(app key_value_store_lib)
 
 add_subdirectory(network)
 add_subdirectory(utils)
 add_subdirectory(membership_protocol)
 add_subdirectory(proto)
 
-target_link_libraries(app proto ${PROTOBUF_LIBRARY})
+add_executable(app main.cpp)
+target_link_libraries(app key_value_store_lib proto)
 
 enable_testing()
 add_subdirectory(tests)
