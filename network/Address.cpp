@@ -43,6 +43,11 @@ namespace network
         port = addr.port();
     }
 
+    bool operator==(const Address& address1, const Address& address2)
+    {
+        return address1.address == address2.address && address1.port == address2.port;
+    }
+
     std::unique_ptr<gen::Address> Address::serialize() const
     {
         gen::Address* addr = new gen::Address;

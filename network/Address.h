@@ -13,7 +13,9 @@ namespace network
         Address(const std::string& addr);
         Address(const Address& other);
         Address(const gen::Address& addr);
-        
+
+        friend bool operator==(const Address& address1, const Address& address2);
+
         std::string toString() const;
         std::unique_ptr<gen::Address> serialize() const;
 

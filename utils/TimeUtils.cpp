@@ -8,4 +8,10 @@ namespace utils
         std::time_t result = std::time(nullptr);
         return std::ctime(&result);
     }
+
+    long Time::getTimestamp()
+    {
+        std::time_t result = std::time(nullptr);
+        return static_cast<long>(result);
+    }
 }
