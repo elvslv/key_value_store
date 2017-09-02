@@ -3,6 +3,7 @@
 #include "JoinRepMessage.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
+#include "../utils/TimeUtils.h"
 
 namespace membership_protocol
 {
@@ -97,6 +98,83 @@ namespace membership_protocol
             }
         }
     }
+
+    void MembershipProtocol::executeMembershipProtocol() 
+    {
+        for (auto it = waitingList.begin(); it != waitingList.end(); ++it)
+        {
+            // log("Ping message was sent to ", it->second.getAddress().getAddress(), " at ", it->first, " now ", par->globaltime);
+    
+            long curTime = utils::Time::getTimestamp();
+            if (curTime - it->first > PING_TIMEOUT)
+            {
+                network::Address address = it->second.getAddress();
+                std::string addressStr = address.toString();
+                log("Node", addressStr, "exceeded timeout", PING_TIMEOUT);
+                events.emplace_back(FAILED, address, curTime);
+    
+                assert(waitingListIter.erase(addressStr) == 1);
+    
+                // auto nodeIter = memberNode->memberListIter.find(addressStr);
+                // assert(nodeIter != memberNode->memberListIter.end());
+    
+                // log(__FILE__, __LINE__);
+    
+                for (auto jt = members.begin(); jt != members.end(); ++jt)
+                {
+                    if (jt->getAddress() == address)
+                    {
+                        members.erase(jt);
+                        break;
+                    }
+                }
+    
+                // log(__FILE__, __LINE__, addressStr);
+    
+                // memberNode->memberListIter.erase(addressStr);
+    
+                // log(__FILE__, __LINE__);
+    
+                it = std::prev(waitingList.erase(it));
+    
+                // logger->logNodeRemove(&memberNode->addr, &address);
+            }
+        }
+    
+        if (members.size() == 0)
+        {
+            return;
+        }
+    
+        int i = std::rand() % members.size();
+        auto targetAddress = members[i].getAddress();
+        std::string addressStr = targetAddress.toString();
+        if (waitingListIter.find(addressStr) != waitingListIter.end())
+        {
+            log("Already sent PING message to ", addressStr, " at ", waitingListIter[addressStr]->first);
+            return;
+        }
+    
+        long curTime = utils::Time::getTimestamp();        
+        log("Failure detector is going to send PING message to node ", addressStr, " at ", curTime);
+        
+        waitingList.emplace_back(curTime, members[i]);
+        waitingListIter[addressStr] = std::prev(waitingList.end());
+        assert(waitingListIter[addressStr] !=  waitingList.end());
+    
+        std::vector<Event> newEvents;
+        for (auto it = events.begin(); it != events.end(); ++it)
+        {
+            if (it->getTimestamp() > members[i].getTimestamp())
+            {
+                newEvents.push_back(*it);
+            }
+        }
+    
+        members[i].setTimestamp(curTime);
+        sendMessage(std::make_unique<PingMessage>(node.getAddress(), targetAddress, newEvents), targetAddress);
+    }
+    
 
     void MembershipProtocol::sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress)
     {

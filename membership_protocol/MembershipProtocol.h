@@ -33,8 +33,11 @@ namespace membership_protocol
             logger->log(node.getAddress().toString(), next...);
         }
 
+        const long PING_TIMEOUT = 1000;
+
         void sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress);
         void processMessage(const std::unique_ptr<Message> & message);
         void addMemberListEntry(const network::Address& address);
+        void executeMembershipProtocol();
     };
 }
