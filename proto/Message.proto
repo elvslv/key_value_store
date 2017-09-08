@@ -8,11 +8,9 @@ message Node {
 }
 
 enum MessageType {
-    JOINREQ = 0;
-    JOINREP = 1;
-    PING = 2;
-    ACK = 3;
-    PING_REQ = 4;
+    PING = 0;
+    ACK = 1;
+    PING_REQ = 2;
 }
 
 enum EventTypes {
@@ -29,7 +27,6 @@ message Message {
     MessageType messageType = 1;
     Address sourceAddress = 2;
     Address destinationAddress = 3;
-    repeated Node members = 4;
-    repeated Event events = 5;
-    Address targetAddress = 6;
+    repeated Event events = 4;
+    Address targetAddress = 5;
 }

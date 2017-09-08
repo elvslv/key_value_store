@@ -2,10 +2,9 @@
 
 namespace membership_protocol
 {
-    Event::Event(EventTypes type, const network::Address& addr, long t) :
+    Event::Event(EventTypes type, const network::Address& addr) :
         eventType(type),
-        nodeAddress(addr),
-        timestamp(t)
+        nodeAddress(addr)
     {
     }
 
@@ -17,11 +16,6 @@ namespace membership_protocol
     const network::Address& Event::getNodeAddress() const
     {
         return nodeAddress;
-    }
-
-    long Event::getTimestamp() const
-    {
-        return timestamp;
     }
 
     gen::EventTypes Event::getProtobufEventsType(membership_protocol::EventTypes eventType)

@@ -14,18 +14,16 @@ namespace membership_protocol
     class Event
     {
     public:
-        Event(EventTypes type, const network::Address& addr, long t);
+        Event(EventTypes type, const network::Address& addr);
 
         std::unique_ptr<gen::Event> serialize() const;
         EventTypes getEventType() const;
         const network::Address& getNodeAddress() const;
-        long getTimestamp() const;
 
     private:
         static gen::EventTypes getProtobufEventsType(EventTypes eventType);
 
         EventTypes eventType;
         network::Address nodeAddress;
-        long timestamp;
     };
 }

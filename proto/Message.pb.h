@@ -64,16 +64,14 @@ void InitDefaults();
 }  // namespace protobuf_Message_2eproto
 
 enum MessageType {
-  JOINREQ = 0,
-  JOINREP = 1,
-  PING = 2,
-  ACK = 3,
-  PING_REQ = 4,
+  PING = 0,
+  ACK = 1,
+  PING_REQ = 2,
   MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool MessageType_IsValid(int value);
-const MessageType MessageType_MIN = JOINREQ;
+const MessageType MessageType_MIN = PING;
 const MessageType MessageType_MAX = PING_REQ;
 const int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
@@ -347,30 +345,6 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // repeated .gen.Node members = 4;
-  int members_size() const;
-  void clear_members();
-  static const int kMembersFieldNumber = 4;
-  const ::gen::Node& members(int index) const;
-  ::gen::Node* mutable_members(int index);
-  ::gen::Node* add_members();
-  ::google::protobuf::RepeatedPtrField< ::gen::Node >*
-      mutable_members();
-  const ::google::protobuf::RepeatedPtrField< ::gen::Node >&
-      members() const;
-
-  // repeated .gen.Event events = 5;
-  int events_size() const;
-  void clear_events();
-  static const int kEventsFieldNumber = 5;
-  const ::gen::Event& events(int index) const;
-  ::gen::Event* mutable_events(int index);
-  ::gen::Event* add_events();
-  ::google::protobuf::RepeatedPtrField< ::gen::Event >*
-      mutable_events();
-  const ::google::protobuf::RepeatedPtrField< ::gen::Event >&
-      events() const;
-
   // .gen.Address sourceAddress = 2;
   bool has_sourceaddress() const;
   void clear_sourceaddress();
@@ -389,10 +363,19 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::gen::Address* release_destinationaddress();
   void set_allocated_destinationaddress(::gen::Address* destinationaddress);
 
-  // .gen.Address targetAddress = 6;
+  // .gen.Event event = 4;
+  bool has_event() const;
+  void clear_event();
+  static const int kEventFieldNumber = 4;
+  const ::gen::Event& event() const;
+  ::gen::Event* mutable_event();
+  ::gen::Event* release_event();
+  void set_allocated_event(::gen::Event* event);
+
+  // .gen.Address targetAddress = 5;
   bool has_targetaddress() const;
   void clear_targetaddress();
-  static const int kTargetAddressFieldNumber = 6;
+  static const int kTargetAddressFieldNumber = 5;
   const ::gen::Address& targetaddress() const;
   ::gen::Address* mutable_targetaddress();
   ::gen::Address* release_targetaddress();
@@ -408,10 +391,9 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::gen::Node > members_;
-  ::google::protobuf::RepeatedPtrField< ::gen::Event > events_;
   ::gen::Address* sourceaddress_;
   ::gen::Address* destinationaddress_;
+  ::gen::Event* event_;
   ::gen::Address* targetaddress_;
   int messagetype_;
   mutable int _cached_size_;
@@ -617,67 +599,46 @@ inline void Message::set_allocated_destinationaddress(::gen::Address* destinatio
   // @@protoc_insertion_point(field_set_allocated:gen.Message.destinationAddress)
 }
 
-// repeated .gen.Node members = 4;
-inline int Message::members_size() const {
-  return members_.size();
+// .gen.Event event = 4;
+inline bool Message::has_event() const {
+  return this != internal_default_instance() && event_ != NULL;
 }
-inline void Message::clear_members() {
-  members_.Clear();
+inline void Message::clear_event() {
+  if (GetArenaNoVirtual() == NULL && event_ != NULL) delete event_;
+  event_ = NULL;
 }
-inline const ::gen::Node& Message::members(int index) const {
-  // @@protoc_insertion_point(field_get:gen.Message.members)
-  return members_.Get(index);
+inline const ::gen::Event& Message::event() const {
+  // @@protoc_insertion_point(field_get:gen.Message.event)
+  return event_ != NULL ? *event_
+                         : *::gen::Event::internal_default_instance();
 }
-inline ::gen::Node* Message::mutable_members(int index) {
-  // @@protoc_insertion_point(field_mutable:gen.Message.members)
-  return members_.Mutable(index);
+inline ::gen::Event* Message::mutable_event() {
+  
+  if (event_ == NULL) {
+    event_ = new ::gen::Event;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.Message.event)
+  return event_;
 }
-inline ::gen::Node* Message::add_members() {
-  // @@protoc_insertion_point(field_add:gen.Message.members)
-  return members_.Add();
+inline ::gen::Event* Message::release_event() {
+  // @@protoc_insertion_point(field_release:gen.Message.event)
+  
+  ::gen::Event* temp = event_;
+  event_ = NULL;
+  return temp;
 }
-inline ::google::protobuf::RepeatedPtrField< ::gen::Node >*
-Message::mutable_members() {
-  // @@protoc_insertion_point(field_mutable_list:gen.Message.members)
-  return &members_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::gen::Node >&
-Message::members() const {
-  // @@protoc_insertion_point(field_list:gen.Message.members)
-  return members_;
-}
-
-// repeated .gen.Event events = 5;
-inline int Message::events_size() const {
-  return events_.size();
-}
-inline void Message::clear_events() {
-  events_.Clear();
-}
-inline const ::gen::Event& Message::events(int index) const {
-  // @@protoc_insertion_point(field_get:gen.Message.events)
-  return events_.Get(index);
-}
-inline ::gen::Event* Message::mutable_events(int index) {
-  // @@protoc_insertion_point(field_mutable:gen.Message.events)
-  return events_.Mutable(index);
-}
-inline ::gen::Event* Message::add_events() {
-  // @@protoc_insertion_point(field_add:gen.Message.events)
-  return events_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::gen::Event >*
-Message::mutable_events() {
-  // @@protoc_insertion_point(field_mutable_list:gen.Message.events)
-  return &events_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::gen::Event >&
-Message::events() const {
-  // @@protoc_insertion_point(field_list:gen.Message.events)
-  return events_;
+inline void Message::set_allocated_event(::gen::Event* event) {
+  delete event_;
+  event_ = event;
+  if (event) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.event)
 }
 
-// .gen.Address targetAddress = 6;
+// .gen.Address targetAddress = 5;
 inline bool Message::has_targetaddress() const {
   return this != internal_default_instance() && targetaddress_ != NULL;
 }

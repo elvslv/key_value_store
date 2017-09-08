@@ -73,8 +73,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, messagetype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, sourceaddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, destinationaddress_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, members_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, events_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, event_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, targetaddress_),
 };
 
@@ -138,6 +137,8 @@ void TableStruct::InitDefaultsImpl() {
       ::gen::Address::internal_default_instance());
   _Message_default_instance_.get_mutable()->destinationaddress_ = const_cast< ::gen::Address*>(
       ::gen::Address::internal_default_instance());
+  _Message_default_instance_.get_mutable()->event_ = const_cast< ::gen::Event*>(
+      ::gen::Event::internal_default_instance());
   _Message_default_instance_.get_mutable()->targetaddress_ = const_cast< ::gen::Address*>(
       ::gen::Address::internal_default_instance());
 }
@@ -152,19 +153,17 @@ void AddDescriptorsImpl() {
       "\n\rMessage.proto\022\003gen\032\rAddress.proto\"%\n\004N"
       "ode\022\035\n\007address\030\001 \001(\0132\014.gen.Address\"F\n\005Ev"
       "ent\022\036\n\005event\030\001 \001(\0162\017.gen.EventTypes\022\035\n\007a"
-      "ddress\030\002 \001(\0132\014.gen.Address\"\334\001\n\007Message\022%"
+      "ddress\030\002 \001(\0132\014.gen.Address\"\277\001\n\007Message\022%"
       "\n\013messageType\030\001 \001(\0162\020.gen.MessageType\022#\n"
       "\rsourceAddress\030\002 \001(\0132\014.gen.Address\022(\n\022de"
-      "stinationAddress\030\003 \001(\0132\014.gen.Address\022\032\n\007"
-      "members\030\004 \003(\0132\t.gen.Node\022\032\n\006events\030\005 \003(\013"
-      "2\n.gen.Event\022#\n\rtargetAddress\030\006 \001(\0132\014.ge"
-      "n.Address*H\n\013MessageType\022\013\n\007JOINREQ\020\000\022\013\n"
-      "\007JOINREP\020\001\022\010\n\004PING\020\002\022\007\n\003ACK\020\003\022\014\n\010PING_RE"
-      "Q\020\004*$\n\nEventTypes\022\n\n\006JOINED\020\000\022\n\n\006FAILED\020"
-      "\001b\006proto3"
+      "stinationAddress\030\003 \001(\0132\014.gen.Address\022\031\n\005"
+      "event\030\004 \001(\0132\n.gen.Event\022#\n\rtargetAddress"
+      "\030\005 \001(\0132\014.gen.Address*.\n\013MessageType\022\010\n\004P"
+      "ING\020\000\022\007\n\003ACK\020\001\022\014\n\010PING_REQ\020\002*$\n\nEventTyp"
+      "es\022\n\n\006JOINED\020\000\022\n\n\006FAILED\020\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 489);
+      descriptor, 434);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Message.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -193,8 +192,6 @@ bool MessageType_IsValid(int value) {
     case 0:
     case 1:
     case 2:
-    case 3:
-    case 4:
       return true;
     default:
       return false;
@@ -817,8 +814,7 @@ void Event::set_allocated_address(::gen::Address* address) {
 const int Message::kMessageTypeFieldNumber;
 const int Message::kSourceAddressFieldNumber;
 const int Message::kDestinationAddressFieldNumber;
-const int Message::kMembersFieldNumber;
-const int Message::kEventsFieldNumber;
+const int Message::kEventFieldNumber;
 const int Message::kTargetAddressFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -833,8 +829,6 @@ Message::Message()
 Message::Message(const Message& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      members_(from.members_),
-      events_(from.events_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_sourceaddress()) {
@@ -846,6 +840,11 @@ Message::Message(const Message& from)
     destinationaddress_ = new ::gen::Address(*from.destinationaddress_);
   } else {
     destinationaddress_ = NULL;
+  }
+  if (from.has_event()) {
+    event_ = new ::gen::Event(*from.event_);
+  } else {
+    event_ = NULL;
   }
   if (from.has_targetaddress()) {
     targetaddress_ = new ::gen::Address(*from.targetaddress_);
@@ -873,6 +872,9 @@ void Message::SharedDtor() {
   }
   if (this != internal_default_instance()) {
     delete destinationaddress_;
+  }
+  if (this != internal_default_instance()) {
+    delete event_;
   }
   if (this != internal_default_instance()) {
     delete targetaddress_;
@@ -904,8 +906,6 @@ Message* Message::New(::google::protobuf::Arena* arena) const {
 
 void Message::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.Message)
-  members_.Clear();
-  events_.Clear();
   if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) {
     delete sourceaddress_;
   }
@@ -914,6 +914,10 @@ void Message::Clear() {
     delete destinationaddress_;
   }
   destinationaddress_ = NULL;
+  if (GetArenaNoVirtual() == NULL && event_ != NULL) {
+    delete event_;
+  }
+  event_ = NULL;
   if (GetArenaNoVirtual() == NULL && targetaddress_ != NULL) {
     delete targetaddress_;
   }
@@ -970,34 +974,22 @@ bool Message::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .gen.Node members = 4;
+      // .gen.Event event = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_members()));
+               input, mutable_event()));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // repeated .gen.Event events = 5;
+      // .gen.Address targetAddress = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_events()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .gen.Address targetAddress = 6;
-      case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_targetaddress()));
         } else {
@@ -1051,22 +1043,16 @@ void Message::SerializeWithCachedSizes(
       3, *this->destinationaddress_, output);
   }
 
-  // repeated .gen.Node members = 4;
-  for (unsigned int i = 0, n = this->members_size(); i < n; i++) {
+  // .gen.Event event = 4;
+  if (this->has_event()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->members(i), output);
+      4, *this->event_, output);
   }
 
-  // repeated .gen.Event events = 5;
-  for (unsigned int i = 0, n = this->events_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, this->events(i), output);
-  }
-
-  // .gen.Address targetAddress = 6;
+  // .gen.Address targetAddress = 5;
   if (this->has_targetaddress()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, *this->targetaddress_, output);
+      5, *this->targetaddress_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:gen.Message)
@@ -1098,25 +1084,18 @@ void Message::SerializeWithCachedSizes(
         3, *this->destinationaddress_, deterministic, target);
   }
 
-  // repeated .gen.Node members = 4;
-  for (unsigned int i = 0, n = this->members_size(); i < n; i++) {
+  // .gen.Event event = 4;
+  if (this->has_event()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, this->members(i), deterministic, target);
+        4, *this->event_, deterministic, target);
   }
 
-  // repeated .gen.Event events = 5;
-  for (unsigned int i = 0, n = this->events_size(); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        5, this->events(i), deterministic, target);
-  }
-
-  // .gen.Address targetAddress = 6;
+  // .gen.Address targetAddress = 5;
   if (this->has_targetaddress()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, *this->targetaddress_, deterministic, target);
+        5, *this->targetaddress_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:gen.Message)
@@ -1126,28 +1105,6 @@ void Message::SerializeWithCachedSizes(
 size_t Message::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:gen.Message)
   size_t total_size = 0;
-
-  // repeated .gen.Node members = 4;
-  {
-    unsigned int count = this->members_size();
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->members(i));
-    }
-  }
-
-  // repeated .gen.Event events = 5;
-  {
-    unsigned int count = this->events_size();
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->events(i));
-    }
-  }
 
   // .gen.Address sourceAddress = 2;
   if (this->has_sourceaddress()) {
@@ -1163,7 +1120,14 @@ size_t Message::ByteSizeLong() const {
         *this->destinationaddress_);
   }
 
-  // .gen.Address targetAddress = 6;
+  // .gen.Event event = 4;
+  if (this->has_event()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->event_);
+  }
+
+  // .gen.Address targetAddress = 5;
   if (this->has_targetaddress()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1205,13 +1169,14 @@ void Message::MergeFrom(const Message& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  members_.MergeFrom(from.members_);
-  events_.MergeFrom(from.events_);
   if (from.has_sourceaddress()) {
     mutable_sourceaddress()->::gen::Address::MergeFrom(from.sourceaddress());
   }
   if (from.has_destinationaddress()) {
     mutable_destinationaddress()->::gen::Address::MergeFrom(from.destinationaddress());
+  }
+  if (from.has_event()) {
+    mutable_event()->::gen::Event::MergeFrom(from.event());
   }
   if (from.has_targetaddress()) {
     mutable_targetaddress()->::gen::Address::MergeFrom(from.targetaddress());
@@ -1244,10 +1209,9 @@ void Message::Swap(Message* other) {
   InternalSwap(other);
 }
 void Message::InternalSwap(Message* other) {
-  members_.InternalSwap(&other->members_);
-  events_.InternalSwap(&other->events_);
   std::swap(sourceaddress_, other->sourceaddress_);
   std::swap(destinationaddress_, other->destinationaddress_);
+  std::swap(event_, other->event_);
   std::swap(targetaddress_, other->targetaddress_);
   std::swap(messagetype_, other->messagetype_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -1353,67 +1317,46 @@ void Message::set_allocated_destinationaddress(::gen::Address* destinationaddres
   // @@protoc_insertion_point(field_set_allocated:gen.Message.destinationAddress)
 }
 
-// repeated .gen.Node members = 4;
-int Message::members_size() const {
-  return members_.size();
+// .gen.Event event = 4;
+bool Message::has_event() const {
+  return this != internal_default_instance() && event_ != NULL;
 }
-void Message::clear_members() {
-  members_.Clear();
+void Message::clear_event() {
+  if (GetArenaNoVirtual() == NULL && event_ != NULL) delete event_;
+  event_ = NULL;
 }
-const ::gen::Node& Message::members(int index) const {
-  // @@protoc_insertion_point(field_get:gen.Message.members)
-  return members_.Get(index);
+const ::gen::Event& Message::event() const {
+  // @@protoc_insertion_point(field_get:gen.Message.event)
+  return event_ != NULL ? *event_
+                         : *::gen::Event::internal_default_instance();
 }
-::gen::Node* Message::mutable_members(int index) {
-  // @@protoc_insertion_point(field_mutable:gen.Message.members)
-  return members_.Mutable(index);
+::gen::Event* Message::mutable_event() {
+  
+  if (event_ == NULL) {
+    event_ = new ::gen::Event;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.Message.event)
+  return event_;
 }
-::gen::Node* Message::add_members() {
-  // @@protoc_insertion_point(field_add:gen.Message.members)
-  return members_.Add();
+::gen::Event* Message::release_event() {
+  // @@protoc_insertion_point(field_release:gen.Message.event)
+  
+  ::gen::Event* temp = event_;
+  event_ = NULL;
+  return temp;
 }
-::google::protobuf::RepeatedPtrField< ::gen::Node >*
-Message::mutable_members() {
-  // @@protoc_insertion_point(field_mutable_list:gen.Message.members)
-  return &members_;
-}
-const ::google::protobuf::RepeatedPtrField< ::gen::Node >&
-Message::members() const {
-  // @@protoc_insertion_point(field_list:gen.Message.members)
-  return members_;
-}
-
-// repeated .gen.Event events = 5;
-int Message::events_size() const {
-  return events_.size();
-}
-void Message::clear_events() {
-  events_.Clear();
-}
-const ::gen::Event& Message::events(int index) const {
-  // @@protoc_insertion_point(field_get:gen.Message.events)
-  return events_.Get(index);
-}
-::gen::Event* Message::mutable_events(int index) {
-  // @@protoc_insertion_point(field_mutable:gen.Message.events)
-  return events_.Mutable(index);
-}
-::gen::Event* Message::add_events() {
-  // @@protoc_insertion_point(field_add:gen.Message.events)
-  return events_.Add();
-}
-::google::protobuf::RepeatedPtrField< ::gen::Event >*
-Message::mutable_events() {
-  // @@protoc_insertion_point(field_mutable_list:gen.Message.events)
-  return &events_;
-}
-const ::google::protobuf::RepeatedPtrField< ::gen::Event >&
-Message::events() const {
-  // @@protoc_insertion_point(field_list:gen.Message.events)
-  return events_;
+void Message::set_allocated_event(::gen::Event* event) {
+  delete event_;
+  event_ = event;
+  if (event) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.event)
 }
 
-// .gen.Address targetAddress = 6;
+// .gen.Address targetAddress = 5;
 bool Message::has_targetaddress() const {
   return this != internal_default_instance() && targetaddress_ != NULL;
 }

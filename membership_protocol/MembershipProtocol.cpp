@@ -1,203 +1,159 @@
-#include <algorithm>
+#include <sstream>
+
 #include "MembershipProtocol.h"
-#include "JoinRepMessage.h"
-#include "PingMessage.h"
-#include "AckMessage.h"
-#include "../utils/TimeUtils.h"
+#include "MembershipUpdate.h"
 
 namespace membership_protocol
 {
-    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger): 
+    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<IGossipProtocolFactory>& gossipProtocolFactory): 
         node(addr),
-        members(),
-        events(),
-        waitingList(),
-        waitingListIter(),
-        network(addr),
-        logger(logger)
+        network(std::make_shared<network::Network>(addr)),
+        logger(logger),
+        failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, network, this)),
+        gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, network, this)),
+        observers(),
+        members()
     {
     }
 
-    const std::vector<Node>& MembershipProtocol::getMembers() const
+    void MembershipProtocol::start()
     {
-        return members;
+        // TODO: send initial ping
+
+        failureDetector->addObserver(this);
+        gossipProtocol->addObserver(this);
+
+        failureDetector->start();
+        gossipProtocol->start();
     }
 
-    void MembershipProtocol::processMessage(const std::unique_ptr<Message> & message) 
+    void MembershipProtocol::stop()
     {
-        log("Received message", message->getMessageType(), message->toString());
-    
-        auto sourceAddress = message->getSourceAddress();
-        switch (message->getMessageType())
+        gossipProtocol->stop();
+        failureDetector->stop();
+    }
+
+    void MembershipProtocol::addObserver(IMembershipProtocol::IObserver* observer)
+    {
+        observers.push_back(observer);
+    }
+
+    void MembershipProtocol::onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent)
+    {
+        MembershipUpdateType membershipUpdateType;
+        switch (failureDetectorEvent.eventType)
         {
-            case JOINREQ:
+            case failure_detector::ALIVE:
             {
-                addMemberListEntry(sourceAddress);
-    
-                auto repMessage = std::make_unique<JoinRepMessage>(node.getAddress(), sourceAddress, members);
-                sendMessage(std::move(repMessage), sourceAddress);
+                membershipUpdateType = JOINED;
                 break;
             }
-    
-            case JOINREP:
+
+            case failure_detector::FAILED:
             {
-                // memberNode->inGroup = true;
-                events.emplace_back(JOINED, node.getAddress(), utils::Time::getTimestamp());
+                membershipUpdateType = FAILED;
+                break;
+            }
+
+            default:
+            {
+                std::stringstream ss;
+                ss << "unsupported event " << failureDetectorEvent.eventType;
+                throw std::logic_error(ss.str());
+            }
+        }
+
+        onMembershipUpdate(membershipUpdateType, FAILURE_DETECTOR, failureDetectorEvent.address);
+    }
+
+    void MembershipProtocol::onGossipEvent(const gossip_protocol::GossipEvent& gossipEvent)
+    {
+        MembershipUpdateType membershipUpdateType;
+        switch (gossipEvent.eventType)
+        {
+            case gossip_protocol::JOINED:
+            {
+                membershipUpdateType = JOINED;
+                break;
+            }
+
+            case gossip_protocol::FAILED:
+            {
+                membershipUpdateType = FAILED;
+                break;
+            }
+
+            default:
+            {
+                std::stringstream ss;
+                ss << "unsupported event " << gossipEvent.eventType;
+                throw std::logic_error(ss.str());
+            }
+        }
+
+        onMembershipUpdate(membershipUpdateType, GOSSIP_PROTOCOL, gossipEvent.address);
+    }
+
+    void MembershipProtocol::onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress)
+    {
+        if (sourceAddress == node)
+        {
+            log("Received membership update ", membershipUpdateType, " from ",  membershipUpdateSource, " for current node itself. Ignoring it");
+            return;
+        }
+
+        auto addressStr = sourceAddress.toString();
+        log("Received membership update ", membershipUpdateType, " from ",  membershipUpdateSource, ", node address: ", addressStr);
+
+        switch (membershipUpdateType)
+        {
+            case membership_protocol::JOINED:
+            {
+                bool newNode = members.find(addressStr) == members.end();
+                if (newNode)
+                {
+                    members[addressStr] = Member(sourceAddress);
+
+                    auto membershipUpdate = MembershipUpdate(members[addressStr], membership_protocol::JOINED);
+                    onMembershipUpdate(membershipUpdate, membershipUpdateSource);
+                }
                 
-                addMemberListEntry(sourceAddress);
-    
-                JoinRepMessage* repMessage = static_cast<JoinRepMessage*>(message.get());
-                auto memberList = repMessage->getMemberList();
-                for (auto it = memberList.begin(); it != memberList.end(); ++it)
-                {
-                    addMemberListEntry(it->getAddress());
-                }
-    
                 break;
             }
-    
-            case PING:
+
+            case membership_protocol::FAILED:
             {
-                PingMessage* pingMessage = static_cast<PingMessage*>(message.get());
-                for (auto it = pingMessage->getEvents().begin(); it != pingMessage->getEvents().end(); ++it)
+                bool nodeExists = members.find(addressStr) != members.end();
+                if (nodeExists)
                 {
-                    log("received event ", it->getEventType(), " from node ", it->getNodeAddress().toString());
-    
-                    switch(it->getEventType())
-                    {
-                        case JOINED:
-                        {
-                            addMemberListEntry(it->getNodeAddress());
-                            break;
-                        }
-    
-                        case FAILED:
-                        {
-                            // throw std::logic_error("not implemented!");
-                            log("node failed");
-                        }
-                    }
+                    members.erase(addressStr);
+
+                    auto membershipUpdate = MembershipUpdate(members[addressStr], membership_protocol::FAILED);
+                    onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
-    
-                sendMessage(std::unique_ptr<AckMessage>(new AckMessage(node.getAddress(), sourceAddress)), sourceAddress);
-                break;
             }
-            case ACK:
+
+            default:
             {
-                std::string sourceAddressStr = sourceAddress.toString();
-                if (waitingListIter.find(sourceAddressStr) == waitingListIter.end())
-                {
-                    throw std::logic_error("node not found");
-                }
-    
-                log("Removing node ", sourceAddressStr, " from the waiting list");
-                waitingList.erase(waitingListIter[sourceAddressStr]);
-                waitingListIter.erase(sourceAddressStr);
-    
-                break;
+                std::stringstream ss;
+                ss << "unsupported membership update " << membershipUpdateType;
+                throw std::logic_error(ss.str());
             }
         }
     }
-
-    void MembershipProtocol::executeMembershipProtocol() 
+    
+    void MembershipProtocol::onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource)
     {
-        for (auto it = waitingList.begin(); it != waitingList.end(); ++it)
+        for (auto observer : observers)
         {
-            // log("Ping message was sent to ", it->second.getAddress().getAddress(), " at ", it->first, " now ", par->globaltime);
-    
-            long curTime = utils::Time::getTimestamp();
-            if (curTime - it->first > PING_TIMEOUT)
-            {
-                network::Address address = it->second.getAddress();
-                std::string addressStr = address.toString();
-                log("Node", addressStr, "exceeded timeout", PING_TIMEOUT);
-                events.emplace_back(FAILED, address, curTime);
-    
-                assert(waitingListIter.erase(addressStr) == 1);
-    
-                // auto nodeIter = memberNode->memberListIter.find(addressStr);
-                // assert(nodeIter != memberNode->memberListIter.end());
-    
-                // log(__FILE__, __LINE__);
-    
-                for (auto jt = members.begin(); jt != members.end(); ++jt)
-                {
-                    if (jt->getAddress() == address)
-                    {
-                        members.erase(jt);
-                        break;
-                    }
-                }
-    
-                // log(__FILE__, __LINE__, addressStr);
-    
-                // memberNode->memberListIter.erase(addressStr);
-    
-                // log(__FILE__, __LINE__);
-    
-                it = std::prev(waitingList.erase(it));
-    
-                // logger->logNodeRemove(&memberNode->addr, &address);
-            }
-        }
-    
-        if (members.size() == 0)
-        {
-            return;
-        }
-    
-        int i = std::rand() % members.size();
-        auto targetAddress = members[i].getAddress();
-        std::string addressStr = targetAddress.toString();
-        if (waitingListIter.find(addressStr) != waitingListIter.end())
-        {
-            log("Already sent PING message to ", addressStr, " at ", waitingListIter[addressStr]->first);
-            return;
-        }
-    
-        long curTime = utils::Time::getTimestamp();        
-        log("Failure detector is going to send PING message to node ", addressStr, " at ", curTime);
-        
-        waitingList.emplace_back(curTime, members[i]);
-        waitingListIter[addressStr] = std::prev(waitingList.end());
-        assert(waitingListIter[addressStr] !=  waitingList.end());
-    
-        std::vector<Event> newEvents;
-        for (auto it = events.begin(); it != events.end(); ++it)
-        {
-            if (it->getTimestamp() > members[i].getTimestamp())
-            {
-                newEvents.push_back(*it);
-            }
-        }
-    
-        members[i].setTimestamp(curTime);
-        sendMessage(std::make_unique<PingMessage>(node.getAddress(), targetAddress, newEvents), targetAddress);
-    }
-    
-
-    void MembershipProtocol::sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress)
-    {
-        auto msg = message->serialize();
-        log("Sending message", msg.content.get());
-
-        network.send(destAddress, msg);
-    }
-
-    void MembershipProtocol::addMemberListEntry(const network::Address& address) 
-    {
-        if (address == node.getAddress())
-        {
-            return;
+            observer->onMembershipUpdate(membershipUpdate);
         }
 
-        auto it = std::find_if(members.begin(), members.end(), [&address] (const Node& node) { return node.getAddress() == address; });
-        if (it != members.end())
+        if (membershipUpdateSource == FAILURE_DETECTOR)
         {
-            return;
+            gossipProtocol->spreadMembershipUpdate(membershipUpdate);                    
         }
 
-        // logger->logNodeAdd(&memberNode->addr, &address);
-        members.emplace_back(address);          
+        log("Successfully notified observers about membership update");
     }
 }

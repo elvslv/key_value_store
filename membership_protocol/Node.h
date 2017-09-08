@@ -12,11 +12,8 @@ namespace membership_protocol
         Node(const network::Address& addr);
         const network::Address& getAddress() const;
         size_t getHashCode() const;
-        long getTimestamp() const;
-        void setTimestamp(long val);
     private:
         network::Address address;
         std::hash<std::string> hash_fn;
-        long timestamp;
     };
 }

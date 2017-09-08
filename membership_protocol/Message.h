@@ -10,12 +10,12 @@ namespace membership_protocol
 {
     enum MsgTypes
     {
-        JOINREQ,
-        JOINREP,
+        // JOINREQ,
+        // JOINREP,
         PING,
         ACK,
         PING_REQ,
-        DUMMYLASTMSGTYPE
+        // DUMMYLASTMSGTYPE
     };
 
     class Message
