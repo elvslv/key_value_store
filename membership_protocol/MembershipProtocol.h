@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include <unordered_map>
 #include "IMembershipProtocol.h"
 #include "IFailureDetector.h"
@@ -7,12 +8,13 @@
 #include "IFailureDetectorFactory.h"
 #include "IGossipProtocolFactory.h"
 #include "../utils/Log.h"
-#include "../network/Network.h"
+#include "../utils/MessageDispatcher.h"
 #include "Member.h"
+#include "Message.h"
 
 namespace membership_protocol
 {
-    class MembershipProtocol: public IMembershipProtocol, IFailureDetector::IObserver, IGossipProtocol::IObserver
+    class MembershipProtocol: public IMembershipProtocol, IFailureDetector::IObserver, IGossipProtocol::IObserver, utils::MessageDispatcher::IListener
     {
     public:
         MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<IGossipProtocolFactory>& gossipProtocolFactory);
@@ -25,20 +27,39 @@ namespace membership_protocol
 
         virtual void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent);
         virtual void onGossipEvent(const gossip_protocol::GossipEvent& gossipEvent);
+        virtual void onMessage(const std::unique_ptr<Message>& message);
 
     private:
         network::Address node;
-        std::shared_ptr<network::Network> network;
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
         std::shared_ptr<utils::Log> logger;
 
         std::unique_ptr<IFailureDetector> failureDetector;
         std::unique_ptr<IGossipProtocol> gossipProtocol;
         std::vector<IMembershipProtocol::IObserver*> observers;
 
+        std::mutex membersMutex;
         std::unordered_map<std::string, Member> members;
+
+        std::mutex messagesMutex;
+        std::queue<std::unique_ptr<Message> > messages;
+
+        volatile bool joined;
+        volatile bool processMessages;
+
+        std::unique_ptr<std::thread> messageProcessingThread;
 
         void onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource);
         void onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress);
+
+        void sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress);        
+
+        network::Address getJoinAddress();
+        void onJoin();
+        void addMember(const network::Address& address);
+
+        void processMessagesQueue();
+        void processMessage(const std::unique_ptr<Message>& message);
 
         template <typename T, typename ... args >
         void log(T current, args... next )

@@ -2,35 +2,56 @@
 
 #include "MembershipProtocol.h"
 #include "MembershipUpdate.h"
+#include "JoinReqMessage.h"
+#include "JoinRepMessage.h"
+#include "AckMessage.h"
+
 
 namespace membership_protocol
 {
     MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<IGossipProtocolFactory>& gossipProtocolFactory): 
         node(addr),
-        network(std::make_shared<network::Network>(addr)),
+        messageDispatcher(std::make_shared<utils::MessageDispatcher>(addr, logger)),
         logger(logger),
-        failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, network, this)),
-        gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, network, this)),
+        failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this)),
+        gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, messageDispatcher, this)),
         observers(),
-        members()
+        membersMutex(),
+        members(),
+        messagesMutex(),
+        messages(),
+        joined(false),
+        processMessages(false),
+        messageProcessingThread()
     {
     }
 
     void MembershipProtocol::start()
     {
-        // TODO: send initial ping
-
         failureDetector->addObserver(this);
         gossipProtocol->addObserver(this);
+        
+        messageProcessingThread = std::make_unique<std::thread>(&MembershipProtocol::processMessagesQueue, this);        
 
-        failureDetector->start();
-        gossipProtocol->start();
+        auto targetAddress = getJoinAddress();
+        if (targetAddress == node)
+        {
+            messageDispatcher->listen(JOINREQ, this);
+            onJoin();
+            return;
+        }
+
+        messageDispatcher->listen(JOINREP, this);
+        messageDispatcher->sendMessage(std::make_unique<JoinReqMessage>(node, targetAddress), targetAddress);
     }
 
     void MembershipProtocol::stop()
     {
         gossipProtocol->stop();
-        failureDetector->stop();
+        failureDetector->stop();    
+
+        processMessages = false;
+        messageProcessingThread->join();
     }
 
     void MembershipProtocol::addObserver(IMembershipProtocol::IObserver* observer)
@@ -109,6 +130,7 @@ namespace membership_protocol
         {
             case membership_protocol::JOINED:
             {
+                std::lock_guard<std::mutex> lock(membersMutex);                
                 bool newNode = members.find(addressStr) == members.end();
                 if (newNode)
                 {
@@ -123,6 +145,7 @@ namespace membership_protocol
 
             case membership_protocol::FAILED:
             {
+                std::lock_guard<std::mutex> lock(membersMutex);                                
                 bool nodeExists = members.find(addressStr) != members.end();
                 if (nodeExists)
                 {
@@ -151,9 +174,88 @@ namespace membership_protocol
 
         if (membershipUpdateSource == FAILURE_DETECTOR)
         {
-            gossipProtocol->spreadMembershipUpdate(membershipUpdate);                    
+            gossipProtocol->spreadMembershipUpdate(membershipUpdate);
         }
 
         log("Successfully notified observers about membership update");
+    }
+
+    void MembershipProtocol::onJoin()
+    {
+        messageDispatcher->listen(PING, this);
+
+        failureDetector->start();
+        gossipProtocol->start();
+
+        joined = true;
+    }
+
+    void MembershipProtocol::onMessage(const std::unique_ptr<Message>& message)
+    {
+        std::lock_guard<std::mutex> lock(messagesMutex);
+        messages.push(std::move(message));
+    }
+
+    void MembershipProtocol::processMessagesQueue()
+    {
+        while (processMessages)
+        {
+            std::unique_ptr<Message> message;
+            {
+                std::lock_guard<std::mutex> lock(messagesMutex);
+                if (!messages.empty())
+                {
+                    message = std::move(messages.front());
+                    messages.pop();
+                }
+            }
+
+            if (!message)
+            {
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(100ms);
+                continue;
+            }
+
+            processMessage(message);
+        }
+    }
+
+    void MembershipProtocol::processMessage(const std::unique_ptr<Message>& message)
+    {
+        auto sourceAddress = message->getSourceAddress();
+        
+        switch (message->getMessageType())
+        {
+            case JOINREP:
+            {
+                onJoin();
+                break;
+            }
+
+            case JOINREQ:
+            {
+                messageDispatcher->sendMessage(std::make_unique<JoinRepMessage>(node, sourceAddress), sourceAddress);
+                
+                onMembershipUpdate(JOINED, INITIAL_SYNC, sourceAddress);
+
+                break;
+            }
+
+            case PING:
+            {
+                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress), sourceAddress);
+
+                onMembershipUpdate(JOINED, MEMBERSHIP_PROTOCOL, sourceAddress);
+                
+                break;
+            }
+
+            default:
+            {
+                log("Unexpected message ", message->getMessageType());
+                break;
+            }
+        }
     }
 }

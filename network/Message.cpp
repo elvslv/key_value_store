@@ -13,4 +13,9 @@ namespace network
         size(sz)
     {
     }
+
+    bool Message::empty()
+    {
+        return size == 0;
+    }
 }

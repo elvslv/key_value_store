@@ -14,6 +14,8 @@ namespace membership_protocol
     {
         FAILURE_DETECTOR,
         GOSSIP_PROTOCOL,
+        INITIAL_SYNC,
+        MEMBERSHIP_PROTOCOL,
     };
 
     struct MembershipUpdate 
