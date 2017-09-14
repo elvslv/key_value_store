@@ -1,49 +1,58 @@
 #include <sstream>
 #include <chrono>
+#include <string>
 
 #include "MessageDispatcher.h"
+#include "Utils.h"
 
 namespace utils
 {
     MessageDispatcher::MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger):
         network(address),
         logger(logger),
-        listeners(),
+        callbacks(),
         isRunning(false),
         thread()
     {
     }
 
-    void MessageDispatcher::listen(membership_protocol::MsgTypes msgType, IListener* listener)
+    std::string MessageDispatcher::listen(membership_protocol::MsgTypes msgType, const Callback& callback)
     {
-        if (listeners.find(msgType) != listeners.end())
+        std::lock_guard<std::mutex> lock(mutex);
+
+        if (callbacks.find(msgType) != callbacks.end())
         {
             std::stringstream ss;
             ss << "Listener to message " << msgType << " already exists";
             throw std::logic_error(ss.str());
         }
 
-        listeners[msgType] = listener;
+        std::string token = Utils::getRandomString(TOKEN_LENGTH);
+        callbacks[msgType] = callback;
+        tokens[msgType] = token;
     }
 
-    void MessageDispatcher::stopListening(membership_protocol::MsgTypes msgType, IListener* listener)
+    void MessageDispatcher::stopListening(membership_protocol::MsgTypes msgType, const std::string& token)
     {
-        auto it = listeners.find(msgType);
-        if (it == listeners.end())
+        std::lock_guard<std::mutex> lock(mutex);
+        
+        auto it = callbacks.find(msgType);
+        if (it == callbacks.end())
         {
             std::stringstream ss;
             ss << "Listener to message " << msgType << " not found";
             throw std::logic_error(ss.str());
         }
 
-        if (it->second != listener)
+        if (tokens[msgType] != token)
         {
             std::stringstream ss;
-            ss << "Given listener " << listener << " of message " <<   msgType <<  " doesn't match registered listener " << it->second;
+            ss << "Given listener " << token << " of message " <<   msgType <<  " doesn't match registered listener " << tokens[msgType];
             throw std::logic_error(ss.str());
         }
 
-        listeners.erase(it);
+        callbacks.erase(it);
+        tokens.erase(msgType);
     }
 
     void MessageDispatcher::start()
@@ -66,20 +75,29 @@ namespace utils
             if (message.empty())
             {
                 using namespace std::chrono_literals;
-                std::this_thread::sleep_for(100ms);
+                std::this_thread::sleep_for(SLEEP_DELAY);
                 continue;
             }
 
             auto parsedMessage = membership_protocol::Message::parseMessage(message);
             logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageType(), " from ", parsedMessage->getSourceAddress());
-            auto it = listeners.find(parsedMessage->getMessageType());
-            if (it == listeners.end())
+            
+            Callback callback;
             {
-                logger->log("<MessageDispatcher> -- listeners of ", parsedMessage->getMessageType(), " not found. Discarding this message");
-                continue;
+                std::lock_guard<std::mutex> lock(mutex);
+
+                auto it = callbacks.find(parsedMessage->getMessageType());
+                if (it == callbacks.end())
+                {
+                    logger->log("<MessageDispatcher> -- listeners of ", parsedMessage->getMessageType(), " not found. Discarding this message");
+                    continue;
+                }
+
+                callback = it->second;
             }
 
-            it->second->onMessage(parsedMessage);
+
+            callback(parsedMessage);
         }
     }
 
@@ -88,7 +106,6 @@ namespace utils
         auto msg = message->serialize();
         logger->log("Sending message", msg.content.get());
 
-        network->send(destAddress, msg);
+        network.send(destAddress, msg);
     }
-
 }

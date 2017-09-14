@@ -41,6 +41,27 @@
         "streambuf": "cpp",
         "tuple": "cpp",
         "unordered_set": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "locale": "cpp",
+        "*.tcc": "cpp",
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "cstdarg": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "limits": "cpp",
+        "cstdint": "cpp",
+        "hashtable": "cpp",
+        "type_traits": "cpp",
+        "atomic": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "thread": "cpp"
     }
 }

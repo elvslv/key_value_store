@@ -13,35 +13,34 @@ namespace membership_protocol
         node(addr),
         messageDispatcher(std::make_shared<utils::MessageDispatcher>(addr, logger)),
         logger(logger),
+        asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),
+        asyncQueueCallback(),
         failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this)),
         gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, messageDispatcher, this)),
         observers(),
         membersMutex(),
         members(),
-        messagesMutex(),
-        messages(),
-        joined(false),
-        processMessages(false),
-        messageProcessingThread()
+        joined(false)
     {
+        asyncQueueCallback = std::bind(&utils::AsyncQueue::push, asyncQueue, std::placeholders::_1);
     }
 
     void MembershipProtocol::start()
     {
+        asyncQueue.start();
+
         failureDetector->addObserver(this);
         gossipProtocol->addObserver(this);
         
-        messageProcessingThread = std::make_unique<std::thread>(&MembershipProtocol::processMessagesQueue, this);        
-
         auto targetAddress = getJoinAddress();
         if (targetAddress == node)
         {
-            messageDispatcher->listen(JOINREQ, this);
+            messageDispatcher->listen(JOINREQ, asyncQueueCallback);
             onJoin();
             return;
         }
 
-        messageDispatcher->listen(JOINREP, this);
+        messageDispatcher->listen(JOINREP, asyncQueueCallback);
         messageDispatcher->sendMessage(std::make_unique<JoinReqMessage>(node, targetAddress), targetAddress);
     }
 
@@ -50,8 +49,7 @@ namespace membership_protocol
         gossipProtocol->stop();
         failureDetector->stop();    
 
-        processMessages = false;
-        messageProcessingThread->join();
+        asyncQueue.stop();
     }
 
     void MembershipProtocol::addObserver(IMembershipProtocol::IObserver* observer)
@@ -182,43 +180,12 @@ namespace membership_protocol
 
     void MembershipProtocol::onJoin()
     {
-        messageDispatcher->listen(PING, this);
+        messageDispatcher->listen(PING, asyncQueueCallback);
 
         failureDetector->start();
         gossipProtocol->start();
 
         joined = true;
-    }
-
-    void MembershipProtocol::onMessage(const std::unique_ptr<Message>& message)
-    {
-        std::lock_guard<std::mutex> lock(messagesMutex);
-        messages.push(std::move(message));
-    }
-
-    void MembershipProtocol::processMessagesQueue()
-    {
-        while (processMessages)
-        {
-            std::unique_ptr<Message> message;
-            {
-                std::lock_guard<std::mutex> lock(messagesMutex);
-                if (!messages.empty())
-                {
-                    message = std::move(messages.front());
-                    messages.pop();
-                }
-            }
-
-            if (!message)
-            {
-                using namespace std::chrono_literals;
-                std::this_thread::sleep_for(100ms);
-                continue;
-            }
-
-            processMessage(message);
-        }
     }
 
     void MembershipProtocol::processMessage(const std::unique_ptr<Message>& message)
@@ -257,5 +224,10 @@ namespace membership_protocol
                 break;
             }
         }
+    }
+
+    network::Address MembershipProtocol::getJoinAddress()
+    {
+        return node;
     }
 }
