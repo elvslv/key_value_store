@@ -6,6 +6,8 @@ namespace membership_protocol
 {
     struct Member
     {
+        Member();
+
         Member(const network::Address& address):
             address(address)
         {

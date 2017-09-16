@@ -11,6 +11,8 @@ enum MessageType {
     PING = 0;
     ACK = 1;
     PING_REQ = 2;
+    JOINREQ = 3;
+    JOINREP = 4;
 }
 
 enum EventTypes {

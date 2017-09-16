@@ -23,7 +23,12 @@ namespace membership_protocol
     {
     public:
         virtual ~Message();
-
+        Message(Message&&) = default;
+        Message& operator = (Message&&) = default;
+    
+        Message(const Message&) = default;
+        Message& operator = (const Message&) = default;
+    
         MsgTypes getMessageType() const;
 
         static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage); 

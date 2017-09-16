@@ -16,7 +16,7 @@ namespace utils
     class MessageDispatcher
     {
     public:
-        typedef std::function<void(const std::unique_ptr<membership_protocol::Message>&)> Callback;
+        typedef std::function<void(std::unique_ptr<membership_protocol::Message>&)> Callback;
 
         MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger);
 
@@ -27,7 +27,7 @@ namespace utils
         void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress);
     private:
         static const int TOKEN_LENGTH = 10;
-        static const std::chrono::duration<1, 1000> SLEEP_DELAY = std::chrono::milliseconds(100);
+        static constexpr auto SLEEP_DELAY = std::chrono::milliseconds(100);
 
         network::Network network;
         std::shared_ptr<Log> logger;

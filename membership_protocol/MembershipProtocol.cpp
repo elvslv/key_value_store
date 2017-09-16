@@ -14,7 +14,7 @@ namespace membership_protocol
         messageDispatcher(std::make_shared<utils::MessageDispatcher>(addr, logger)),
         logger(logger),
         asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),
-        asyncQueueCallback(),
+        asyncQueueCallback([this](std::unique_ptr<Message>& message){asyncQueue.push(message);}),        
         failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this)),
         gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, messageDispatcher, this)),
         observers(),
@@ -22,7 +22,6 @@ namespace membership_protocol
         members(),
         joined(false)
     {
-        asyncQueueCallback = std::bind(&utils::AsyncQueue::push, asyncQueue, std::placeholders::_1);
     }
 
     void MembershipProtocol::start()
@@ -132,9 +131,9 @@ namespace membership_protocol
                 bool newNode = members.find(addressStr) == members.end();
                 if (newNode)
                 {
-                    members[addressStr] = Member(sourceAddress);
+                    auto result = members.emplace(addressStr, sourceAddress);
 
-                    auto membershipUpdate = MembershipUpdate(members[addressStr], membership_protocol::JOINED);
+                    auto membershipUpdate = MembershipUpdate(result.first->second, membership_protocol::JOINED);
                     onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
                 
@@ -147,9 +146,10 @@ namespace membership_protocol
                 bool nodeExists = members.find(addressStr) != members.end();
                 if (nodeExists)
                 {
+                    auto member = members[addressStr];
                     members.erase(addressStr);
 
-                    auto membershipUpdate = MembershipUpdate(members[addressStr], membership_protocol::FAILED);
+                    auto membershipUpdate = MembershipUpdate(member, membership_protocol::FAILED);
                     onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
             }

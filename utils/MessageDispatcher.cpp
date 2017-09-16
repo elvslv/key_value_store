@@ -30,6 +30,8 @@ namespace utils
         std::string token = Utils::getRandomString(TOKEN_LENGTH);
         callbacks[msgType] = callback;
         tokens[msgType] = token;
+
+        return token;
     }
 
     void MessageDispatcher::stopListening(membership_protocol::MsgTypes msgType, const std::string& token)
@@ -80,7 +82,7 @@ namespace utils
             }
 
             auto parsedMessage = membership_protocol::Message::parseMessage(message);
-            logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageType(), " from ", parsedMessage->getSourceAddress());
+            logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageType(), " from ", parsedMessage->getSourceAddress().toString());
             
             Callback callback;
             {

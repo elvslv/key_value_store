@@ -45,48 +45,12 @@ namespace membership_protocol
 
             case gen::JOINREP:
             {
-                int members_num = message.members_size();
-                std::vector<Node> members;
-                members.reserve(members_num);
-
-                for (int i = 0; i < members_num; ++i)
-                {
-                    gen::Node genMember = message.members(i);
-                    gen::Address addr = genMember.address();
-                    members.emplace_back(network::Address(addr));
-                }
-
-                return std::make_unique<JoinRepMessage>(srcAddress, destAddress, members);
+                return std::make_unique<JoinRepMessage>(srcAddress, destAddress);
             }
 
             case gen::PING:
             {
-                int events_num = message.events_size();
-                std::vector<Event> events;
-
-                for (int i = 0; i < events_num; ++i)
-                {
-                    gen::Event event = message.events(i);
-                    EventTypes type;
-                    switch (event.event())
-                    {
-                        case gen::JOINED:
-                            type = JOINED;
-                            break;
-
-                        case gen::FAILED:
-                            type = FAILED;
-                            break;
-
-                        default:
-                            assert(false);
-                    }
-
-                    network::Address address(event.address());
-                    events.emplace_back(type, address, 0);
-                }
-
-                return std::make_unique<PingMessage>(srcAddress, destAddress, events);
+                return std::make_unique<PingMessage>(srcAddress, destAddress);
             }
 
             case gen::ACK:

@@ -8,8 +8,6 @@ namespace membership_protocol
     {
     public:
         JoinRepMessage(const network::Address& from, const network::Address& to);
-        std::string toString();
         virtual gen::MessageType getProtobufMessageType();
-        virtual gen::Message serializeToProtobuf();
     };
 }

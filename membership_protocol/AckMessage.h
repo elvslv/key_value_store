@@ -9,6 +9,7 @@ namespace membership_protocol
     {
     public:
         AckMessage(const network::Address& from, const network::Address& to);
+        
 
     protected:
         virtual gen::MessageType getProtobufMessageType();

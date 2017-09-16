@@ -2,6 +2,7 @@
 
 namespace membership_protocol
 {
+/*
     Event::Event(EventTypes type, const network::Address& addr) :
         eventType(type),
         nodeAddress(addr)
@@ -40,4 +41,5 @@ namespace membership_protocol
 
         return std::unique_ptr<gen::Event>(event);
     }
+*/
 }

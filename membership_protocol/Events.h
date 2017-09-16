@@ -5,7 +5,7 @@
 
 namespace membership_protocol
 {
-    enum EventTypes
+/*    enum EventTypes
     {
         JOINED,
         FAILED,
@@ -26,4 +26,5 @@ namespace membership_protocol
         EventTypes eventType;
         network::Address nodeAddress;
     };
+*/
 }

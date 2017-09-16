@@ -2,14 +2,9 @@
 
 namespace membership_protocol
 {
-    PingReqMessage::PingReqMessage(const network::Address& from, const network::Address& to, const network::Address& tgtAddress, const std::vector<Event>& ev): 
-        PingMessageBase(PING_REQ, from, to, ev),
-        targetAddress(tgtAddress)
-    {
-    }
-
     PingReqMessage::PingReqMessage(const network::Address& from, const network::Address& to, const network::Address& tgtAddress): 
-        PingReqMessage(from, to, tgtAddress, std::vector<Event>())
+        PingMessageBase(PING_REQ, from, to),
+        targetAddress(tgtAddress)
     {
     }
 

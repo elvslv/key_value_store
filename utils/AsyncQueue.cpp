@@ -23,7 +23,7 @@ namespace utils
         messageProcessingThread->join();
     }
 
-    void AsyncQueue::push(const std::unique_ptr<membership_protocol::Message>& message)
+    void AsyncQueue::push(std::unique_ptr<membership_protocol::Message>& message)
     {
         std::lock_guard<std::mutex> lock(messagesMutex);
         messages.push(std::move(message));
