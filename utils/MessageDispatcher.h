@@ -16,7 +16,7 @@ namespace utils
     class MessageDispatcher
     {
     public:
-        typedef std::function<void(std::unique_ptr<membership_protocol::Message>&)> Callback;
+        typedef std::function<void(std::unique_ptr<membership_protocol::Message>)> Callback;
 
         MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger);
 

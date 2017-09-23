@@ -99,7 +99,7 @@ namespace utils
             }
 
 
-            callback(parsedMessage);
+            callback(std::move(parsedMessage));
         }
     }
 

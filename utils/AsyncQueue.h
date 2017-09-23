@@ -12,13 +12,13 @@ namespace utils
     class AsyncQueue
     {
     public:
-        typedef std::function<void(std::unique_ptr<membership_protocol::Message>&)> Callback;
+        typedef std::function<void(std::unique_ptr<membership_protocol::Message>)> Callback;
         AsyncQueue(const Callback& callback);
 
         void start();
         void stop();
 
-        void push(std::unique_ptr<membership_protocol::Message>& message);
+        void push(std::unique_ptr<membership_protocol::Message> message);
 
     private:
         Callback callback;

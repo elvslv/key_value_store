@@ -14,7 +14,7 @@ namespace membership_protocol
         messageDispatcher(std::make_shared<utils::MessageDispatcher>(addr, logger)),
         logger(logger),
         asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),
-        asyncQueueCallback([this](std::unique_ptr<Message>& message){asyncQueue.push(message);}),        
+        asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),        
         failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this)),
         gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, messageDispatcher, this)),
         observers(),
