@@ -18,6 +18,7 @@ add_subdirectory("${CMAKE_BINARY_DIR}/tests/googletest-src"
 include_directories("${gtest_SOURCE_DIR}/include"
                     "${gmock_SOURCE_DIR}/include")
  
-add_executable(key_value_store_tests "utils/CMakeLists.txt")
+add_executable(key_value_store_tests "utils/CMakeLists.txt" "network/CMakeLists.txt")
 target_link_libraries(key_value_store_tests key_value_store_lib gtest_main proto)
 add_subdirectory(utils)
+add_subdirectory(network)
