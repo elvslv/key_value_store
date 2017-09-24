@@ -125,5 +125,12 @@ namespace
         {
             ASSERT_TRUE(sentIds[it->first] == receivedIds[it->first]);
         }
+
+        auto emulNet = network::EmulNet::instance();
+        auto message = emulNet->receive(consumerAddress);
+        ASSERT_TRUE(message.empty());
+
+        message = emulNet->receive(producerAddress);
+        ASSERT_TRUE(message.empty());        
     }
 }
