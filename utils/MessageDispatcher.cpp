@@ -7,6 +7,8 @@
 
 namespace utils
 {
+    const auto MessageDispatcher::SLEEP_DELAY = std::chrono::milliseconds(100);
+
     MessageDispatcher::MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger):
         network(address),
         logger(logger),
@@ -77,7 +79,7 @@ namespace utils
             if (message.empty())
             {
                 using namespace std::chrono_literals;
-                std::this_thread::sleep_for(SLEEP_DELAY);
+                std::this_thread::sleep_for(MessageDispatcher::SLEEP_DELAY);
                 continue;
             }
 

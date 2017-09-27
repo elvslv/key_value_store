@@ -27,7 +27,7 @@ namespace utils
         void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress);
     private:
         static const int TOKEN_LENGTH = 10;
-        static constexpr auto SLEEP_DELAY = std::chrono::milliseconds(100);
+        static const std::chrono::duration<long long, std::milli> SLEEP_DELAY;
 
         network::Network network;
         std::shared_ptr<Log> logger;
