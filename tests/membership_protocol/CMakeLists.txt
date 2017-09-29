@@ -1,0 +1,5 @@
+set(membership_protocol_test_files MembershipProtocolTests)
+
+foreach(membership_protocol_test_file ${membership_protocol_test_files})
+  target_sources(key_value_store_tests PRIVATE "network/${membership_protocol_test_file}.cpp")
+endforeach(membership_protocol_test_file)

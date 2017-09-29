@@ -11,6 +11,7 @@ namespace membership_protocol
     class IGossipProtocolFactory
     {
     public:
+        virtual ~IGossipProtocolFactory() = 0;        
         virtual std::unique_ptr<IGossipProtocol> createGossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol) = 0;
     };
 }
