@@ -5,6 +5,7 @@
 #include "JoinReqMessage.h"
 #include "JoinRepMessage.h"
 #include "AckMessage.h"
+#include "../utils/Exceptions.h"
 
 
 namespace membership_protocol
@@ -49,6 +50,11 @@ namespace membership_protocol
         failureDetector->stop();    
 
         asyncQueue.stop();
+    }
+
+    std::vector<Member> MembershipProtocol::getMembers()
+    {
+        throw utils::NotImplementedException();
     }
 
     void MembershipProtocol::addObserver(IMembershipProtocol::IObserver* observer)

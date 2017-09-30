@@ -13,6 +13,7 @@ namespace network
         Address(const std::string& addr);
         Address(const Address& other);
         Address(const gen::Address& addr);
+        Address(){};
 
         friend bool operator==(const Address& address1, const Address& address2);
 
