@@ -31,6 +31,7 @@ namespace membership_protocol
     private:
         network::Address node;
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
+        std::unordered_map<MsgTypes, std::string> tokens;
         std::shared_ptr<utils::Log> logger;
         utils::AsyncQueue asyncQueue;
         utils::AsyncQueue::Callback asyncQueueCallback;

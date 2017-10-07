@@ -8,7 +8,7 @@ namespace membership_protocol
     {
     }
 
-    gen::Message PingReqMessage::serializeToProtobuf()
+    gen::Message PingReqMessage::serializeToProtobuf() const
     {
         auto message = PingMessageBase::serializeToProtobuf();
         auto addr = targetAddress.serialize();
@@ -17,7 +17,7 @@ namespace membership_protocol
         return message;
     }
 
-    gen::MessageType PingReqMessage::getProtobufMessageType()
+    gen::MessageType PingReqMessage::getProtobufMessageType() const
     {
         return gen::PING_REQ;
     }

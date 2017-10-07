@@ -8,7 +8,7 @@ namespace membership_protocol
         Message(JOINREP, from, to)
     {
     }
-    gen::MessageType JoinRepMessage::getProtobufMessageType()
+    gen::MessageType JoinRepMessage::getProtobufMessageType() const
     {
         return gen::JOINREP;
     }

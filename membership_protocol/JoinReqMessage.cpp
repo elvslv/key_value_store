@@ -8,7 +8,7 @@ namespace membership_protocol
     {
     }
 
-    gen::MessageType JoinReqMessage::getProtobufMessageType()
+    gen::MessageType JoinReqMessage::getProtobufMessageType() const
     {
         return gen::JOINREQ;
     }

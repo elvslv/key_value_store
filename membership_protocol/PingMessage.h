@@ -10,6 +10,6 @@ namespace membership_protocol
     public:
         PingMessage(const network::Address& from, const network::Address& to);
     protected:
-        virtual gen::MessageType getProtobufMessageType();
+        virtual gen::MessageType getProtobufMessageType() const;
     };
 }

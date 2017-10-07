@@ -7,7 +7,7 @@ namespace membership_protocol
     {
     }
 
-    gen::MessageType AckMessage::getProtobufMessageType()
+    gen::MessageType AckMessage::getProtobufMessageType() const
     {
         return gen::ACK;
     }

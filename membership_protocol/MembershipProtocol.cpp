@@ -13,6 +13,7 @@ namespace membership_protocol
     MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<IGossipProtocolFactory>& gossipProtocolFactory): 
         node(addr),
         messageDispatcher(std::make_shared<utils::MessageDispatcher>(addr, logger)),
+        tokens(),
         logger(logger),
         asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),
         asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),        
@@ -30,22 +31,32 @@ namespace membership_protocol
         asyncQueue.start();
 
         failureDetector->addObserver(this);
+        failureDetector->start();
+
         gossipProtocol->addObserver(this);
-        
+        gossipProtocol->start();
+
         auto targetAddress = getJoinAddress();
         if (targetAddress == node)
         {
-            messageDispatcher->listen(JOINREQ, asyncQueueCallback);
+            tokens[JOINREQ] = messageDispatcher->listen(JOINREQ, asyncQueueCallback);
             onJoin();
             return;
         }
 
-        messageDispatcher->listen(JOINREP, asyncQueueCallback);
+        tokens[JOINREP] = messageDispatcher->listen(JOINREP, asyncQueueCallback);
         messageDispatcher->sendMessage(std::make_unique<JoinReqMessage>(node, targetAddress), targetAddress);
     }
 
     void MembershipProtocol::stop()
     {
+        for (auto it = tokens.begin(); it != tokens.end(); ++it)
+        {
+            messageDispatcher->stopListening(it->first, it->second);
+        }
+
+        // finish processing async queue
+
         gossipProtocol->stop();
         failureDetector->stop();    
 

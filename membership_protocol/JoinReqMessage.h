@@ -9,6 +9,6 @@ namespace membership_protocol
     public:
         JoinReqMessage(const network::Address& from, const network::Address& to);
 
-        virtual gen::MessageType getProtobufMessageType();
+        virtual gen::MessageType getProtobufMessageType() const;
     };
 }

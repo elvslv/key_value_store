@@ -7,7 +7,7 @@ namespace membership_protocol
     {
     }
 
-    gen::MessageType PingMessage::getProtobufMessageType()
+    gen::MessageType PingMessage::getProtobufMessageType() const
     {
         return gen::PING;
     }

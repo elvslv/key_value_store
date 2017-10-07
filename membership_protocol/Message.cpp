@@ -10,13 +10,15 @@
 #include "AckMessage.h"
 #include "Events.h"
 #include "Node.h"
+#include "../utils/Utils.h"
 
 namespace membership_protocol
 {
     Message::Message(MsgTypes msgType, const network::Address& srcAddress, const network::Address& destAddress) :
         from(srcAddress),
         to(destAddress),
-        messageType(msgType)
+        messageType(msgType),
+        id(utils::Utils::getRandomString(16))
     {
     }
 
@@ -67,17 +69,22 @@ namespace membership_protocol
         throw std::logic_error("not impelemnted");
     }
 
-    const network::Address& Message::getSourceAddress()
+    const network::Address& Message::getSourceAddress() const
     {
         return from;
     }
 
-    const network::Address& Message::getDestinationAddress()
+    const network::Address& Message::getDestinationAddress() const
     {
         return to;
     }
 
-    network::Message Message::serialize()
+    const std::string& Message::getId() const
+    {
+        return id;
+    }
+
+    network::Message Message::serialize() const
     {        
         gen::Message message = serializeToProtobuf();
 
@@ -88,7 +95,7 @@ namespace membership_protocol
         return network::Message(data, size);
     }
 
-    gen::Message Message::serializeToProtobuf()
+    gen::Message Message::serializeToProtobuf() const
     {
         auto srcAddress = from.serialize();
         auto destAddress = to.serialize();
@@ -101,7 +108,7 @@ namespace membership_protocol
         return message;
     }
 
-    std::string Message::toString()
+    std::string Message::toString() const
     {
         std::stringstream ss;
         ss << getMsgTypeStr(messageType) << " from " << from.toString() << " to " << to.toString() << std::endl;

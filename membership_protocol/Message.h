@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 #include "../proto/Message.pb.h"
 #include "../network/Address.h"
 #include "../network/Message.h"
@@ -32,20 +33,22 @@ namespace membership_protocol
         MsgTypes getMessageType() const;
 
         static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage); 
-        virtual std::string toString();
-        virtual network::Message serialize();
-        const network::Address& getSourceAddress();
-        const network::Address& getDestinationAddress();
+        virtual std::string toString() const;
+        virtual network::Message serialize() const;
+        const network::Address& getSourceAddress() const;
+        const network::Address& getDestinationAddress() const;
+        const std::string& getId() const;
     protected:
         Message(MsgTypes messageType, const network::Address& srcAddress, const network::Address& destAddress);
-        virtual gen::Message serializeToProtobuf();
-        virtual gen::MessageType getProtobufMessageType() = 0;
+        virtual gen::Message serializeToProtobuf() const;
+        virtual gen::MessageType getProtobufMessageType() const = 0;
         static std::string getMsgTypeStr(MsgTypes msgType);
 
         network::Address from;
         network::Address to;
     private:
         MsgTypes messageType;
+        std::string id;
     };
 }
 

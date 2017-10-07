@@ -1,5 +1,7 @@
 #include "FailureDetector.h"
 #include "../utils/Exceptions.h"
+#include "../utils/Utils.h"
+#include "PingMessage.h"
 
 namespace membership_protocol
 {
@@ -7,23 +9,91 @@ namespace membership_protocol
         address(addr),
         logger(logger),
         messageDispatcher(messageDispatcher),
+        tokens(),
         membershipProtocol(membershipProtocol),
         observers(),
-        membersMutex(),
+        asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1)),
+        asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),
         members(),
-        membersMap(),
-        currentMember(members.end())
+        messageProcessingThread(),
+        isRunning(false),
+        msgIdsMutex(),
+        msgIds()
     {
     }
     
     void FailureDetector::start()
     {
+        membershipProtocol->addObserver(static_cast<IMembershipProtocol::IObserver*>(this));
 
+        tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
+        tokens[ACK] = messageDispatcher->listen(ACK, asyncQueueCallback);                
+        isRunning = true;
+        messageProcessingThread = std::make_unique<std::thread>(&FailureDetector::run, this);
     }
 
     void FailureDetector::stop()
     {
+        isRunning = false;
+        messageProcessingThread->join();
+    }
 
+    void FailureDetector::run()
+    {
+        while (isRunning)
+        {
+            if (!members.hasElements())
+            {
+                // TODO: add const
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(100ms);
+                continue;
+            }
+
+            auto address = members.getNextElement();
+            sendPing(address);
+        }
+    }
+
+    void FailureDetector::sendPing(const network::Address destAddress)
+    {
+        auto message = std::make_unique<PingMessage>(address, destAddress);
+        auto msgId = message->getId();
+
+        {
+            std::lock_guard<std::mutex> lock(msgIdsMutex);
+            msgIds.insert({msgId, false});
+        }
+
+        messageDispatcher->sendMessage(std::move(message), destAddress);
+        logger->log("Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
+
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(100ms);
+        bool receivedResponse = false;
+        {
+            std::lock_guard<std::mutex> lock(msgIdsMutex);
+            auto it = msgIds.find(msgId);
+            assert(it != msgIds.end());
+            receivedResponse = it->second;
+
+            msgIds.erase(it);
+        }
+
+        if (receivedResponse)
+        {
+            logger->log("Received ACK for message ", msgId);
+        }
+        else
+        {
+            logger->log("Haven't received ACK for message ", msgId);
+        }
+
+        failure_detector::FailureDetectorEvent failureDetectorEvent(destAddress, receivedResponse ? failure_detector::ALIVE : failure_detector::FAILED);
+        for (auto observer : observers)
+        {
+            observer->onFailureDetectorEvent(failureDetectorEvent);
+        }
     }
 
     void FailureDetector::addObserver(IFailureDetector::IObserver* observer)
@@ -38,45 +108,20 @@ namespace membership_protocol
         {
             case JOINED:
             {
-                std::lock_guard<std::mutex> lock(membersMutex);
-                if (membersMap.find(address) != membersMap.end())
-                {
-                    throw std::logic_error("Member " + address.toString() + " has been already added");
-                }
-
-                // test for corner cases!!!
-                int shift = rand() % members.size();
-                auto it = members.begin();
-                std::advance(it, shift);
-
-                it = members.insert(it, address);
-                membersMap.insert(address, it);
-
-                logger->log("Successfully inserted node ", address.toString(), " into position ", shift);
-
+                members.insert(address);
                 break;
             }
             
             case FAILED:
             {
-                std::lock_guard<std::mutex> lock(membersMutex);
-
-                auto it = membersMap.find(address);
-                if (it == membersMap.end())
-                {
-                    throw std::logic_error("Member " + address.toString() + " wasn't found");
-                }
-
-                if (it->second == currentMember)
-                {
-                    throw utils::NotImplementedException();
-                }
-
-                members.erase(it->second);
-                membersMap.erase(it);
-
-                break;                
+                members.remove(address);
+                break;
             }
         }
+    }
+
+    void FailureDetector::processMessage(const std::unique_ptr<Message>& message)
+    {
+
     }
 }

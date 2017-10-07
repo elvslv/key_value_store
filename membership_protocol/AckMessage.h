@@ -12,6 +12,6 @@ namespace membership_protocol
         
 
     protected:
-        virtual gen::MessageType getProtobufMessageType();
+        virtual gen::MessageType getProtobufMessageType() const;
     };
 }

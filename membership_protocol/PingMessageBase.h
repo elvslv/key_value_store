@@ -9,6 +9,5 @@ namespace membership_protocol
     {
     protected:
         PingMessageBase(MsgTypes msgType, const network::Address& from, const network::Address& to);
-        virtual gen::MessageType getProtobufMessageType() = 0;
     };
 }

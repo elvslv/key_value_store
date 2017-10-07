@@ -10,8 +10,8 @@ namespace membership_protocol
     public:
         PingReqMessage(const network::Address& from, const network::Address& to, const network::Address& tgtAddress);
     protected:
-        virtual gen::MessageType getProtobufMessageType();
-        virtual gen::Message serializeToProtobuf();
+        virtual gen::MessageType getProtobufMessageType() const;
+        virtual gen::Message serializeToProtobuf() const;
 
     private:
         network::Address targetAddress;
