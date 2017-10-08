@@ -73,6 +73,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, messagetype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, sourceaddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, destinationaddress_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, originalid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, events_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, targetaddress_),
 };
@@ -151,18 +153,19 @@ void AddDescriptorsImpl() {
       "\n\rMessage.proto\022\003gen\032\rAddress.proto\"%\n\004N"
       "ode\022\035\n\007address\030\001 \001(\0132\014.gen.Address\"F\n\005Ev"
       "ent\022\036\n\005event\030\001 \001(\0162\017.gen.EventTypes\022\035\n\007a"
-      "ddress\030\002 \001(\0132\014.gen.Address\"\300\001\n\007Message\022%"
+      "ddress\030\002 \001(\0132\014.gen.Address\"\340\001\n\007Message\022%"
       "\n\013messageType\030\001 \001(\0162\020.gen.MessageType\022#\n"
       "\rsourceAddress\030\002 \001(\0132\014.gen.Address\022(\n\022de"
-      "stinationAddress\030\003 \001(\0132\014.gen.Address\022\032\n\006"
-      "events\030\004 \003(\0132\n.gen.Event\022#\n\rtargetAddres"
-      "s\030\005 \001(\0132\014.gen.Address*H\n\013MessageType\022\010\n\004"
-      "PING\020\000\022\007\n\003ACK\020\001\022\014\n\010PING_REQ\020\002\022\013\n\007JOINREQ"
-      "\020\003\022\013\n\007JOINREP\020\004*$\n\nEventTypes\022\n\n\006JOINED\020"
-      "\000\022\n\n\006FAILED\020\001b\006proto3"
+      "stinationAddress\030\003 \001(\0132\014.gen.Address\022\n\n\002"
+      "id\030\004 \001(\t\022\022\n\noriginalId\030\005 \001(\t\022\032\n\006events\030\006"
+      " \003(\0132\n.gen.Event\022#\n\rtargetAddress\030\007 \001(\0132"
+      "\014.gen.Address*H\n\013MessageType\022\010\n\004PING\020\000\022\007"
+      "\n\003ACK\020\001\022\014\n\010PING_REQ\020\002\022\013\n\007JOINREQ\020\003\022\013\n\007JO"
+      "INREP\020\004*$\n\nEventTypes\022\n\n\006JOINED\020\000\022\n\n\006FAI"
+      "LED\020\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 461);
+      descriptor, 493);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Message.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -815,6 +818,8 @@ void Event::set_allocated_address(::gen::Address* address) {
 const int Message::kMessageTypeFieldNumber;
 const int Message::kSourceAddressFieldNumber;
 const int Message::kDestinationAddressFieldNumber;
+const int Message::kIdFieldNumber;
+const int Message::kOriginalIdFieldNumber;
 const int Message::kEventsFieldNumber;
 const int Message::kTargetAddressFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -833,6 +838,14 @@ Message::Message(const Message& from)
       events_(from.events_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.id().size() > 0) {
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  originalid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.originalid().size() > 0) {
+    originalid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.originalid_);
+  }
   if (from.has_sourceaddress()) {
     sourceaddress_ = new ::gen::Address(*from.sourceaddress_);
   } else {
@@ -853,6 +866,8 @@ Message::Message(const Message& from)
 }
 
 void Message::SharedCtor() {
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  originalid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&sourceaddress_, 0, reinterpret_cast<char*>(&messagetype_) -
     reinterpret_cast<char*>(&sourceaddress_) + sizeof(messagetype_));
   _cached_size_ = 0;
@@ -864,6 +879,8 @@ Message::~Message() {
 }
 
 void Message::SharedDtor() {
+  id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  originalid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) {
     delete sourceaddress_;
   }
@@ -901,6 +918,8 @@ Message* Message::New(::google::protobuf::Arena* arena) const {
 void Message::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.Message)
   events_.Clear();
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  originalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) {
     delete sourceaddress_;
   }
@@ -965,10 +984,42 @@ bool Message::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .gen.Event events = 4;
+      // string id = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_id()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->id().data(), this->id().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "gen.Message.id"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string originalId = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_originalid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->originalid().data(), this->originalid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "gen.Message.originalId"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .gen.Event events = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_events()));
         } else {
@@ -977,10 +1028,10 @@ bool Message::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.Address targetAddress = 5;
-      case 5: {
+      // .gen.Address targetAddress = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
+            static_cast< ::google::protobuf::uint8>(58u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_targetaddress()));
         } else {
@@ -1034,16 +1085,36 @@ void Message::SerializeWithCachedSizes(
       3, *this->destinationaddress_, output);
   }
 
-  // repeated .gen.Event events = 4;
-  for (unsigned int i = 0, n = this->events_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->events(i), output);
+  // string id = 4;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), this->id().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.Message.id");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->id(), output);
   }
 
-  // .gen.Address targetAddress = 5;
+  // string originalId = 5;
+  if (this->originalid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->originalid().data(), this->originalid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.Message.originalId");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->originalid(), output);
+  }
+
+  // repeated .gen.Event events = 6;
+  for (unsigned int i = 0, n = this->events_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      6, this->events(i), output);
+  }
+
+  // .gen.Address targetAddress = 7;
   if (this->has_targetaddress()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, *this->targetaddress_, output);
+      7, *this->targetaddress_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:gen.Message)
@@ -1075,18 +1146,40 @@ void Message::SerializeWithCachedSizes(
         3, *this->destinationaddress_, deterministic, target);
   }
 
-  // repeated .gen.Event events = 4;
+  // string id = 4;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), this->id().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.Message.id");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->id(), target);
+  }
+
+  // string originalId = 5;
+  if (this->originalid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->originalid().data(), this->originalid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.Message.originalId");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->originalid(), target);
+  }
+
+  // repeated .gen.Event events = 6;
   for (unsigned int i = 0, n = this->events_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, this->events(i), deterministic, target);
+        6, this->events(i), deterministic, target);
   }
 
-  // .gen.Address targetAddress = 5;
+  // .gen.Address targetAddress = 7;
   if (this->has_targetaddress()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->targetaddress_, deterministic, target);
+        7, *this->targetaddress_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:gen.Message)
@@ -1097,7 +1190,7 @@ size_t Message::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:gen.Message)
   size_t total_size = 0;
 
-  // repeated .gen.Event events = 4;
+  // repeated .gen.Event events = 6;
   {
     unsigned int count = this->events_size();
     total_size += 1UL * count;
@@ -1106,6 +1199,20 @@ size_t Message::ByteSizeLong() const {
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->events(i));
     }
+  }
+
+  // string id = 4;
+  if (this->id().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->id());
+  }
+
+  // string originalId = 5;
+  if (this->originalid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->originalid());
   }
 
   // .gen.Address sourceAddress = 2;
@@ -1122,7 +1229,7 @@ size_t Message::ByteSizeLong() const {
         *this->destinationaddress_);
   }
 
-  // .gen.Address targetAddress = 5;
+  // .gen.Address targetAddress = 7;
   if (this->has_targetaddress()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1165,6 +1272,14 @@ void Message::MergeFrom(const Message& from) {
   (void) cached_has_bits;
 
   events_.MergeFrom(from.events_);
+  if (from.id().size() > 0) {
+
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  if (from.originalid().size() > 0) {
+
+    originalid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.originalid_);
+  }
   if (from.has_sourceaddress()) {
     mutable_sourceaddress()->::gen::Address::MergeFrom(from.sourceaddress());
   }
@@ -1203,6 +1318,8 @@ void Message::Swap(Message* other) {
 }
 void Message::InternalSwap(Message* other) {
   events_.InternalSwap(&other->events_);
+  id_.Swap(&other->id_);
+  originalid_.Swap(&other->originalid_);
   std::swap(sourceaddress_, other->sourceaddress_);
   std::swap(destinationaddress_, other->destinationaddress_);
   std::swap(targetaddress_, other->targetaddress_);
@@ -1310,7 +1427,113 @@ void Message::set_allocated_destinationaddress(::gen::Address* destinationaddres
   // @@protoc_insertion_point(field_set_allocated:gen.Message.destinationAddress)
 }
 
-// repeated .gen.Event events = 4;
+// string id = 4;
+void Message::clear_id() {
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& Message::id() const {
+  // @@protoc_insertion_point(field_get:gen.Message.id)
+  return id_.GetNoArena();
+}
+void Message::set_id(const ::std::string& value) {
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.Message.id)
+}
+#if LANG_CXX11
+void Message::set_id(::std::string&& value) {
+  
+  id_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.Message.id)
+}
+#endif
+void Message::set_id(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.Message.id)
+}
+void Message::set_id(const char* value, size_t size) {
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.Message.id)
+}
+::std::string* Message::mutable_id() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.Message.id)
+  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* Message::release_id() {
+  // @@protoc_insertion_point(field_release:gen.Message.id)
+  
+  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Message::set_allocated_id(::std::string* id) {
+  if (id != NULL) {
+    
+  } else {
+    
+  }
+  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.id)
+}
+
+// string originalId = 5;
+void Message::clear_originalid() {
+  originalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& Message::originalid() const {
+  // @@protoc_insertion_point(field_get:gen.Message.originalId)
+  return originalid_.GetNoArena();
+}
+void Message::set_originalid(const ::std::string& value) {
+  
+  originalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.Message.originalId)
+}
+#if LANG_CXX11
+void Message::set_originalid(::std::string&& value) {
+  
+  originalid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.Message.originalId)
+}
+#endif
+void Message::set_originalid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  originalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.Message.originalId)
+}
+void Message::set_originalid(const char* value, size_t size) {
+  
+  originalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.Message.originalId)
+}
+::std::string* Message::mutable_originalid() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.Message.originalId)
+  return originalid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* Message::release_originalid() {
+  // @@protoc_insertion_point(field_release:gen.Message.originalId)
+  
+  return originalid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Message::set_allocated_originalid(::std::string* originalid) {
+  if (originalid != NULL) {
+    
+  } else {
+    
+  }
+  originalid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), originalid);
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.originalId)
+}
+
+// repeated .gen.Event events = 6;
 int Message::events_size() const {
   return events_.size();
 }
@@ -1340,7 +1563,7 @@ Message::events() const {
   return events_;
 }
 
-// .gen.Address targetAddress = 5;
+// .gen.Address targetAddress = 7;
 bool Message::has_targetaddress() const {
   return this != internal_default_instance() && targetaddress_ != NULL;
 }

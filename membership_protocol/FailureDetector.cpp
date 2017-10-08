@@ -24,16 +24,21 @@ namespace membership_protocol
     
     void FailureDetector::start()
     {
-        membershipProtocol->addObserver(static_cast<IMembershipProtocol::IObserver*>(this));
+        membershipProtocol->addObserver(this);
 
-        tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
-        tokens[ACK] = messageDispatcher->listen(ACK, asyncQueueCallback);                
+        // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
+        tokens[ACK] = messageDispatcher->listen(ACK, asyncQueueCallback);
         isRunning = true;
         messageProcessingThread = std::make_unique<std::thread>(&FailureDetector::run, this);
     }
 
     void FailureDetector::stop()
     {
+        for (auto token : tokens)
+        {
+            messageDispatcher->stopListening(token.first, token.second);
+        }
+
         isRunning = false;
         messageProcessingThread->join();
     }
@@ -122,6 +127,27 @@ namespace membership_protocol
 
     void FailureDetector::processMessage(const std::unique_ptr<Message>& message)
     {
+        switch (message->getMessageType())
+        {
+            case ACK:
+                auto msgId = message->getId();
+                {
+                    std::lock_guard<std::mutex> lock(msgIdsMutex);
+                    auto it = msgIds.find(msgId);
+                    if (it == msgIds.end())
+                    {
+                        logger->log("Unexpected ACK message ", message.toString());
+                        return;
+                    }
 
+                    it->second = true;
+                }
+
+                break;
+
+            default:
+                logger->log("Unexpected message ", message.toString());
+                break;
+        }
     }
 }

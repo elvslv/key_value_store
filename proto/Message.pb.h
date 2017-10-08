@@ -347,10 +347,10 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // repeated .gen.Event events = 4;
+  // repeated .gen.Event events = 6;
   int events_size() const;
   void clear_events();
-  static const int kEventsFieldNumber = 4;
+  static const int kEventsFieldNumber = 6;
   const ::gen::Event& events(int index) const;
   ::gen::Event* mutable_events(int index);
   ::gen::Event* add_events();
@@ -358,6 +358,34 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
       mutable_events();
   const ::google::protobuf::RepeatedPtrField< ::gen::Event >&
       events() const;
+
+  // string id = 4;
+  void clear_id();
+  static const int kIdFieldNumber = 4;
+  const ::std::string& id() const;
+  void set_id(const ::std::string& value);
+  #if LANG_CXX11
+  void set_id(::std::string&& value);
+  #endif
+  void set_id(const char* value);
+  void set_id(const char* value, size_t size);
+  ::std::string* mutable_id();
+  ::std::string* release_id();
+  void set_allocated_id(::std::string* id);
+
+  // string originalId = 5;
+  void clear_originalid();
+  static const int kOriginalIdFieldNumber = 5;
+  const ::std::string& originalid() const;
+  void set_originalid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_originalid(::std::string&& value);
+  #endif
+  void set_originalid(const char* value);
+  void set_originalid(const char* value, size_t size);
+  ::std::string* mutable_originalid();
+  ::std::string* release_originalid();
+  void set_allocated_originalid(::std::string* originalid);
 
   // .gen.Address sourceAddress = 2;
   bool has_sourceaddress() const;
@@ -377,10 +405,10 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::gen::Address* release_destinationaddress();
   void set_allocated_destinationaddress(::gen::Address* destinationaddress);
 
-  // .gen.Address targetAddress = 5;
+  // .gen.Address targetAddress = 7;
   bool has_targetaddress() const;
   void clear_targetaddress();
-  static const int kTargetAddressFieldNumber = 5;
+  static const int kTargetAddressFieldNumber = 7;
   const ::gen::Address& targetaddress() const;
   ::gen::Address* mutable_targetaddress();
   ::gen::Address* release_targetaddress();
@@ -397,6 +425,8 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::gen::Event > events_;
+  ::google::protobuf::internal::ArenaStringPtr id_;
+  ::google::protobuf::internal::ArenaStringPtr originalid_;
   ::gen::Address* sourceaddress_;
   ::gen::Address* destinationaddress_;
   ::gen::Address* targetaddress_;
@@ -604,7 +634,113 @@ inline void Message::set_allocated_destinationaddress(::gen::Address* destinatio
   // @@protoc_insertion_point(field_set_allocated:gen.Message.destinationAddress)
 }
 
-// repeated .gen.Event events = 4;
+// string id = 4;
+inline void Message::clear_id() {
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Message::id() const {
+  // @@protoc_insertion_point(field_get:gen.Message.id)
+  return id_.GetNoArena();
+}
+inline void Message::set_id(const ::std::string& value) {
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.Message.id)
+}
+#if LANG_CXX11
+inline void Message::set_id(::std::string&& value) {
+  
+  id_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.Message.id)
+}
+#endif
+inline void Message::set_id(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.Message.id)
+}
+inline void Message::set_id(const char* value, size_t size) {
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.Message.id)
+}
+inline ::std::string* Message::mutable_id() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.Message.id)
+  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Message::release_id() {
+  // @@protoc_insertion_point(field_release:gen.Message.id)
+  
+  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Message::set_allocated_id(::std::string* id) {
+  if (id != NULL) {
+    
+  } else {
+    
+  }
+  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.id)
+}
+
+// string originalId = 5;
+inline void Message::clear_originalid() {
+  originalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Message::originalid() const {
+  // @@protoc_insertion_point(field_get:gen.Message.originalId)
+  return originalid_.GetNoArena();
+}
+inline void Message::set_originalid(const ::std::string& value) {
+  
+  originalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.Message.originalId)
+}
+#if LANG_CXX11
+inline void Message::set_originalid(::std::string&& value) {
+  
+  originalid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.Message.originalId)
+}
+#endif
+inline void Message::set_originalid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  originalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.Message.originalId)
+}
+inline void Message::set_originalid(const char* value, size_t size) {
+  
+  originalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.Message.originalId)
+}
+inline ::std::string* Message::mutable_originalid() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.Message.originalId)
+  return originalid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Message::release_originalid() {
+  // @@protoc_insertion_point(field_release:gen.Message.originalId)
+  
+  return originalid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Message::set_allocated_originalid(::std::string* originalid) {
+  if (originalid != NULL) {
+    
+  } else {
+    
+  }
+  originalid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), originalid);
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.originalId)
+}
+
+// repeated .gen.Event events = 6;
 inline int Message::events_size() const {
   return events_.size();
 }
@@ -634,7 +770,7 @@ Message::events() const {
   return events_;
 }
 
-// .gen.Address targetAddress = 5;
+// .gen.Address targetAddress = 7;
 inline bool Message::has_targetaddress() const {
   return this != internal_default_instance() && targetaddress_ != NULL;
 }

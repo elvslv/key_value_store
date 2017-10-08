@@ -29,6 +29,8 @@ message Message {
     MessageType messageType = 1;
     Address sourceAddress = 2;
     Address destinationAddress = 3;
-    repeated Event events = 4;
-    Address targetAddress = 5;
+    string id = 4;
+    string originalId = 5;
+    repeated Event events = 6;
+    Address targetAddress = 7;
 }

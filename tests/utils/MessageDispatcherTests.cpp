@@ -43,7 +43,7 @@ namespace
                 }
                 else 
                 {
-                    message = std::make_unique<membership_protocol::AckMessage>(producerAddress, consumerAddress);
+                    message = std::make_unique<membership_protocol::AckMessage>(producerAddress, consumerAddress, "str");
                 }
 
                 messageDispatcher.sendMessage(message, consumerAddress);

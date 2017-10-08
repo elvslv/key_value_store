@@ -8,7 +8,8 @@ namespace membership_protocol
     {
     public:
         JoinReqMessage(const network::Address& from, const network::Address& to);
-
+        JoinReqMessage(const network::Address& from, const network::Address& to, const std::string& id);
+        
         virtual gen::MessageType getProtobufMessageType() const;
     };
 }

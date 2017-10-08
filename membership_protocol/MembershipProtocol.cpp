@@ -228,7 +228,7 @@ namespace membership_protocol
 
             case PING:
             {
-                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress), sourceAddress);
+                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress, message->getId()), sourceAddress);
 
                 onMembershipUpdate(JOINED, MEMBERSHIP_PROTOCOL, sourceAddress);
                 

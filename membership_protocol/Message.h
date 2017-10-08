@@ -40,6 +40,7 @@ namespace membership_protocol
         const std::string& getId() const;
     protected:
         Message(MsgTypes messageType, const network::Address& srcAddress, const network::Address& destAddress);
+        Message(MsgTypes messageType, const network::Address& srcAddress, const network::Address& destAddress, const std::string& id); 
         virtual gen::Message serializeToProtobuf() const;
         virtual gen::MessageType getProtobufMessageType() const = 0;
         static std::string getMsgTypeStr(MsgTypes msgType);

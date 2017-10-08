@@ -3,14 +3,20 @@
 namespace membership_protocol
 {
     PingReqMessage::PingReqMessage(const network::Address& from, const network::Address& to, const network::Address& tgtAddress): 
-        PingMessageBase(PING_REQ, from, to),
+        Message(PING_REQ, from, to),
+        targetAddress(tgtAddress)
+    {
+    }
+
+    PingReqMessage::PingReqMessage(const network::Address& from, const network::Address& to, const std::string& id, const network::Address& tgtAddress): 
+        Message(PING_REQ, from, to, id),
         targetAddress(tgtAddress)
     {
     }
 
     gen::Message PingReqMessage::serializeToProtobuf() const
     {
-        auto message = PingMessageBase::serializeToProtobuf();
+        auto message = Message::serializeToProtobuf();
         auto addr = targetAddress.serialize();
         message.set_allocated_targetaddress(addr.release());
 

@@ -15,6 +15,11 @@
 namespace membership_protocol
 {
     Message::Message(MsgTypes msgType, const network::Address& srcAddress, const network::Address& destAddress) :
+        Message(msgType, srcAddress, destAddress, utils::Utils::getRandomString(16))
+    {
+    }
+
+    Message::Message(MsgTypes msgType, const network::Address& srcAddress, const network::Address& destAddress, const std::string& id) :
         from(srcAddress),
         to(destAddress),
         messageType(msgType),
@@ -42,22 +47,22 @@ namespace membership_protocol
         {
             case gen::JOINREQ:
             {
-                return std::make_unique<JoinReqMessage>(srcAddress, destAddress);
+                return std::make_unique<JoinReqMessage>(srcAddress, destAddress, message.id());
             }
 
             case gen::JOINREP:
             {
-                return std::make_unique<JoinRepMessage>(srcAddress, destAddress);
+                return std::make_unique<JoinRepMessage>(srcAddress, destAddress, message.id());
             }
 
             case gen::PING:
             {
-                return std::make_unique<PingMessage>(srcAddress, destAddress);
+                return std::make_unique<PingMessage>(srcAddress, destAddress, message.id());
             }
 
             case gen::ACK:
             {
-                return std::make_unique<AckMessage>(srcAddress, destAddress);
+                return std::make_unique<AckMessage>(srcAddress, destAddress, message.id(), message.originalid());
             }
 
             case gen::PING_REQ:
