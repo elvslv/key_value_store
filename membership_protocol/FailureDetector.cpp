@@ -47,7 +47,8 @@ namespace membership_protocol
     {
         while (isRunning)
         {
-            if (!members.hasElements())
+            network::Address address;
+            if (!members.getNextElement(address))
             {
                 // TODO: add const
                 using namespace std::chrono_literals;
@@ -55,7 +56,6 @@ namespace membership_protocol
                 continue;
             }
 
-            auto address = members.getNextElement();
             sendPing(address);
         }
     }
