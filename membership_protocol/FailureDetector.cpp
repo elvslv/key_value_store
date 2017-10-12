@@ -94,7 +94,7 @@ namespace membership_protocol
             logger->log("Haven't received ACK for message ", msgId);
         }
 
-        failure_detector::FailureDetectorEvent failureDetectorEvent(destAddress, receivedResponse ? failure_detector::ALIVE : failure_detector::FAILED);
+        failure_detector::FailureDetectorEvent failureDetectorEvent{ destAddress, receivedResponse ? failure_detector::ALIVE : failure_detector::FAILED };
         for (auto observer : observers)
         {
             observer->onFailureDetectorEvent(failureDetectorEvent);
@@ -130,13 +130,14 @@ namespace membership_protocol
         switch (message->getMessageType())
         {
             case ACK:
+            {
                 auto msgId = message->getId();
                 {
                     std::lock_guard<std::mutex> lock(msgIdsMutex);
                     auto it = msgIds.find(msgId);
                     if (it == msgIds.end())
                     {
-                        logger->log("Unexpected ACK message ", message.toString());
+                        logger->log("Unexpected ACK message ", message->toString());
                         return;
                     }
 
@@ -144,9 +145,10 @@ namespace membership_protocol
                 }
 
                 break;
+            }
 
             default:
-                logger->log("Unexpected message ", message.toString());
+                logger->log("Unexpected message ", message->toString());
                 break;
         }
     }

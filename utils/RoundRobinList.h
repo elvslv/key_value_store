@@ -53,15 +53,15 @@ namespace utils
                 return false;
             }
 
-            if (it == currentElement)
+            if (it->second == currentElement)
             {
                 --currentElement;
-                elements.remove(it);
+                elements.erase(it->second);
                 advanceCurrentElement();
             }
             else
             {
-                elements.remove(it);                
+                elements.erase(it->second);  
             }
         }
 

@@ -26,3 +26,14 @@ namespace network
         unsigned short port; 
     };
 }
+
+namespace std 
+{
+    template <> struct hash<network::Address>
+    {
+      size_t operator()(const network::Address& address) const
+      {
+        return hash<std::string>()(address.toString());
+      }
+    };
+  }
