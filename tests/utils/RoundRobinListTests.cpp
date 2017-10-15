@@ -104,6 +104,8 @@ namespace
             auto it = set.find(address);
             ASSERT_NE(it, set.end());
             set.erase(it);
+
+            ASSERT_TRUE(list.remove(address));
         }
 
         ASSERT_TRUE(set.empty());
