@@ -64,6 +64,7 @@
         "system_error": "cpp",
         "thread": "cpp",
         "algorithm": "cpp",
-        "__functional_base": "cpp"
+        "__functional_base": "cpp",
+        "bitset": "cpp"
     }
 }

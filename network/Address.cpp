@@ -48,6 +48,12 @@ namespace network
         return address1.address == address2.address && address1.port == address2.port;
     }
 
+    std::ostream& operator<<(std::ostream& os, const Address& address)
+    {
+        os << address.toString();
+        return os;
+    }
+
     std::unique_ptr<gen::Address> Address::serialize() const
     {
         gen::Address* addr = new gen::Address;
@@ -88,5 +94,10 @@ namespace network
         ss << ":" << port;
 
         return ss.str();
+    }
+
+    std::string Address::operator()() const
+    {
+        return toString();
     }
 }

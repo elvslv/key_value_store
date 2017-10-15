@@ -38,7 +38,7 @@ namespace utils
             {
                 elements.push_front(element);
                 elementsMap[element] = elements.begin();
-                currentElement = elements.begin();                
+                currentElement = elements.begin();
             }
             else
             {
@@ -48,7 +48,7 @@ namespace utils
                 auto elemIt = elements.begin();
                 for (int i = 0; i < index; ++i, ++elemIt);
     
-                elements.insert(elemIt, element);    
+                elemIt = elements.insert(elemIt, element);    
                 elementsMap[element] = elemIt;
             }
 
@@ -70,7 +70,7 @@ namespace utils
             if (iterToRemove == currentElement)
             {
                 --currentElement;
-                elements.erase(iterToRemove);
+                elements.erase(iterToRemove);                
                 advanceCurrentElement();
             }
             else

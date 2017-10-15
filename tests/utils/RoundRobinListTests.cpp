@@ -34,7 +34,7 @@ namespace
         ASSERT_EQ(values.size(), num);
     }
 
-    TEST(RoundRobinListTests, Address)
+    TEST(RoundRobinListTests, AddressBasic)
     {
         utils::RoundRobinList<network::Address> list;
 
@@ -48,5 +48,64 @@ namespace
         ASSERT_FALSE(list.insert(address));
         ASSERT_TRUE(list.remove(address));
         ASSERT_TRUE(list.insert(address));        
+    }
+
+    TEST(RoundRobinListTests, AddressRand)
+    {
+        unsigned char num = 5;
+        std::vector<network::Address> addresses;
+        addresses.reserve(num);
+        for (unsigned char i = 0; i < num; ++i)
+        {
+            addresses.push_back({{{i, 0, 0, 0}}, i});
+        }
+
+        std::unordered_set<network::Address> set;
+        utils::RoundRobinList<network::Address> list;
+        int repNum = 20;
+        for (int i = 0; i < repNum; ++i)
+        {
+            int j = std::rand() % num;
+            auto it = set.find(addresses[j]);
+            bool exists = it != set.end();
+            bool remove = std::rand() % 2;
+            if (remove)
+            {
+                if (exists)
+                {
+                    ASSERT_TRUE(list.remove(addresses[j]));
+                    set.erase(addresses[j]);
+                }
+                else
+                {
+                    ASSERT_FALSE(list.remove(addresses[j]));
+                }
+            }
+            else
+            {
+                if (!exists)
+                {
+                    ASSERT_TRUE(list.insert(addresses[j]));
+                    set.insert(addresses[j]);
+                }
+                else
+                {
+                    ASSERT_FALSE(list.insert(addresses[j]));
+                }
+            }
+        }
+
+        int cnt = set.size();
+        for (int i = 0; i < cnt; ++i)
+        {
+            network::Address address;
+            ASSERT_TRUE(list.getNextElement(address));
+
+            auto it = set.find(address);
+            ASSERT_NE(it, set.end());
+            set.erase(it);
+        }
+
+        ASSERT_TRUE(set.empty());
     }
 }
