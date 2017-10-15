@@ -34,18 +34,22 @@ namespace utils
                 return false;
             }
 
-            int index = !elements.empty() ? std::rand() % elements.size() : 0;
-            
-            // optimize?
-            auto elemIt = elements.begin();
-            for (int i = 0; i < index; ++i, ++elemIt);
-
-            elements.insert(elemIt, element);
-            elementsMap[element] = elemIt;
-
-            if (elements.size() == 1)
+            if (elements.empty())
             {
-                currentElement = elements.begin();
+                elements.push_front(element);
+                elementsMap[element] = elements.begin();
+                currentElement = elements.begin();                
+            }
+            else
+            {
+                int index = std::rand() % elements.size();
+                
+                // optimize?
+                auto elemIt = elements.begin();
+                for (int i = 0; i < index; ++i, ++elemIt);
+    
+                elements.insert(elemIt, element);    
+                elementsMap[element] = elemIt;
             }
 
             return true;
@@ -60,15 +64,18 @@ namespace utils
                 return false;
             }
 
-            if (it->second == currentElement)
+            typename std::list<T>::iterator iterToRemove = it->second;
+            elementsMap.erase(element);
+
+            if (iterToRemove == currentElement)
             {
                 --currentElement;
-                elements.erase(it->second);
+                elements.erase(iterToRemove);
                 advanceCurrentElement();
             }
             else
             {
-                elements.erase(it->second);  
+                elements.erase(iterToRemove);  
             }
 
             return true;
