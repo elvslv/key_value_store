@@ -3,6 +3,7 @@
 #include <random>
 #include <unordered_map>
 #include "Exceptions.h"
+#include <iostream>
 
 namespace utils
 {
@@ -17,9 +18,10 @@ namespace utils
             {
                 return false;
             }
-
+            
             result = *currentElement;
             advanceCurrentElement();
+
             return true;
         }
 
@@ -32,7 +34,7 @@ namespace utils
                 return false;
             }
 
-            int index = std::rand() % elements.size();
+            int index = !elements.empty() ? std::rand() % elements.size() : 0;
             
             // optimize?
             auto elemIt = elements.begin();
@@ -40,6 +42,11 @@ namespace utils
 
             elements.insert(elemIt, element);
             elementsMap[element] = elemIt;
+
+            if (elements.size() == 1)
+            {
+                currentElement = elements.begin();
+            }
 
             return true;
         }
@@ -63,6 +70,8 @@ namespace utils
             {
                 elements.erase(it->second);  
             }
+
+            return true;
         }
 
     private:

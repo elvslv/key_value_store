@@ -5,6 +5,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}, membership_protocol, network, utils, proto)
 set(CMAKE_CXX_FLAGS "-Wall -g -std=c++14")
+SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -rdynamic" )
 
 add_library(key_value_store_lib "")
 include("network/CMakeLists.txt")
