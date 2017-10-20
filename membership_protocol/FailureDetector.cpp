@@ -25,10 +25,10 @@ namespace membership_protocol
     void FailureDetector::start()
     {
         membershipProtocol->addObserver(this);
-
+        
         // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
         tokens[ACK] = messageDispatcher->listen(ACK, asyncQueueCallback);
-        isRunning = true;
+        isRunning = true;        
         messageProcessingThread = std::make_unique<std::thread>(&FailureDetector::run, this);
     }
 

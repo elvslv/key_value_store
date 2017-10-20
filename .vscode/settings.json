@@ -65,6 +65,7 @@
         "thread": "cpp",
         "algorithm": "cpp",
         "__functional_base": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "random": "cpp"
     }
 }
