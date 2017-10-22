@@ -144,7 +144,7 @@ namespace membership_protocol
         {
             case membership_protocol::JOINED:
             {
-                std::lock_guard<std::mutex> lock(membersMutex);                
+                std::lock_guard<std::mutex> lock(membersMutex);
                 bool newNode = members.find(addressStr) == members.end();
                 if (newNode)
                 {
@@ -159,7 +159,7 @@ namespace membership_protocol
 
             case membership_protocol::FAILED:
             {
-                std::lock_guard<std::mutex> lock(membersMutex);                                
+                std::lock_guard<std::mutex> lock(membersMutex);
                 bool nodeExists = members.find(addressStr) != members.end();
                 if (nodeExists)
                 {

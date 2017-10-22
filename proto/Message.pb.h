@@ -69,12 +69,13 @@ enum MessageType {
   PING_REQ = 2,
   JOINREQ = 3,
   JOINREP = 4,
+  GOSSIP = 5,
   MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool MessageType_IsValid(int value);
 const MessageType MessageType_MIN = PING;
-const MessageType MessageType_MAX = JOINREP;
+const MessageType MessageType_MAX = GOSSIP;
 const int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* MessageType_descriptor();

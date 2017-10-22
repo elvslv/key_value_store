@@ -13,6 +13,7 @@ enum MessageType {
     PING_REQ = 2;
     JOINREQ = 3;
     JOINREP = 4;
+    GOSSIP = 5;
 }
 
 enum EventTypes {

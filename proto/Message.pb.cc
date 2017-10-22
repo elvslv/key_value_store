@@ -159,13 +159,13 @@ void AddDescriptorsImpl() {
       "stinationAddress\030\003 \001(\0132\014.gen.Address\022\n\n\002"
       "id\030\004 \001(\t\022\022\n\noriginalId\030\005 \001(\t\022\032\n\006events\030\006"
       " \003(\0132\n.gen.Event\022#\n\rtargetAddress\030\007 \001(\0132"
-      "\014.gen.Address*H\n\013MessageType\022\010\n\004PING\020\000\022\007"
+      "\014.gen.Address*T\n\013MessageType\022\010\n\004PING\020\000\022\007"
       "\n\003ACK\020\001\022\014\n\010PING_REQ\020\002\022\013\n\007JOINREQ\020\003\022\013\n\007JO"
-      "INREP\020\004*$\n\nEventTypes\022\n\n\006JOINED\020\000\022\n\n\006FAI"
-      "LED\020\001b\006proto3"
+      "INREP\020\004\022\n\n\006GOSSIP\020\005*$\n\nEventTypes\022\n\n\006JOI"
+      "NED\020\000\022\n\n\006FAILED\020\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 493);
+      descriptor, 505);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Message.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -196,6 +196,7 @@ bool MessageType_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;
