@@ -8,7 +8,7 @@
 
 #include "../network/Message.h"
 #include "../network/Network.h"
-#include "../membership_protocol/Message.h"
+#include "../membership_protocol/messages/Message.h"
 #include "Log.h"
 
 namespace utils

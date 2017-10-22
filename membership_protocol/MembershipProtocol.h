@@ -11,7 +11,7 @@
 #include "../utils/MessageDispatcher.h"
 #include "../utils/AsyncQueue.h"
 #include "Member.h"
-#include "Message.h"
+#include "messages/Message.h"
 
 namespace membership_protocol
 {

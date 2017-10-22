@@ -9,7 +9,6 @@
 #include "PingMessage.h"
 #include "AckMessage.h"
 #include "Events.h"
-#include "Node.h"
 #include "../utils/Utils.h"
 
 namespace membership_protocol

@@ -1,6 +1,5 @@
 #pragma once
 #include "Message.h"
-#include "Node.h"
 
 namespace membership_protocol
 {

@@ -2,9 +2,9 @@
 
 #include "MembershipProtocol.h"
 #include "MembershipUpdate.h"
-#include "JoinReqMessage.h"
-#include "JoinRepMessage.h"
-#include "AckMessage.h"
+#include "messages/JoinReqMessage.h"
+#include "messages/JoinRepMessage.h"
+#include "messages/AckMessage.h"
 #include "../utils/Exceptions.h"
 
 
