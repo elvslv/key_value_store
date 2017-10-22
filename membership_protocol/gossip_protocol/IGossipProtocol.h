@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GossipEvent.h"
-#include "MembershipUpdate.h"
+#include "membership_protocol/MembershipUpdate.h"
 
 namespace membership_protocol
 {

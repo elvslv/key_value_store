@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IGossipProtocol.h"
-#include "IMembershipProtocol.h"
+#include "membership_protocol/IMembershipProtocol.h"
 #include "network/Network.h"
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
