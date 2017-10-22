@@ -8,7 +8,6 @@
 #include "proto/Message.pb.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
-#include "Events.h"
 #include "utils/Utils.h"
 
 namespace membership_protocol
@@ -95,7 +94,7 @@ namespace membership_protocol
     }
 
     network::Message Message::serialize() const
-    {        
+    {
         gen::Message message = serializeToProtobuf();
 
         unsigned int size = message.ByteSize();

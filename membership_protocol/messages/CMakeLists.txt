@@ -1,4 +1,4 @@
-set(membership_protocol_messages_src_files AckMessage Events JoinRepMessage JoinReqMessage Message PingMessage PingReqMessage)
+set(membership_protocol_messages_src_files AckMessage JoinRepMessage JoinReqMessage Message PingMessage PingReqMessage Gossip GossipMessage)
 foreach(membership_protocol_messages_src_file ${membership_protocol_messages_src_files})
   target_sources(key_value_store_lib PRIVATE "membership_protocol/messages/${membership_protocol_messages_src_file}.cpp")
 endforeach(membership_protocol_messages_src_file)
