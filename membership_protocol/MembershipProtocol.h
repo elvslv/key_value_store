@@ -3,10 +3,10 @@
 #include <queue>
 #include <unordered_map>
 #include "IMembershipProtocol.h"
-#include "IFailureDetector.h"
-#include "IGossipProtocol.h"
-#include "IFailureDetectorFactory.h"
-#include "IGossipProtocolFactory.h"
+#include "failure_detector/IFailureDetector.h"
+#include "gossip_protocol/IGossipProtocol.h"
+#include "failure_detector/IFailureDetectorFactory.h"
+#include "gossip_protocol/IGossipProtocolFactory.h"
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
 #include "utils/AsyncQueue.h"
