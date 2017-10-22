@@ -14,11 +14,11 @@ namespace
         MOCK_METHOD1(addObserver, void(membership_protocol::IMembershipProtocol::IObserver* observer));
    };
     
-    class FailureDetectorTests: public testing::Test, public membership_protocol::IFailureDetector::IObserver
+    class FailureDetectorTests: public testing::Test, public failure_detector::IFailureDetector::IObserver
     {
     public:
         std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;        
-        std::unique_ptr<membership_protocol::FailureDetector> failureDectector;
+        std::unique_ptr<failure_detector::FailureDetector> failureDectector;
         std::vector<network::Address> failedNodes;
         std::vector<network::Address> aliveNodes;
         
@@ -30,7 +30,7 @@ namespace
             auto logger = std::make_shared<utils::Log>();
             auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
             membershipProtocol = std::make_unique<MockIMembershipProtocol>();
-            failureDectector = std::make_unique<membership_protocol::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol.get());    
+            failureDectector = std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol.get());    
         }
 
         void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent)

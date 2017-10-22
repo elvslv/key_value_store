@@ -2,7 +2,7 @@
 
 #include "FailureDetectorEvent.h"
 
-namespace membership_protocol
+namespace failure_detector
 {
     class IFailureDetector 
     {

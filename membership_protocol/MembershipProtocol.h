@@ -15,10 +15,10 @@
 
 namespace membership_protocol
 {
-    class MembershipProtocol: public IMembershipProtocol, IFailureDetector::IObserver, IGossipProtocol::IObserver
+    class MembershipProtocol: public IMembershipProtocol, failure_detector::IFailureDetector::IObserver, IGossipProtocol::IObserver
     {
     public:
-        MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<IGossipProtocolFactory>& gossipProtocolFactory);
+        MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<IGossipProtocolFactory>& gossipProtocolFactory);
         virtual ~MembershipProtocol() {}
 
         virtual void start();
@@ -36,7 +36,7 @@ namespace membership_protocol
         utils::AsyncQueue asyncQueue;
         utils::AsyncQueue::Callback asyncQueueCallback;
 
-        std::unique_ptr<IFailureDetector> failureDetector;
+        std::unique_ptr<failure_detector::IFailureDetector> failureDetector;
         std::unique_ptr<IGossipProtocol> gossipProtocol;
         std::vector<IMembershipProtocol::IObserver*> observers;
 

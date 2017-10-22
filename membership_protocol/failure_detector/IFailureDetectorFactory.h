@@ -6,7 +6,7 @@
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
 
-namespace membership_protocol
+namespace failure_detector
 {
     class IFailureDetectorFactory
     {

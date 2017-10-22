@@ -3,9 +3,9 @@
 #include "utils/Utils.h"
 #include "membership_protocol/messages/PingMessage.h"
 
-namespace membership_protocol
+namespace failure_detector
 {
-    FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, IMembershipProtocol* membershipProtocol):
+    FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol):
         address(addr),
         logger(logger),
         messageDispatcher(messageDispatcher),
@@ -13,7 +13,7 @@ namespace membership_protocol
         membershipProtocol(membershipProtocol),
         observers(),
         asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1)),
-        asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),
+        asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
         members(),
         messageProcessingThread(),
         isRunning(false),
@@ -27,7 +27,7 @@ namespace membership_protocol
         membershipProtocol->addObserver(this);
         
         // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
-        tokens[ACK] = messageDispatcher->listen(ACK, asyncQueueCallback);
+        tokens[membership_protocol::ACK] = messageDispatcher->listen(membership_protocol::ACK, asyncQueueCallback);
         isRunning = true;        
         messageProcessingThread = std::make_unique<std::thread>(&FailureDetector::run, this);
     }
@@ -62,7 +62,7 @@ namespace membership_protocol
 
     void FailureDetector::sendPing(const network::Address destAddress)
     {
-        auto message = std::make_unique<PingMessage>(address, destAddress);
+        auto message = std::make_unique<membership_protocol::PingMessage>(address, destAddress);
         auto msgId = message->getId();
 
         {
@@ -106,18 +106,18 @@ namespace membership_protocol
         observers.push_back(observer);
     }
 
-    void FailureDetector::onMembershipUpdate(const MembershipUpdate& membershipUpdate)
+    void FailureDetector::onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
         auto address = membershipUpdate.member.address;
         switch (membershipUpdate.updateType)
         {
-            case JOINED:
+            case membership_protocol::JOINED:
             {
                 members.insert(address);
                 break;
             }
             
-            case FAILED:
+            case membership_protocol::FAILED:
             {
                 members.remove(address);
                 break;
@@ -125,11 +125,11 @@ namespace membership_protocol
         }
     }
 
-    void FailureDetector::processMessage(const std::unique_ptr<Message>& message)
+    void FailureDetector::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
     {
         switch (message->getMessageType())
         {
-            case ACK:
+            case membership_protocol::ACK:
             {
                 auto msgId = message->getId();
                 {
