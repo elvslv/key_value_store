@@ -18,4 +18,16 @@ namespace membership_protocol
     {
         return gen::ACK;
     }
+
+    gen::Message AckMessage::serializeToProtobuf() const
+    {
+        auto message = Message::serializeToProtobuf();
+
+        auto ackFields = std::make_unique<gen::AckFields>();
+        ackFields->set_originalid(pingMessageId);
+        message.set_allocated_ackfields(ackFields.release());
+
+        return message;
+    }
+
 }

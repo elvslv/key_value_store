@@ -12,7 +12,8 @@ namespace membership_protocol
         
     protected:
         virtual gen::MessageType getProtobufMessageType() const;
-
+        virtual gen::Message serializeToProtobuf() const;
+        
     private:
         std::string pingMessageId;
     };
