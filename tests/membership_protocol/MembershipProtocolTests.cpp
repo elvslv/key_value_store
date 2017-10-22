@@ -13,7 +13,7 @@ namespace
         MOCK_METHOD1(addObserver, void(IObserver* observer));
    };
 
-    class MockIGossipProtocol: public membership_protocol::IGossipProtocol 
+    class MockIGossipProtocol: public gossip_protocol::IGossipProtocol 
     {
     public:
         MOCK_METHOD0(start, void());
@@ -30,9 +30,9 @@ namespace
         }
     };
 
-    class GossipProtocolFactory: public membership_protocol::IGossipProtocolFactory
+    class GossipProtocolFactory: public gossip_protocol::IGossipProtocolFactory
     {
-        virtual std::unique_ptr<membership_protocol::IGossipProtocol> createGossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol)
+        virtual std::unique_ptr<gossip_protocol::IGossipProtocol> createGossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol)
         {
             return std::make_unique<testing::NiceMock<MockIGossipProtocol> >();
         }
@@ -43,7 +43,7 @@ namespace
         network::Address addr("1.0.0.0:100");
         auto logger = std::make_shared<utils::Log>();
         std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
-        std::unique_ptr<membership_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
+        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
         
         membership_protocol::MembershipProtocol membershiptProtocol(addr, logger, failureDetectorFactory, goossipProtocolFactory);
     }

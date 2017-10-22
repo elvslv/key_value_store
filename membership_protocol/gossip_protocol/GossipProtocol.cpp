@@ -1,8 +1,8 @@
 #include "GossipProtocol.h"
 
-namespace membership_protocol
+namespace gossip_protocol
 {
-    GossipProtocol::GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, IMembershipProtocol* membershipProtocol):
+    GossipProtocol::GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol):
         address(addr),
         logger(logger),
         messageDispatcher(messageDispatcher),
@@ -10,7 +10,7 @@ namespace membership_protocol
         membershipProtocol(membershipProtocol),
         observers(),
         asyncQueue(std::bind(&GossipProtocol::processMessage, this, std::placeholders::_1)),
-        asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),
+        asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
         members(),
         messageProcessingThread(),
         isRunning(false),
@@ -61,7 +61,7 @@ namespace membership_protocol
         observers.push_back(observer);
     }
 
-    void GossipProtocol::onMembershipUpdate(const MembershipUpdate& membershipUpdate)
+    void GossipProtocol::onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
         auto address = membershipUpdate.member.address;
         switch (membershipUpdate.updateType)
@@ -80,7 +80,7 @@ namespace membership_protocol
         }
     }
 
-    void GossipProtocol::processMessage(const std::unique_ptr<Message>& message)
+    void GossipProtocol::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
     {
         switch (message->getMessageType())
         {

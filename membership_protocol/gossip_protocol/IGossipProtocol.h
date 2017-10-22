@@ -3,7 +3,7 @@
 #include "GossipEvent.h"
 #include "membership_protocol/MembershipUpdate.h"
 
-namespace membership_protocol
+namespace gossip_protocol
 {
     class IGossipProtocol
     {
@@ -18,6 +18,6 @@ namespace membership_protocol
         virtual void start() = 0;
         virtual void stop() = 0;
         virtual void addObserver(IObserver* observer) = 0;
-        virtual void spreadMembershipUpdate(const MembershipUpdate& membershipUpdate) = 0;
+        virtual void spreadMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate) = 0;
     };
 }

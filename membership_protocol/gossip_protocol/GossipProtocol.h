@@ -10,26 +10,26 @@
 #include "utils/RoundRobinList.h"
 #include "IMembershipProtocol.h"
 
-namespace membership_protocol
+namespace gossip_protocol
 {
     struct Gossip
     {
         int period;
         std::string id;
-        MembershipUpdate membershipUpdate;
+        membership_protocol::MembershipUpdate membershipUpdate;
         std::unordered_set<network::Address> infectedNodes;
     };
 
-    class GossipProtocol: public IGossipProtocol, public IMembershipProtocol::IObserver
+    class GossipProtocol: public IGossipProtocol, public membership_protocol::IMembershipProtocol::IObserver
     {
     public:
-        GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, IMembershipProtocol* membershipProtocol);
+        GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol);
         
         virtual void start();
         virtual void stop();
         virtual void addObserver(IGossipProtocol::IObserver* observer);
-        virtual void spreadMembershipUpdate(const MembershipUpdate& membershipUpdate);
-        virtual void onMembershipUpdate(const MembershipUpdate& membershipUpdate);
+        virtual void spreadMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate);
+        virtual void onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate);
     private:
         network::Address address;
         std::shared_ptr<utils::Log> logger;
@@ -51,6 +51,6 @@ namespace membership_protocol
         std::mutex gossipsMutex;
 
         void run();
-        void processMessage(const std::unique_ptr<Message>& message);
+        void processMessage(const std::unique_ptr<membership_protocol::Message>& message);
     };
 }
