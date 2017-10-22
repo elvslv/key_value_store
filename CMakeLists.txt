@@ -3,7 +3,7 @@ project(KEY_VALUE_STORE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR} membership_protocol membership_protocol/failure_detector membership_protocol/messages network utils proto)
+include_directories(${CMAKE_CURRENT_BINARY_DIR} membership_protocol membership_protocol/failure_detector network utils proto)
 set(CMAKE_CXX_FLAGS "-Wall -g -std=c++14")
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -rdynamic" )
 
