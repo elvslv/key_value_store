@@ -2,9 +2,9 @@
 
 #include "IGossipProtocol.h"
 #include "IMembershipProtocol.h"
-#include "../network/Network.h"
-#include "../utils/Log.h"
-#include "../utils/MessageDispatcher.h"
+#include "network/Network.h"
+#include "utils/Log.h"
+#include "utils/MessageDispatcher.h"
 
 namespace membership_protocol
 {

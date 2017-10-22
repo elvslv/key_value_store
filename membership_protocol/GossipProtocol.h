@@ -4,10 +4,10 @@
 #include <unordered_set>
 
 #include "IGossipProtocol.h"
-#include "../utils/AsyncQueue.h"
-#include "../utils/Log.h"
-#include "../utils/MessageDispatcher.h"
-#include "../utils/RoundRobinList.h"
+#include "utils/AsyncQueue.h"
+#include "utils/Log.h"
+#include "utils/MessageDispatcher.h"
+#include "utils/RoundRobinList.h"
 #include "IMembershipProtocol.h"
 
 namespace membership_protocol

@@ -3,11 +3,11 @@
 #include <unordered_map>
 
 #include "IFailureDetector.h"
-#include "../utils/AsyncQueue.h"
-#include "../utils/Log.h"
-#include "../utils/MessageDispatcher.h"
-#include "../utils/RoundRobinList.h"
-#include "IMembershipProtocol.h"
+#include "utils/AsyncQueue.h"
+#include "utils/Log.h"
+#include "utils/MessageDispatcher.h"
+#include "utils/RoundRobinList.h"
+#include "membership_protocol/IMembershipProtocol.h"
 
 namespace membership_protocol
 {

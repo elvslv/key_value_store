@@ -1,7 +1,7 @@
 #include "FailureDetector.h"
-#include "../utils/Exceptions.h"
-#include "../utils/Utils.h"
-#include "messages/PingMessage.h"
+#include "utils/Exceptions.h"
+#include "utils/Utils.h"
+#include "membership_protocol/messages/PingMessage.h"
 
 namespace membership_protocol
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../network/Address.h"
+#include "network/Address.h"
 
 namespace membership_protocol
 {

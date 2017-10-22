@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include "../../membership_protocol/MembershipProtocol.h"
+#include "membership_protocol/MembershipProtocol.h"
 
 namespace
 {

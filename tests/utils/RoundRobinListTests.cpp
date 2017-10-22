@@ -1,8 +1,8 @@
 #include <unordered_set>
 
 #include "gtest/gtest.h"
-#include "../../network/Address.h"
-#include "../../utils/RoundRobinList.h"
+#include "network/Address.h"
+#include "utils/RoundRobinList.h"
 
 namespace
 {

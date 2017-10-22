@@ -2,7 +2,7 @@
 #include "MembershipProtocol.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
-#include "../utils/TimeUtils.h"
+#include "utils/TimeUtils.h"
 
 namespace membership_protocol
 {

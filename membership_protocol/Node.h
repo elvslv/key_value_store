@@ -2,7 +2,7 @@
 
 #include <functional>
 #include <vector>
-#include "../network/Address.h"
+#include "network/Address.h"
 
 namespace membership_protocol
 {

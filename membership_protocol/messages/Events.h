@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include "../network/Address.h"
-#include "../proto/Message.pb.h"
+#include "network/Address.h"
+#include "proto/Message.pb.h"
 
 namespace membership_protocol
 {

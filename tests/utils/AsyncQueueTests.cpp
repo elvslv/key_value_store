@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "../../utils/AsyncQueue.h"
-#include "../../utils/Utils.h"
-#include "../../membership_protocol/messages/PingMessage.h"
+#include "utils/AsyncQueue.h"
+#include "utils/Utils.h"
+#include "membership_protocol/messages/PingMessage.h"
 
 namespace 
 {

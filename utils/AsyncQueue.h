@@ -5,7 +5,7 @@
 #include <queue>
 #include <memory>
 #include <thread>
-#include "../membership_protocol/messages/Message.h"
+#include "membership_protocol/messages/Message.h"
 
 namespace utils
 {

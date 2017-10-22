@@ -5,11 +5,11 @@
 #include "Message.h"
 #include "JoinReqMessage.h"
 #include "JoinRepMessage.h"
-#include "../proto/Message.pb.h"
+#include "proto/Message.pb.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
 #include "Events.h"
-#include "../utils/Utils.h"
+#include "utils/Utils.h"
 
 namespace membership_protocol
 {

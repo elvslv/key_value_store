@@ -3,13 +3,11 @@ project(KEY_VALUE_STORE)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}, membership_protocol, network, utils, proto)
+include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/membership_protocol ${CMAKE_SOURCE_DIR}/membership_protocol/failure_detector ${CMAKE_SOURCE_DIR}/membership_protocol/messages ${CMAKE_SOURCE_DIR}/network ${CMAKE_SOURCE_DIR}/utils ${CMAKE_SOURCE_DIR}/proto)
 set(CMAKE_CXX_FLAGS "-Wall -g -std=c++14")
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -rdynamic" )
 
 add_library(key_value_store_lib "")
-include("network/CMakeLists.txt")
-include("utils/CMakeLists.txt")
 
 # add_executable(app main.cpp)
 # target_link_libraries(app key_value_store_lib)

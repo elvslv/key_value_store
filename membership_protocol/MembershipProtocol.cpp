@@ -5,7 +5,7 @@
 #include "messages/JoinReqMessage.h"
 #include "messages/JoinRepMessage.h"
 #include "messages/AckMessage.h"
-#include "../utils/Exceptions.h"
+#include "utils/Exceptions.h"
 
 
 namespace membership_protocol

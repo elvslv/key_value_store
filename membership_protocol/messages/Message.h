@@ -3,9 +3,9 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include "../proto/Message.pb.h"
-#include "../network/Address.h"
-#include "../network/Message.h"
+#include "proto/Message.pb.h"
+#include "network/Address.h"
+#include "network/Message.h"
 
 namespace membership_protocol
 {

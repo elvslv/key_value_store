@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include "../../membership_protocol/FailureDetector.h"
+#include "membership_protocol/failure_detector/FailureDetector.h"
 
 namespace 
 {

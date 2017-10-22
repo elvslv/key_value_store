@@ -3,7 +3,7 @@
 #include <array>
 #include <memory>
 #include <string>
-#include "../proto/Address.pb.h"
+#include "proto/Address.pb.h"
 
 namespace network
 {

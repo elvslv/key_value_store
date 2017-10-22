@@ -2,8 +2,8 @@
 #include <thread>
 
 #include "gtest/gtest.h"
-#include "../../network/EmulNet.h"
-#include "../../network/Message.h"
+#include "network/EmulNet.h"
+#include "network/Message.h"
 
 namespace 
 {

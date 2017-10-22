@@ -1,10 +1,10 @@
 #include <queue>
 
 #include "gtest/gtest.h"
-#include "../../utils/MessageDispatcher.h"
-#include "../../membership_protocol/messages/AckMessage.h"
-#include "../../membership_protocol/messages/PingMessage.h"
-#include "../../utils/Utils.h"
+#include "utils/MessageDispatcher.h"
+#include "membership_protocol/messages/AckMessage.h"
+#include "membership_protocol/messages/PingMessage.h"
+#include "utils/Utils.h"
 
 namespace
 {

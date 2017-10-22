@@ -7,9 +7,9 @@
 #include "IGossipProtocol.h"
 #include "IFailureDetectorFactory.h"
 #include "IGossipProtocolFactory.h"
-#include "../utils/Log.h"
-#include "../utils/MessageDispatcher.h"
-#include "../utils/AsyncQueue.h"
+#include "utils/Log.h"
+#include "utils/MessageDispatcher.h"
+#include "utils/AsyncQueue.h"
 #include "Member.h"
 #include "messages/Message.h"
 
