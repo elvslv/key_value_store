@@ -17,8 +17,11 @@ namespace membership_protocol
     gen::Message PingReqMessage::serializeToProtobuf() const
     {
         auto message = Message::serializeToProtobuf();
+
         auto addr = targetAddress.serialize();
-        message.set_allocated_targetaddress(addr.release());
+        auto pingReqFields = std::make_unique<gen::PingReqFields>();
+        pingReqFields->set_allocated_targetaddress(addr.release());
+        message.set_allocated_pingreqfields(pingReqFields.release());
 
         return message;
     }

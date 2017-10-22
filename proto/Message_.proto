@@ -1,0 +1,37 @@
+syntax = "proto3";
+package gen;
+
+import "Address.proto";
+
+message Node {
+    Address address = 1;
+}
+
+enum MessageType {
+    PING = 0;
+    ACK = 1;
+    PING_REQ = 2;
+    JOINREQ = 3;
+    JOINREP = 4;
+    GOSSIP = 5;
+}
+
+enum EventTypes {
+    JOINED = 0;
+    FAILED = 1;
+}
+
+message Event {
+    EventTypes event = 1;
+    Address address = 2;
+}
+
+message Message {
+    MessageType messageType = 1;
+    Address sourceAddress = 2;
+    Address destinationAddress = 3;
+    string id = 4;
+    string originalId = 5;
+    repeated Event events = 6;
+    Address targetAddress = 7;
+}

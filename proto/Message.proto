@@ -3,10 +3,6 @@ package gen;
 
 import "Address.proto";
 
-message Node {
-    Address address = 1;
-}
-
 enum MessageType {
     PING = 0;
     ACK = 1;
@@ -16,14 +12,28 @@ enum MessageType {
     GOSSIP = 5;
 }
 
-enum EventTypes {
+message PingReqFields {
+    Address targetAddress = 2;
+}
+
+message AckFields {
+    string originalId = 2;
+}
+
+enum GossipEventTypes {
     JOINED = 0;
     FAILED = 1;
 }
 
-message Event {
-    EventTypes event = 1;
+message Gossip {
+    GossipEventTypes event = 1;
     Address address = 2;
+    string id = 3;
+}
+
+message GossipFields {
+    Message messageCommon = 1;
+    repeated Gossip gossips = 2;
 }
 
 message Message {
@@ -31,7 +41,10 @@ message Message {
     Address sourceAddress = 2;
     Address destinationAddress = 3;
     string id = 4;
-    string originalId = 5;
-    repeated Event events = 6;
-    Address targetAddress = 7;
+
+    oneof customFields {
+        PingReqFields pingReqFields = 5;
+        AckFields ackFields = 6;
+        GossipFields gossipFields = 7;
+    }
 }

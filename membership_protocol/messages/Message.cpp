@@ -61,7 +61,13 @@ namespace membership_protocol
 
             case gen::ACK:
             {
-                return std::make_unique<AckMessage>(srcAddress, destAddress, message.id(), message.originalid());
+                if (!message.has_ackfields())
+                {
+                    throw std::logic_error("AckFields are expected");
+                }
+
+                auto ackFields = message.ackfields();
+                return std::make_unique<AckMessage>(srcAddress, destAddress, message.id(), ackFields.originalid());
             }
 
             case gen::PING_REQ:
