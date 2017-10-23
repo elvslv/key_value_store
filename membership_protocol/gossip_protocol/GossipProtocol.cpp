@@ -86,17 +86,19 @@ namespace gossip_protocol
         {
             case GOSSIP:
             {
-                auto gossipId = message->getId();
                 {
-                    std::lock_guard<std::mutex> lock(gossipsMutex);
-                    auto it = gossips.find(gossipId);
-                    if (it != gossips.end())
+                    auto gossipMessage = std::static_cast<membership_protocol::GossipMessage>(message.get());
+                    for (auto it = gossipMessage->gossips.start(); it != gossipMessage->gossips.end(); ++it)
                     {
-                        logger->log("Already received gossip ", gossipId);
-                        return;
+                        auto gossipId = it->id;
+                        std::lock_guard<std::mutex> lock(gossipsMutex);
+                        auto it = gossips.find(gossipId);
+                        if (it != gossips.end())
+                        {
+                            logger->log("Already received gossip ", gossipId);
+                            continue;
+                        }
                     }
-
-                    auto gossipMessage = std::static_cast<>;
                 }
 
                 break;

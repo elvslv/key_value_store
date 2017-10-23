@@ -13,15 +13,13 @@ namespace membership_protocol
 
     struct Gossip
     {
-    public:
         Gossip(const network::Address& address, GossipType gossipType, const std::string& id);
 
+        gen::GossipEventTypes getProtobufEventsType() const;        
         void serializeTo(gen::Gossip* gossip) const;
-    private:
+
         network::Address address;
         GossipType gossipType;
         std::string id;
-
-        gen::GossipEventTypes getProtobufEventsType() const;
     };
 }

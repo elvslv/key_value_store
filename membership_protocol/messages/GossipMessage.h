@@ -10,7 +10,8 @@ namespace membership_protocol
     public:
         GossipMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips);
         GossipMessage(const network::Address& from, const network::Address& to, const std::string& id, const std::vector<Gossip>& gossips);
-        
+
+        const std::vector<Gossip>& getGossips() const;
     protected:
         virtual gen::MessageType getProtobufMessageType() const;
         virtual gen::Message serializeToProtobuf() const;

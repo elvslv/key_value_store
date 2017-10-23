@@ -52,5 +52,6 @@ namespace gossip_protocol
 
         void run();
         void processMessage(const std::unique_ptr<membership_protocol::Message>& message);
+        void addGossip(const std::string& id, const network::Address& node, gossip_protocol::GossipEventType eventType);
     };
 }

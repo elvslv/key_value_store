@@ -34,4 +34,9 @@ namespace membership_protocol
     {
         return gen::GOSSIP;
     }
+
+    const std::vector<Gossip>& GossipMessage::getGossips() const
+    {
+        return gossips;
+    }
 }
