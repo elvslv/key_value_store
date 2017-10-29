@@ -11,6 +11,12 @@ namespace utils
     class RoundRobinList
     {
     public:
+        size_t size()
+        {
+            std::lock_guard<std::mutex> lock(elementsMutex);
+            return elements.size();
+        }
+
         bool getNextElement(T& result)
         {
             std::lock_guard<std::mutex> lock(elementsMutex);

@@ -132,7 +132,24 @@ namespace gossip_protocol
 
     std::vector<membership_protocol::Gossip> GossipProtocol::getGossipsForAddress(const network::Address& address)
     {
-        throw utils::NotImplementedException();
+        std::vector<membership_protocol::Gossip> result;
+        {
+            std::lock_guard<std::mutex> lock(gossipsMutex);
+            
+            for (auto it = gossips.begin(); it != gossips.end(); ++it)
+            {
+                Gossip& gossip = it->second;
+                if (gossip.infectedNodes.find(address) != gossip.infectedNodes.end())
+                {
+                    continue;
+                }
+    
+                result.emplace_back(gossip.membershipUpdate.address, gossip.membershipUpdate.updateType, gossip.id);
+                gossip.infectedNodes.insert(address);
+            }    
+        }
+
+        return result;
     }
 
     void GossipProtocol::cleanupMessages()
