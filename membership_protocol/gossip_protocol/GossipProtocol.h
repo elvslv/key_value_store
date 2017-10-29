@@ -8,12 +8,23 @@
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
 #include "utils/RoundRobinList.h"
-#include "IMembershipProtocol.h"
+#include "membership_protocol/IMembershipProtocol.h"
+#include "membership_protocol/messages/Gossip.h"
 
 namespace gossip_protocol
 {
     struct Gossip
     {
+        Gossip(){}
+
+        Gossip(int period, const std::string& id, const membership_protocol::MembershipUpdate& membershipUpdate, const std::unordered_set<network::Address>& infectedNodes) :
+            period(period),
+            id(id),
+            membershipUpdate(membershipUpdate),
+            infectedNodes(infectedNodes)
+        {
+        }
+
         int period;
         std::string id;
         membership_protocol::MembershipUpdate membershipUpdate;
@@ -34,7 +45,7 @@ namespace gossip_protocol
         network::Address address;
         std::shared_ptr<utils::Log> logger;
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
-        std::unordered_map<MsgTypes, std::string> tokens;
+        std::unordered_map<membership_protocol::MsgTypes, std::string> tokens;
         membership_protocol::IMembershipProtocol* membershipProtocol;
         std::vector<IGossipProtocol::IObserver*> observers;
         utils::AsyncQueue asyncQueue;
@@ -52,6 +63,7 @@ namespace gossip_protocol
 
         void run();
         void processMessage(const std::unique_ptr<membership_protocol::Message>& message);
-        void addGossip(const std::string& id, const network::Address& node, gossip_protocol::GossipEventType eventType);
+        std::vector<membership_protocol::Gossip> getGossipsForAddress(const network::Address& address);
+        void cleanupMessages();
     };
 }

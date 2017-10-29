@@ -1,5 +1,6 @@
 add_subdirectory(messages)
 add_subdirectory(failure_detector)
+add_subdirectory(gossip_protocol)
 
 set(membership_protocol_src_files MembershipProtocol Node)
 foreach(membership_protocol_src_file ${membership_protocol_src_files})

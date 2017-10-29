@@ -108,7 +108,7 @@ namespace failure_detector
 
     void FailureDetector::onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
-        auto address = membershipUpdate.member.address;
+        auto address = membershipUpdate.address;
         switch (membershipUpdate.updateType)
         {
             case membership_protocol::JOINED:

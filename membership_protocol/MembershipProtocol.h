@@ -27,7 +27,7 @@ namespace membership_protocol
         virtual void addObserver(IMembershipProtocol::IObserver* observer);
 
         virtual void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent);
-        virtual void onGossipEvent(const gossip_protocol::GossipEvent& gossipEvent);
+        virtual void onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate);
     private:
         network::Address node;
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher;

@@ -2,9 +2,9 @@
 
 namespace membership_protocol
 {
-    Gossip::Gossip(const network::Address& address, GossipType gossipType, const std::string& id):
+    Gossip::Gossip(const network::Address& address, MembershipUpdateType membershipUpdateType, const std::string& id):
         address(address),
-        gossipType(gossipType),
+        membershipUpdateType(membershipUpdateType),
         id(id)
     {
     }
@@ -20,7 +20,7 @@ namespace membership_protocol
 
     gen::GossipEventTypes Gossip::getProtobufEventsType() const
     {
-        switch (gossipType)
+        switch (membershipUpdateType)
         {
             case JOINED:
                 return gen::JOINED;

@@ -1,4 +1,8 @@
 #include "GossipProtocol.h"
+#include "membership_protocol/messages/GossipMessage.h"
+#include "membership_protocol/MembershipUpdate.h"
+#include "utils/Utils.h"
+#include "utils/Exceptions.h"
 
 namespace gossip_protocol
 {
@@ -25,7 +29,7 @@ namespace gossip_protocol
     {
         membershipProtocol->addObserver(this);
         
-        tokens[GOSSIP] = messageDispatcher->listen(GOSSIP, asyncQueueCallback);
+        tokens[membership_protocol::GOSSIP] = messageDispatcher->listen(membership_protocol::GOSSIP, asyncQueueCallback);
         isRunning = true;
         messageProcessingThread = std::make_unique<std::thread>(&GossipProtocol::run, this);
     }
@@ -45,14 +49,18 @@ namespace gossip_protocol
     {
         while (isRunning)
         {
-            network::Address address;
-            if (!members.getNextElement(address))
+            network::Address targetAddress;
+            if (!members.getNextElement(targetAddress))
             {
                 // TODO: add const
                 using namespace std::chrono_literals;
                 std::this_thread::sleep_for(100ms);
+                ++period;
                 continue;
             }
+
+            auto gossips = getGossipsForAddress(targetAddress);
+            messageDispatcher->sendMessage(std::make_unique<membership_protocol::GossipMessage>(address, targetAddress, gossips), targetAddress);
         }
     }
 
@@ -63,40 +71,52 @@ namespace gossip_protocol
 
     void GossipProtocol::onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
-        auto address = membershipUpdate.member.address;
         switch (membershipUpdate.updateType)
         {
-            case JOINED:
+            case membership_protocol::JOINED:
             {
-                members.insert(address);
+                members.insert(membershipUpdate.address);
                 break;
             }
             
-            case FAILED:
+            case membership_protocol::FAILED:
             {
-                members.remove(address);
+                members.remove(membershipUpdate.address);
                 break;
             }
         }
     }
 
+    void GossipProtocol::spreadMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
+    {
+        auto gossipId = utils::Utils::getRandomString(16);
+        std::lock_guard<std::mutex> lock(gossipsMutex);
+        gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {});
+    }    
+
     void GossipProtocol::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
     {
         switch (message->getMessageType())
         {
-            case GOSSIP:
+            case membership_protocol::GOSSIP:
             {
                 {
-                    auto gossipMessage = std::static_cast<membership_protocol::GossipMessage>(message.get());
-                    for (auto it = gossipMessage->gossips.start(); it != gossipMessage->gossips.end(); ++it)
+                    auto gossipMessage = static_cast<membership_protocol::GossipMessage*>(message.get());
+                    for (auto it = gossipMessage->getGossips().begin(); it != gossipMessage->getGossips().end(); ++it)
                     {
                         auto gossipId = it->id;
                         std::lock_guard<std::mutex> lock(gossipsMutex);
-                        auto it = gossips.find(gossipId);
-                        if (it != gossips.end())
+                        if (gossips.find(gossipId) != gossips.end())
                         {
                             logger->log("Already received gossip ", gossipId);
                             continue;
+                        }
+
+                        auto membershipUpdate = membership_protocol::MembershipUpdate(it->address, it->membershipUpdateType);
+                        gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {message->getSourceAddress()});
+                        for (auto jt = observers.begin(); jt != observers.end(); ++jt)
+                        {
+                            (*jt)->onGossipEvent(membershipUpdate);
                         }
                     }
                 }
@@ -108,5 +128,15 @@ namespace gossip_protocol
                 logger->log("Unexpected message ", message->toString());
                 break;
         }
+    }
+
+    std::vector<membership_protocol::Gossip> GossipProtocol::getGossipsForAddress(const network::Address& address)
+    {
+        throw utils::NotImplementedException();
+    }
+
+    void GossipProtocol::cleanupMessages()
+    {
+        throw utils::NotImplementedException();
     }
 }

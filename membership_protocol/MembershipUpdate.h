@@ -20,13 +20,15 @@ namespace membership_protocol
 
     struct MembershipUpdate 
     {
-        MembershipUpdate(const Member& member, const MembershipUpdateType& updateType):
-            member(member),
+        MembershipUpdate() {}
+
+        MembershipUpdate(const network::Address& address, const MembershipUpdateType& updateType):
+            address(address),
             updateType(updateType)
         {
         }
 
-        Member member;
+        network::Address address;
         MembershipUpdateType updateType;
     };
 }

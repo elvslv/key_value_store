@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GossipEvent.h"
 #include "membership_protocol/MembershipUpdate.h"
 
 namespace gossip_protocol
@@ -11,7 +10,7 @@ namespace gossip_protocol
         class IObserver
         {
         public:
-            virtual void onGossipEvent(const gossip_protocol::GossipEvent& gossipEvent) = 0;
+            virtual void onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate) = 0;
         };
 
         virtual ~IGossipProtocol(){};

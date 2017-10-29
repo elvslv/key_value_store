@@ -101,32 +101,9 @@ namespace membership_protocol
         onMembershipUpdate(membershipUpdateType, FAILURE_DETECTOR, failureDetectorEvent.address);
     }
 
-    void MembershipProtocol::onGossipEvent(const gossip_protocol::GossipEvent& gossipEvent)
+    void MembershipProtocol::onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
-        MembershipUpdateType membershipUpdateType;
-        switch (gossipEvent.eventType)
-        {
-            case gossip_protocol::JOINED:
-            {
-                membershipUpdateType = JOINED;
-                break;
-            }
-
-            case gossip_protocol::FAILED:
-            {
-                membershipUpdateType = FAILED;
-                break;
-            }
-
-            default:
-            {
-                std::stringstream ss;
-                ss << "unsupported event " << gossipEvent.eventType;
-                throw std::logic_error(ss.str());
-            }
-        }
-
-        onMembershipUpdate(membershipUpdateType, GOSSIP_PROTOCOL, gossipEvent.address);
+        onMembershipUpdate(membershipUpdate.updateType, GOSSIP_PROTOCOL, membershipUpdate.address);
     }
 
     void MembershipProtocol::onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress)
@@ -150,7 +127,7 @@ namespace membership_protocol
                 {
                     auto result = members.emplace(addressStr, sourceAddress);
 
-                    auto membershipUpdate = MembershipUpdate(result.first->second, membership_protocol::JOINED);
+                    auto membershipUpdate = MembershipUpdate(result.first->second.address, membership_protocol::JOINED);
                     onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
                 
@@ -166,7 +143,7 @@ namespace membership_protocol
                     auto member = members[addressStr];
                     members.erase(addressStr);
 
-                    auto membershipUpdate = MembershipUpdate(member, membership_protocol::FAILED);
+                    auto membershipUpdate = MembershipUpdate(member.address, membership_protocol::FAILED);
                     onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
             }
