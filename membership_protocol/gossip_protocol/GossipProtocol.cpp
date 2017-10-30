@@ -20,7 +20,7 @@ namespace gossip_protocol
         isRunning(false),
         period(0),
         gossips(),
-        periods(),
+        // periods(),
         gossipsMutex()
     {
     }
@@ -50,17 +50,17 @@ namespace gossip_protocol
         while (isRunning)
         {
             network::Address targetAddress;
-            if (!members.getNextElement(targetAddress))
+            if (members.getNextElement(targetAddress))
             {
-                // TODO: add const
-                using namespace std::chrono_literals;
-                std::this_thread::sleep_for(100ms);
-                ++period;
-                continue;
+                auto gossips = getGossipsForAddress(targetAddress);
+                messageDispatcher->sendMessage(std::make_unique<membership_protocol::GossipMessage>(address, targetAddress, gossips), targetAddress);
             }
 
-            auto gossips = getGossipsForAddress(targetAddress);
-            messageDispatcher->sendMessage(std::make_unique<membership_protocol::GossipMessage>(address, targetAddress, gossips), targetAddress);
+            cleanupMessages();
+            ++period;
+
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(100ms);
         }
     }
 
@@ -133,12 +133,18 @@ namespace gossip_protocol
     std::vector<membership_protocol::Gossip> GossipProtocol::getGossipsForAddress(const network::Address& address)
     {
         std::vector<membership_protocol::Gossip> result;
+        int periodsToSpread = getPeriodsToSpread();
+        int curPeriod = period;
         {
             std::lock_guard<std::mutex> lock(gossipsMutex);
-            
             for (auto it = gossips.begin(); it != gossips.end(); ++it)
             {
                 Gossip& gossip = it->second;
+                if (gossip.period + periodsToSpread < curPeriod)
+                {
+                    continue;
+                }
+
                 if (gossip.infectedNodes.find(address) != gossip.infectedNodes.end())
                 {
                     continue;
@@ -154,6 +160,33 @@ namespace gossip_protocol
 
     void GossipProtocol::cleanupMessages()
     {
-        throw utils::NotImplementedException();
+        int periodsToKeep = getPeriodsToKeep();
+        int curPeriod = period;
+
+        std::lock_guard<std::mutex> lock(gossipsMutex);
+        for (auto it = gossips.begin(); it != gossips.end();)
+        {
+            Gossip& gossip = it->second;
+            if (gossip.period + periodsToKeep >= curPeriod)
+            {
+                ++it;
+                continue;
+            }
+
+            it = gossips.erase(it);
+        }
+    }
+
+    int GossipProtocol::getPeriodsToSpread()
+    {
+        // TODO: figure out if this is the right formula
+        return 2 * std::ceil(std::log2(members.size() + 1));
+    }
+
+    int GossipProtocol::getPeriodsToKeep()
+    {
+        // TODO: figure out if this is the right formula
+        int periodsToSpread = getPeriodsToSpread();
+        return 2 * (periodsToSpread + 1);
     }
 }

@@ -58,12 +58,15 @@ namespace gossip_protocol
         volatile int period;
 
         std::unordered_map<std::string, Gossip> gossips;
-        std::unordered_map<int, std::unordered_set<std::string> > periods;
+        // std::unordered_map<int, std::unordered_set<std::string> > periods;
         std::mutex gossipsMutex;
 
         void run();
         void processMessage(const std::unique_ptr<membership_protocol::Message>& message);
         std::vector<membership_protocol::Gossip> getGossipsForAddress(const network::Address& address);
         void cleanupMessages();
+
+        int getPeriodsToSpread();
+        int getPeriodsToKeep();        
     };
 }
