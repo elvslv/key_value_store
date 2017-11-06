@@ -24,6 +24,7 @@ namespace membership_protocol
         virtual void start();
         virtual void stop();
         virtual std::vector<Member> getMembers();
+        virtual size_t getMembersNum();
         virtual void addObserver(IMembershipProtocol::IObserver* observer);
 
         virtual void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent);

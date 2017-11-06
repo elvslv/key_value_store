@@ -11,6 +11,7 @@ namespace
         MOCK_METHOD0(start, void());
         MOCK_METHOD0(stop, void());
         MOCK_METHOD0(getMembers,  std::vector<membership_protocol::Member>());
+        MOCK_METHOD0(getMembersNum, size_t());        
         MOCK_METHOD1(addObserver, void(membership_protocol::IMembershipProtocol::IObserver* observer));
    };
 
@@ -32,7 +33,7 @@ namespace
             // auto logger = std::make_shared<>();
             auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
             membershipProtocol = std::make_unique<MockIMembershipProtocol>();
-            gossipProtocol = std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, messageDispatcher, membershipProtocol.get());    
+            gossipProtocol = std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, membershipProtocol.get());    
         }
 
         void onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate)
@@ -48,7 +49,7 @@ namespace
                 case membership_protocol::FAILED:
                 {
                     failedNodes.push_back(membershipUpdate.address);
-                    gossipProtocol->onMembershipUpdate(membershipUpdate);
+                    gossipProtocol->spreadMembershipUpdate(membershipUpdate);
                     break;
                 }
 
@@ -120,7 +121,7 @@ namespace
         gossipProtocol->start();
 
         membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
-        gossipProtocol->onMembershipUpdate(membershipUpdate);
+        gossipProtocol->spreadMembershipUpdate(membershipUpdate);
 
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(2s);

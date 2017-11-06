@@ -6,16 +6,11 @@
 
 namespace gossip_protocol
 {
-    GossipProtocol::GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol):
+    GossipProtocol::GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol):
         address(addr),
         logger(logger),
-        messageDispatcher(messageDispatcher),
-        tokens(),
         membershipProtocol(membershipProtocol),
         observers(),
-        asyncQueue(std::bind(&GossipProtocol::processMessage, this, std::placeholders::_1)),
-        asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
-        members(),
         messageProcessingThread(),
         isRunning(false),
         period(0),
@@ -27,20 +22,12 @@ namespace gossip_protocol
 
     void GossipProtocol::start()
     {
-        membershipProtocol->addObserver(this);
-        
-        tokens[membership_protocol::GOSSIP] = messageDispatcher->listen(membership_protocol::GOSSIP, asyncQueueCallback);
         isRunning = true;
         messageProcessingThread = std::make_unique<std::thread>(&GossipProtocol::run, this);
     }
 
     void GossipProtocol::stop()
     {
-        for (auto token : tokens)
-        {
-            messageDispatcher->stopListening(token.first, token.second);
-        }
-
         isRunning = false;
         messageProcessingThread->join();
     }
@@ -49,13 +36,6 @@ namespace gossip_protocol
     {
         while (isRunning)
         {
-            network::Address targetAddress;
-            if (members.getNextElement(targetAddress))
-            {
-                auto gossips = getGossipsForAddress(targetAddress);
-                messageDispatcher->sendMessage(std::make_unique<membership_protocol::GossipMessage>(address, targetAddress, gossips), targetAddress);
-            }
-
             cleanupMessages();
             ++period;
 
@@ -69,7 +49,7 @@ namespace gossip_protocol
         observers.push_back(observer);
     }
 
-    void GossipProtocol::onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
+    /*void GossipProtocol::onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
         switch (membershipUpdate.updateType)
         {
@@ -85,48 +65,33 @@ namespace gossip_protocol
                 break;
             }
         }
-    }
+    }*/
 
     void GossipProtocol::spreadMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
         auto gossipId = utils::Utils::getRandomString(16);
         std::lock_guard<std::mutex> lock(gossipsMutex);
         gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {});
-    }    
+    }
 
-    void GossipProtocol::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
+    void GossipProtocol::onNewGossips(const network::Address& sourceAddress, const std::vector<membership_protocol::Gossip>& newGossips)
     {
-        switch (message->getMessageType())
+        for (auto it = newGossips.begin(); it != newGossips.end(); ++it)
         {
-            case membership_protocol::GOSSIP:
+            auto gossipId = it->id;
+            std::lock_guard<std::mutex> lock(gossipsMutex);
+            if (gossips.find(gossipId) != gossips.end())
             {
-                {
-                    auto gossipMessage = static_cast<membership_protocol::GossipMessage*>(message.get());
-                    for (auto it = gossipMessage->getGossips().begin(); it != gossipMessage->getGossips().end(); ++it)
-                    {
-                        auto gossipId = it->id;
-                        std::lock_guard<std::mutex> lock(gossipsMutex);
-                        if (gossips.find(gossipId) != gossips.end())
-                        {
-                            logger->log("Already received gossip ", gossipId);
-                            continue;
-                        }
-
-                        auto membershipUpdate = membership_protocol::MembershipUpdate(it->address, it->membershipUpdateType);
-                        gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {message->getSourceAddress()});
-                        for (auto jt = observers.begin(); jt != observers.end(); ++jt)
-                        {
-                            (*jt)->onGossipEvent(membershipUpdate);
-                        }
-                    }
-                }
-
-                break;
+                logger->log("Already received gossip ", gossipId);
+                continue;
             }
 
-            default:
-                logger->log("Unexpected message ", message->toString());
-                break;
+            auto membershipUpdate = membership_protocol::MembershipUpdate(it->address, it->membershipUpdateType);
+            gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {sourceAddress});
+            for (auto jt = observers.begin(); jt != observers.end(); ++jt)
+            {
+                (*jt)->onGossipEvent(membershipUpdate);
+            }
         }
     }
 
@@ -180,7 +145,7 @@ namespace gossip_protocol
     int GossipProtocol::getPeriodsToSpread()
     {
         // TODO: figure out if this is the right formula
-        return 2 * std::ceil(std::log2(members.size() + 1));
+        return 2 * std::ceil(std::log2(membershipProtocol->getMembers().size() + 1));
     }
 
     int GossipProtocol::getPeriodsToKeep()

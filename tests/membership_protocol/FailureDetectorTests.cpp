@@ -11,6 +11,7 @@ namespace
         MOCK_METHOD0(start, void());
         MOCK_METHOD0(stop, void());
         MOCK_METHOD0(getMembers,  std::vector<membership_protocol::Member>());
+        MOCK_METHOD0(getMembersNum, size_t());
         MOCK_METHOD1(addObserver, void(membership_protocol::IMembershipProtocol::IObserver* observer));
    };
     

@@ -68,6 +68,11 @@ namespace membership_protocol
         throw utils::NotImplementedException();
     }
 
+    size_t MembershipProtocol::getMembersNum()
+    {
+        throw utils::NotImplementedException();        
+    }
+
     void MembershipProtocol::addObserver(IMembershipProtocol::IObserver* observer)
     {
         observers.push_back(observer);
