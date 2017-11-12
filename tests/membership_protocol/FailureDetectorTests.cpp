@@ -29,7 +29,7 @@ namespace
     class FailureDetectorTests: public testing::Test, public failure_detector::IFailureDetector::IObserver
     {
     public:
-        std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
+        MockIMembershipProtocol membershipProtocol;
         MockIGossipProtocol gossipProtocol;
         std::unique_ptr<failure_detector::FailureDetector> failureDectector;
         std::vector<network::Address> failedNodes;
@@ -43,8 +43,7 @@ namespace
             network::Address addr("1.0.0.0:100");
             auto logger = std::make_shared<utils::Log>();
             auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
-            membershipProtocol = std::make_unique<MockIMembershipProtocol>();
-            failureDectector = std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol.get(), &gossipProtocol);    
+            failureDectector = std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, &membershipProtocol, &gossipProtocol);    
         }
 
         void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent)
