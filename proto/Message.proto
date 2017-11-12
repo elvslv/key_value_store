@@ -9,15 +9,6 @@ enum MessageType {
     PING_REQ = 2;
     JOINREQ = 3;
     JOINREP = 4;
-    GOSSIP = 5;
-}
-
-message PingReqFields {
-    Address targetAddress = 2;
-}
-
-message AckFields {
-    string originalId = 2;
 }
 
 enum GossipEventTypes {
@@ -31,9 +22,16 @@ message Gossip {
     string id = 3;
 }
 
-message GossipFields {
-    Message messageCommon = 1;
-    repeated Gossip gossips = 2;
+message PingFields {
+    Address targetAddress = 1;
+}
+
+message PingReqFields {
+    Address targetAddress = 1;
+}
+
+message AckFields {
+    string originalId = 1;
 }
 
 message Message {
@@ -45,6 +43,8 @@ message Message {
     oneof customFields {
         PingReqFields pingReqFields = 5;
         AckFields ackFields = 6;
-        GossipFields gossipFields = 7;
+        PingFields pingFields = 7;
     }
+
+    repeated Gossip gossips = 8;
 }

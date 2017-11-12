@@ -16,9 +16,9 @@ namespace membership_protocol
         tokens(),
         logger(logger),
         asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),
-        asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),        
-        failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this)),
+        asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),
         gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, messageDispatcher, this)),
+        failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this, gossipProtocol.get())),
         observers(),
         membersMutex(),
         members(),
@@ -30,11 +30,11 @@ namespace membership_protocol
     {
         asyncQueue.start();
 
-        failureDetector->addObserver(this);
-        failureDetector->start();
-
         gossipProtocol->addObserver(this);
         gossipProtocol->start();
+
+        failureDetector->addObserver(this);
+        failureDetector->start();
 
         auto targetAddress = getJoinAddress();
         if (targetAddress == node)
@@ -57,8 +57,8 @@ namespace membership_protocol
 
         // finish processing async queue
 
-        gossipProtocol->stop();
         failureDetector->stop();    
+        gossipProtocol->stop();
 
         asyncQueue.stop();
     }
@@ -210,7 +210,7 @@ namespace membership_protocol
 
             case PING:
             {
-                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress, message->getId()), sourceAddress);
+                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress, std::vector<Gossip>(), message->getId()), sourceAddress);
 
                 onMembershipUpdate(JOINED, MEMBERSHIP_PROTOCOL, sourceAddress);
                 

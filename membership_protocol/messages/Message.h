@@ -16,7 +16,6 @@ namespace membership_protocol
         PING,
         ACK,
         PING_REQ,
-        GOSSIP, 
         // DUMMYLASTMSGTYPE
     };
 

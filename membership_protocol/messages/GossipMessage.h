@@ -3,7 +3,7 @@
 #include "Message.h"
 #include "Gossip.h"
 
-namespace membership_protocol
+/*namespace membership_protocol
 {
     class GossipMessage : public Message
     {
@@ -19,4 +19,4 @@ namespace membership_protocol
     private:
         std::vector<Gossip> gossips;
     };
-}
+}*/

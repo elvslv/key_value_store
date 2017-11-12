@@ -8,13 +8,14 @@
 #include "utils/MessageDispatcher.h"
 #include "utils/RoundRobinList.h"
 #include "membership_protocol/IMembershipProtocol.h"
+#include "membership_protocol/gossip_protocol/IGossipProtocol.h"
 
 namespace failure_detector
 {
     class FailureDetector: public IFailureDetector, public membership_protocol::IMembershipProtocol::IObserver
     {
     public:
-        FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol);
+        FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol);
 
         virtual void start();
         virtual void stop();
@@ -27,6 +28,7 @@ namespace failure_detector
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
         std::unordered_map<membership_protocol::MsgTypes, std::string> tokens;        
         membership_protocol::IMembershipProtocol* membershipProtocol;
+        gossip_protocol::IGossipProtocol* gossipProtocol;
         std::vector<IFailureDetector::IObserver*> observers;
         utils::AsyncQueue asyncQueue;
         utils::AsyncQueue::Callback asyncQueueCallback;

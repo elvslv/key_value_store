@@ -13,25 +13,38 @@ namespace
         MOCK_METHOD0(getMembers,  std::vector<membership_protocol::Member>());
         MOCK_METHOD0(getMembersNum, size_t());
         MOCK_METHOD1(addObserver, void(membership_protocol::IMembershipProtocol::IObserver* observer));
-   };
+    };
     
+    class MockIGossipProtocol : public gossip_protocol::IGossipProtocol 
+    {
+    public:
+        MOCK_METHOD0(start, void());
+        MOCK_METHOD0(stop, void());
+        MOCK_METHOD1(addObserver, void(IObserver* observer));
+        MOCK_METHOD1(spreadMembershipUpdate, void(const membership_protocol::MembershipUpdate& membershipUpdate));
+        MOCK_METHOD1(getGossipsForAddress, std::vector<membership_protocol::Gossip>(const network::Address& address));
+        MOCK_METHOD2(onNewGossips, void(const network::Address& sourceAddress, const std::vector<membership_protocol::Gossip>& gossips));
+    };
+
     class FailureDetectorTests: public testing::Test, public failure_detector::IFailureDetector::IObserver
     {
     public:
-        std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;        
+        std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
+        MockIGossipProtocol gossipProtocol;
         std::unique_ptr<failure_detector::FailureDetector> failureDectector;
         std::vector<network::Address> failedNodes;
         std::vector<network::Address> aliveNodes;
         
         FailureDetectorTests():
             membershipProtocol(),
+            gossipProtocol(),
             failureDectector()
         {
             network::Address addr("1.0.0.0:100");
             auto logger = std::make_shared<utils::Log>();
             auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
             membershipProtocol = std::make_unique<MockIMembershipProtocol>();
-            failureDectector = std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol.get());    
+            failureDectector = std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol.get(), &gossipProtocol);    
         }
 
         void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent)
@@ -71,6 +84,9 @@ namespace
 
     TEST_F(FailureDetectorTests, AddNode)
     {
+        using ::testing::_;
+        EXPECT_CALL(gossipProtocol, getGossipsForAddress(_)).Times(1);
+
         failureDectector->addObserver(this);
         failureDectector->start();
 
@@ -97,7 +113,7 @@ namespace
         membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
         failureDectector->onMembershipUpdate(membershipUpdate);
 
-        membershipUpdate = membership_protocol::MembershipUpdate(anotherAddr, membership_protocol::FAILED);        
+        membershipUpdate = membership_protocol::MembershipUpdate(anotherAddr, membership_protocol::FAILED);
         failureDectector->onMembershipUpdate(membershipUpdate);
 
         failureDectector->stop();

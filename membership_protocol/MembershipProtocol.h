@@ -37,8 +37,8 @@ namespace membership_protocol
         utils::AsyncQueue asyncQueue;
         utils::AsyncQueue::Callback asyncQueueCallback;
 
-        std::unique_ptr<failure_detector::IFailureDetector> failureDetector;
         std::unique_ptr<gossip_protocol::IGossipProtocol> gossipProtocol;
+        std::unique_ptr<failure_detector::IFailureDetector> failureDetector;
         std::vector<IMembershipProtocol::IObserver*> observers;
 
         std::mutex membersMutex;

@@ -1,6 +1,6 @@
 #include "GossipMessage.h"
 
-namespace membership_protocol
+/*namespace membership_protocol
 {
     GossipMessage::GossipMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips): 
         Message(GOSSIP, from, to),
@@ -39,4 +39,4 @@ namespace membership_protocol
     {
         return gossips;
     }
-}
+}*/

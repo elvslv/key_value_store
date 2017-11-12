@@ -38,12 +38,12 @@ namespace
                 std::unique_ptr<membership_protocol::Message> message = nullptr;
                 if (f == 0)
                 {
-                    message = std::make_unique<membership_protocol::PingMessage>(producerAddress, consumerAddress);
+                    message = std::make_unique<membership_protocol::PingMessage>(producerAddress, consumerAddress, std::vector<membership_protocol::Gossip>());
                     ++i;
                 }
                 else 
                 {
-                    message = std::make_unique<membership_protocol::AckMessage>(producerAddress, consumerAddress, "str");
+                    message = std::make_unique<membership_protocol::AckMessage>(producerAddress, consumerAddress, std::vector<membership_protocol::Gossip>(), "str");
                 }
 
                 messageDispatcher.sendMessage(message, consumerAddress);

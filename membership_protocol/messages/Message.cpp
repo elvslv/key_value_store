@@ -55,7 +55,7 @@ namespace membership_protocol
 
             case gen::PING:
             {
-                return std::make_unique<PingMessage>(srcAddress, destAddress, message.id());
+                return std::make_unique<PingMessage>(srcAddress, destAddress, std::vector<Gossip>(), message.id());
             }
 
             case gen::ACK:
@@ -66,7 +66,7 @@ namespace membership_protocol
                 }
 
                 auto ackFields = message.ackfields();
-                return std::make_unique<AckMessage>(srcAddress, destAddress, message.id(), ackFields.originalid());
+                return std::make_unique<AckMessage>(srcAddress, destAddress, std::vector<Gossip>(), message.id(), ackFields.originalid());
             }
 
             case gen::PING_REQ:

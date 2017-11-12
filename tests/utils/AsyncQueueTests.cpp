@@ -50,7 +50,7 @@ namespace
 
         auto from = network::Address("1.0.0.0:0");
         auto to = network::Address("2.0.0.0:0");
-        auto sentMessage = std::make_unique<membership_protocol::PingMessage>(from, to);
+        auto sentMessage = std::make_unique<membership_protocol::PingMessage>(from, to, std::vector<membership_protocol::Gossip>());
 
         asyncQueue.push(std::move(sentMessage));
 

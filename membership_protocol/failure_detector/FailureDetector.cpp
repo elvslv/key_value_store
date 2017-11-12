@@ -5,12 +5,13 @@
 
 namespace failure_detector
 {
-    FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol):
+    FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol):
         address(addr),
         logger(logger),
         messageDispatcher(messageDispatcher),
         tokens(),
         membershipProtocol(membershipProtocol),
+        gossipProtocol(gossipProtocol),
         observers(),
         asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1)),
         asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
@@ -28,7 +29,7 @@ namespace failure_detector
         
         // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
         tokens[membership_protocol::ACK] = messageDispatcher->listen(membership_protocol::ACK, asyncQueueCallback);
-        isRunning = true;        
+        isRunning = true;
         messageProcessingThread = std::make_unique<std::thread>(&FailureDetector::run, this);
     }
 
@@ -62,7 +63,7 @@ namespace failure_detector
 
     void FailureDetector::sendPing(const network::Address destAddress)
     {
-        auto message = std::make_unique<membership_protocol::PingMessage>(address, destAddress);
+        auto message = std::make_unique<membership_protocol::PingMessage>(address, destAddress, gossipProtocol->getGossipsForAddress(destAddress));
         auto msgId = message->getId();
 
         {

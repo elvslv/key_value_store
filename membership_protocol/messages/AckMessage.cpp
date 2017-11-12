@@ -2,14 +2,14 @@
 
 namespace membership_protocol
 {
-    AckMessage::AckMessage(const network::Address& from, const network::Address& to, const std::string& pingMessageId) : 
-        Message(ACK, from, to),
+    AckMessage::AckMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips, const std::string& pingMessageId) : 
+        MessageWithGossipsBase(ACK, from, to, gossips),
         pingMessageId(pingMessageId)
     {
     }
 
-    AckMessage::AckMessage(const network::Address& from, const network::Address& to, const std::string& id, const std::string& pingMessageId) :
-        Message(ACK, from, to, id),
+    AckMessage::AckMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips, const std::string& id, const std::string& pingMessageId) :
+        MessageWithGossipsBase(ACK, from, to, id, gossips),
         pingMessageId(pingMessageId)
     {
     }
@@ -21,7 +21,7 @@ namespace membership_protocol
 
     gen::Message AckMessage::serializeToProtobuf() const
     {
-        auto message = Message::serializeToProtobuf();
+        auto message = MessageWithGossipsBase::serializeToProtobuf();
 
         auto ackFields = std::make_unique<gen::AckFields>();
         ackFields->set_originalid(pingMessageId);

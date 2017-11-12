@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Message.h"
+#include "MessageWithGossipsBase.h"
 
 namespace membership_protocol
 {
-    class PingReqMessage : public Message
+    class PingReqMessage : public MessageWithGossipsBase
     {
     public:
-        PingReqMessage(const network::Address& from, const network::Address& to, const network::Address& tgtAddress);
-        PingReqMessage(const network::Address& from, const network::Address& to, const std::string& id, const network::Address& tgtAddress);
+        PingReqMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips, const network::Address& tgtAddress);
+        PingReqMessage(const network::Address& from, const network::Address& to, const std::string& id, const std::vector<Gossip>& gossips, const network::Address& tgtAddress);
         
     protected:
         virtual gen::MessageType getProtobufMessageType() const;
