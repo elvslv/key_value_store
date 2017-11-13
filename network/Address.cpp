@@ -20,7 +20,7 @@ namespace network
             address[i] = parseNextNum(addr, '.', start, end);
         }
 
-        address[i] = parseNextNum(addr, ':', start, end);        
+        address[i] = parseNextNum(addr, ':', start, end);
         
         port = std::stoi(addr.substr(start));
     }
@@ -33,7 +33,6 @@ namespace network
 
     Address::Address(const gen::Address& addr)
     {
-        std::array<unsigned char, 4> address;
         assert(addr.addr_size() == 4);
         for (int i = 0; i < 4; ++i)
         {
@@ -88,7 +87,7 @@ namespace network
                 ss << ".";
             }
 
-            ss << *it;
+            ss << std::to_string(*it);
         }
 
         ss << ":" << port;

@@ -30,4 +30,8 @@ namespace membership_protocol
         return message;
     }
 
+    const std::string& AckMessage::getPingMessageId() const
+    {
+        return pingMessageId;
+    }
 }

@@ -21,7 +21,7 @@ namespace membership_protocol
         from(srcAddress),
         to(destAddress),
         messageType(msgType),
-        id(utils::Utils::getRandomString(16))
+        id(id)
     {
     }
 
@@ -113,6 +113,7 @@ namespace membership_protocol
         message.set_messagetype(getProtobufMessageType());
         message.set_allocated_sourceaddress(srcAddress.release());
         message.set_allocated_destinationaddress(destAddress.release());
+        message.set_id(id);
 
         return message;
     }
@@ -120,7 +121,7 @@ namespace membership_protocol
     std::string Message::toString() const
     {
         std::stringstream ss;
-        ss << getMsgTypeStr(messageType) << " from " << from.toString() << " to " << to.toString() << std::endl;
+        ss << getMsgTypeStr(messageType) << " from " << from.toString() << " to " << to.toString() << "id " << id << std::endl;
         return ss.str();
     }
 

@@ -1,6 +1,7 @@
 #include "FailureDetector.h"
 #include "utils/Exceptions.h"
 #include "utils/Utils.h"
+#include "membership_protocol/messages/AckMessage.h"
 #include "membership_protocol/messages/PingMessage.h"
 
 namespace failure_detector
@@ -26,6 +27,7 @@ namespace failure_detector
     void FailureDetector::start()
     {
         membershipProtocol->addObserver(this);
+        asyncQueue.start();
         
         // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
         tokens[membership_protocol::ACK] = messageDispatcher->listen(membership_protocol::ACK, asyncQueueCallback);
@@ -39,6 +41,7 @@ namespace failure_detector
         {
             messageDispatcher->stopListening(token.first, token.second);
         }
+        asyncQueue.stop();
 
         isRunning = false;
         messageProcessingThread->join();
@@ -46,6 +49,8 @@ namespace failure_detector
 
     void FailureDetector::run()
     {
+        logger->log("[FailureDetector::run] -- start");
+
         while (isRunning)
         {
             network::Address address;
@@ -59,6 +64,8 @@ namespace failure_detector
 
             sendPing(address);
         }
+
+        logger->log("[FailureDetector::run] -- finish");
     }
 
     void FailureDetector::sendPing(const network::Address destAddress)
@@ -72,10 +79,10 @@ namespace failure_detector
         }
 
         messageDispatcher->sendMessage(std::move(message), destAddress);
-        logger->log("Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
+        logger->log("<FailureDetector> -- Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
 
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(100ms);
+        std::this_thread::sleep_for(2s);
         bool receivedResponse = false;
         {
             std::lock_guard<std::mutex> lock(msgIdsMutex);
@@ -128,17 +135,19 @@ namespace failure_detector
 
     void FailureDetector::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
     {
+        logger->log("<FailureDetector> -- received message ", message->getMessageType(), " from ", message->getSourceAddress());
         switch (message->getMessageType())
         {
             case membership_protocol::ACK:
             {
-                auto msgId = message->getId();
+                auto ackMessage = static_cast<membership_protocol::AckMessage*>(message.get());
+                auto msgId = ackMessage->getPingMessageId();
                 {
                     std::lock_guard<std::mutex> lock(msgIdsMutex);
                     auto it = msgIds.find(msgId);
                     if (it == msgIds.end())
                     {
-                        logger->log("Unexpected ACK message ", message->toString());
+                        logger->log("Unexpected ACK message ", ackMessage->getPingMessageId());
                         return;
                     }
 

@@ -84,7 +84,7 @@ namespace utils
             }
 
             auto parsedMessage = membership_protocol::Message::parseMessage(message);
-            logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageType(), " from ", parsedMessage->getSourceAddress().toString());
+            logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageType(), " from ", parsedMessage->getSourceAddress().toString(), " to ", parsedMessage->getDestinationAddress(), " id ", parsedMessage->getId());
             
             Callback callback;
             {
@@ -108,7 +108,7 @@ namespace utils
     void MessageDispatcher::sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
     {
         auto msg = message->serialize();
-        logger->log("Sending message", msg.content.get());
+        logger->log("Sending message", msg.content.get(), " to ", destAddress.toString());
 
         network.send(destAddress, msg);
     }

@@ -1,10 +1,17 @@
+#include <unordered_set>
+
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
 #include "membership_protocol/failure_detector/FailureDetector.h"
+#include "membership_protocol/messages/AckMessage.h"
 
 namespace 
 {
+    using ::testing::AtLeast; 
+    using ::testing::_;
+    using namespace std::chrono_literals;
+
     class MockIMembershipProtocol : public membership_protocol::IMembershipProtocol 
     {
     public:
@@ -29,21 +36,31 @@ namespace
     class FailureDetectorTests: public testing::Test, public failure_detector::IFailureDetector::IObserver
     {
     public:
+        network::Address address;
+        std::shared_ptr<utils::Log> logger;
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
+
         MockIMembershipProtocol membershipProtocol;
         MockIGossipProtocol gossipProtocol;
         std::unique_ptr<failure_detector::FailureDetector> failureDectector;
         std::vector<network::Address> failedNodes;
-        std::vector<network::Address> aliveNodes;
+        std::unordered_set<network::Address> aliveNodes;
         
         FailureDetectorTests():
+            address("1.0.0.0:100"),
+            logger(std::make_shared<utils::Log>()),
+            messageDispatcher(std::make_shared<utils::MessageDispatcher>(address, logger)),
             membershipProtocol(),
             gossipProtocol(),
             failureDectector()
         {
-            network::Address addr("1.0.0.0:100");
-            auto logger = std::make_shared<utils::Log>();
-            auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
-            failureDectector = std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, &membershipProtocol, &gossipProtocol);    
+            messageDispatcher->start();
+            failureDectector = std::make_unique<failure_detector::FailureDetector>(address, logger, messageDispatcher, &membershipProtocol, &gossipProtocol);    
+        }
+
+        ~FailureDetectorTests()
+        {
+            messageDispatcher->stop();
         }
 
         void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent)
@@ -52,7 +69,7 @@ namespace
             {
                 case failure_detector::ALIVE:
                 {
-                    aliveNodes.push_back(failureDetectorEvent.address);
+                    aliveNodes.insert(failureDetectorEvent.address);
                     break;
                 }
     
@@ -81,9 +98,8 @@ namespace
         failureDectector->stop();
     }
 
-    TEST_F(FailureDetectorTests, AddNode)
+    TEST_F(FailureDetectorTests, AddNodeNoResponse)
     {
-        using ::testing::_;
         EXPECT_CALL(gossipProtocol, getGossipsForAddress(_)).Times(1);
 
         failureDectector->addObserver(this);
@@ -93,7 +109,6 @@ namespace
         membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
         failureDectector->onMembershipUpdate(membershipUpdate);
 
-        using namespace std::chrono_literals;
         std::this_thread::sleep_for(2s);
 
         failureDectector->stop();
@@ -103,6 +118,36 @@ namespace
 
         ASSERT_EQ(aliveNodes.size(), 0);
     }
+
+    TEST_F(FailureDetectorTests, AddNodeAck)
+    {
+        EXPECT_CALL(gossipProtocol, getGossipsForAddress(_)).Times(AtLeast(1));
+
+        network::Address anotherAddr("2.0.0.0:200");
+        auto anotherMessageDispatcher = std::make_shared<utils::MessageDispatcher>(anotherAddr, logger);
+        anotherMessageDispatcher->listen(membership_protocol::PING, [anotherMessageDispatcher, anotherAddr, this](std::unique_ptr<membership_protocol::Message> message){
+            anotherMessageDispatcher->sendMessage(std::make_unique<membership_protocol::AckMessage>(anotherAddr, message->getSourceAddress(), std::vector<membership_protocol::Gossip>(), message->getId()), message->getSourceAddress());
+        });
+
+        anotherMessageDispatcher->start();
+
+        failureDectector->addObserver(this);
+        failureDectector->start();
+
+        membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
+        failureDectector->onMembershipUpdate(membershipUpdate);
+
+        std::this_thread::sleep_for(3s);
+
+        failureDectector->stop();
+        anotherMessageDispatcher->stop();
+
+        ASSERT_EQ(failedNodes.size(), 0);
+
+        ASSERT_EQ(aliveNodes.size(), 1);
+        ASSERT_EQ(*aliveNodes.begin(), anotherAddr);
+    }
+
 
     TEST_F(FailureDetectorTests, AddRemoveNode)
     {
