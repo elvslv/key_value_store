@@ -71,7 +71,7 @@ namespace gossip_protocol
     {
         auto gossipId = utils::Utils::getRandomString(16);
         std::lock_guard<std::mutex> lock(gossipsMutex);
-        gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {});
+        gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {membershipUpdate.address});
     }
 
     void GossipProtocol::onNewGossips(const network::Address& sourceAddress, const std::vector<membership_protocol::Gossip>& newGossips)
@@ -145,7 +145,7 @@ namespace gossip_protocol
     int GossipProtocol::getPeriodsToSpread()
     {
         // TODO: figure out if this is the right formula
-        return 2 * std::ceil(std::log2(membershipProtocol->getMembers().size() + 1));
+        return 2 * std::ceil(std::log2(membershipProtocol->getMembersNum() + 1));
     }
 
     int GossipProtocol::getPeriodsToKeep()

@@ -5,6 +5,8 @@
 
 namespace 
 {
+    using ::testing::Return;
+
     class MockIMembershipProtocol : public membership_protocol::IMembershipProtocol 
     {
     public:
@@ -18,7 +20,7 @@ namespace
    class GossipProtocolTests: public testing::Test, public gossip_protocol::IGossipProtocol::IObserver
    {
     public:
-        std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
+        std::unique_ptr<MockIMembershipProtocol> membershipProtocol;
         std::unique_ptr<gossip_protocol::GossipProtocol> gossipProtocol;
         std::vector<network::Address> failedNodes;
         std::vector<network::Address> aliveNodes;
@@ -30,7 +32,6 @@ namespace
             logger(std::make_shared<utils::Log>())
         {
             network::Address addr("1.0.0.0:100");
-            // auto logger = std::make_shared<>();
             auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
             membershipProtocol = std::make_unique<MockIMembershipProtocol>();
             gossipProtocol = std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, membershipProtocol.get());    
@@ -62,44 +63,6 @@ namespace
             }
         }
    };
-    
-    /*
-    TEST_F(FailureDetectorTests, AddNode)
-    {
-        failureDectector->addObserver(this);
-        failureDectector->start();
-
-        network::Address anotherAddr("2.0.0.0:200");
-        membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
-        failureDectector->onMembershipUpdate(membershipUpdate);
-
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
-
-        failureDectector->stop();
-
-        ASSERT_EQ(failedNodes.size(), 1);
-        ASSERT_EQ(failedNodes[0], anotherAddr);
-
-        ASSERT_EQ(aliveNodes.size(), 0);
-    }
-
-    TEST_F(FailureDetectorTests, AddRemoveNode)
-    {
-        failureDectector->start();
-
-        network::Address anotherAddr("2.0.0.0:200");
-        membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
-        failureDectector->onMembershipUpdate(membershipUpdate);
-
-        membershipUpdate = membership_protocol::MembershipUpdate(anotherAddr, membership_protocol::FAILED);        
-        failureDectector->onMembershipUpdate(membershipUpdate);
-
-        failureDectector->stop();
-
-        ASSERT_EQ(failedNodes.size(), 0);
-        ASSERT_EQ(aliveNodes.size(), 0);
-    }*/
 
     TEST_F(GossipProtocolTests, Constructor)
     {
@@ -109,28 +72,24 @@ namespace
 
     TEST_F(GossipProtocolTests, AddNode)
     {
-        /*network::Address anotherAddr("2.0.0.0:200");
-        std::queue<std::unique_ptr<membership_protocol::Message> > queue;
-        
-        auto anotherMessageDispatcher = std::make_shared<utils::MessageDispatcher>(anotherAddr, logger);
-        auto token = anotherMessageDispatcher->listen(membership_protocol::GOSSIP, [&queue](std::unique_ptr<membership_protocol::Message> message){
-            queue.push(std::move(message));
-        });
-
-        gossipProtocol->addObserver(this);
         gossipProtocol->start();
 
-        // membership_protocol::MembershipUpdate membershipUpdate(anotherAddr, membership_protocol::JOINED);
+        EXPECT_CALL(*membershipProtocol.get(), getMembersNum()).WillRepeatedly(Return(3));
+
+        network::Address anotherAddr("2.0.0.0:200");
+        auto gossips = gossipProtocol->getGossipsForAddress(anotherAddr);
+        ASSERT_TRUE(gossips.empty());
+
+        auto membershipUpdate = membership_protocol::MembershipUpdate(anotherAddr, membership_protocol::JOINED);
         gossipProtocol->spreadMembershipUpdate(membershipUpdate);
 
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
+        gossips = gossipProtocol->getGossipsForAddress(anotherAddr);
+        ASSERT_TRUE(gossips.empty());
+
+        network::Address thirdAddr("3.0.0.0:300");
+        gossips = gossipProtocol->getGossipsForAddress(thirdAddr);
+        ASSERT_EQ(gossips.size(), 1);
 
         gossipProtocol->stop();
-
-        ASSERT_EQ(aliveNodes.size(), 0);
-
-        // anotherMessageDispatcher->stopListening(membership_protocol::GOSSIP, token);
-        ASSERT_TRUE(queue.empty());*/
     }
 }
