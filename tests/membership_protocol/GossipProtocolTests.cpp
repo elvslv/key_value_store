@@ -90,5 +90,9 @@ namespace
         auto gossip = gossips[0];
         ASSERT_EQ(gossip.address, membershipUpdate.address);
         ASSERT_EQ(gossip.membershipUpdateType, membershipUpdate.updateType);
+
+        // gossip has been already spread
+        gossips = gossipProtocol->getGossipsForAddress(thirdAddr);
+        ASSERT_TRUE(gossips.empty());
     }
 }
