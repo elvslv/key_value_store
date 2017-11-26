@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "../mocks/Mocks.h"
 
 #include "membership_protocol/gossip_protocol/GossipProtocol.h"
 
@@ -7,20 +8,11 @@ namespace
 {
     using ::testing::Return;
 
-    class MockIMembershipProtocol : public membership_protocol::IMembershipProtocol 
+    class GossipProtocolTests: public testing::Test, public gossip_protocol::IGossipProtocol::IObserver
     {
     public:
-        MOCK_METHOD0(start, void());
-        MOCK_METHOD0(stop, void());
-        MOCK_METHOD0(getMembers,  std::vector<membership_protocol::Member>());
-        MOCK_METHOD0(getMembersNum, size_t());
-        MOCK_METHOD1(addObserver, void(membership_protocol::IMembershipProtocol::IObserver* observer));
-   };
-
-   class GossipProtocolTests: public testing::Test, public gossip_protocol::IGossipProtocol::IObserver
-   {
-    public:
-        std::unique_ptr<MockIMembershipProtocol> membershipProtocol;
+        mock::MockIMembershipProtocol membershipProtocol;
+        std::unique_ptr<utils::IThreadPolicy> threadPolicy;
         std::unique_ptr<gossip_protocol::GossipProtocol> gossipProtocol;
         std::vector<network::Address> failedNodes;
         std::vector<network::Address> aliveNodes;
@@ -28,13 +20,13 @@ namespace
         
         GossipProtocolTests():
             membershipProtocol(),
+            threadPolicy(new mock::MockIThreadPolicy()),
             gossipProtocol(),
             logger(std::make_shared<utils::Log>())
         {
             network::Address addr("1.0.0.0:100");
             auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
-            membershipProtocol = std::make_unique<MockIMembershipProtocol>();
-            gossipProtocol = std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, membershipProtocol.get());    
+            gossipProtocol = std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, &membershipProtocol, threadPolicy);
         }
 
         void onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate)
@@ -74,7 +66,7 @@ namespace
     {
         gossipProtocol->start();
 
-        EXPECT_CALL(*membershipProtocol.get(), getMembersNum()).WillRepeatedly(Return(3));
+        EXPECT_CALL(membershipProtocol, getMembersNum()).WillRepeatedly(Return(3));
 
         network::Address anotherAddr("2.0.0.0:200");
         auto gossips = gossipProtocol->getGossipsForAddress(anotherAddr);
@@ -89,6 +81,10 @@ namespace
         network::Address thirdAddr("3.0.0.0:300");
         gossips = gossipProtocol->getGossipsForAddress(thirdAddr);
         ASSERT_EQ(gossips.size(), 1);
+
+        auto gossip = gossips[0];
+        ASSERT_EQ(gossip.address, membershipUpdate.address);
+        ASSERT_EQ(gossip.membershipUpdateType, membershipUpdate.updateType);
 
         gossipProtocol->stop();
     }

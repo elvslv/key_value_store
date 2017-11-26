@@ -22,7 +22,7 @@ namespace membership_protocol
     class Message
     {
     public:
-        virtual ~Message();
+        virtual ~Message(){};
         Message(Message&&) = default;
         Message& operator = (Message&&) = default;
     

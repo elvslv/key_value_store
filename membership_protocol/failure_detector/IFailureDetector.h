@@ -10,6 +10,7 @@ namespace failure_detector
         class IObserver
         {
         public:
+            virtual ~IObserver(){}
             virtual void onFailureDetectorEvent(const failure_detector::FailureDetectorEvent& failureDetectorEvent) = 0;
         };
 

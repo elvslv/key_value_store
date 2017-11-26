@@ -6,13 +6,14 @@
 
 namespace failure_detector
 {
-    FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol):
+    FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy):
         address(addr),
         logger(logger),
         messageDispatcher(messageDispatcher),
         tokens(),
         membershipProtocol(membershipProtocol),
         gossipProtocol(gossipProtocol),
+        threadPolicy(std::move(threadPolicy)),
         observers(),
         asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1)),
         asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
@@ -57,8 +58,7 @@ namespace failure_detector
             if (!members.getNextElement(address))
             {
                 // TODO: add const
-                using namespace std::chrono_literals;
-                std::this_thread::sleep_for(100ms);
+                threadPolicy->sleepMilliseconds(100);
                 continue;
             }
 

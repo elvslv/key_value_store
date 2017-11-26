@@ -11,6 +11,7 @@ namespace gossip_protocol
         class IObserver
         {
         public:
+            virtual ~IObserver(){}
             virtual void onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate) = 0;
         };
 

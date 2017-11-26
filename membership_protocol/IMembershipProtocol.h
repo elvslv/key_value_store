@@ -11,9 +11,11 @@ namespace membership_protocol
         class IObserver
         {
         public:
+            virtual ~IObserver(){}
             virtual void onMembershipUpdate(const MembershipUpdate& membershipUpdate) = 0;
         };
 
+        virtual ~IMembershipProtocol(){}
         virtual void start() = 0;
         virtual void stop() = 0;
         virtual std::vector<Member> getMembers() = 0;

@@ -6,32 +6,13 @@
 #include "membership_protocol/failure_detector/FailureDetector.h"
 #include "membership_protocol/messages/AckMessage.h"
 
+#include "../mocks/Mocks.h"
+
 namespace 
 {
     using ::testing::AtLeast; 
     using ::testing::_;
     using namespace std::chrono_literals;
-
-    class MockIMembershipProtocol : public membership_protocol::IMembershipProtocol 
-    {
-    public:
-        MOCK_METHOD0(start, void());
-        MOCK_METHOD0(stop, void());
-        MOCK_METHOD0(getMembers,  std::vector<membership_protocol::Member>());
-        MOCK_METHOD0(getMembersNum, size_t());
-        MOCK_METHOD1(addObserver, void(membership_protocol::IMembershipProtocol::IObserver* observer));
-    };
-    
-    class MockIGossipProtocol : public gossip_protocol::IGossipProtocol 
-    {
-    public:
-        MOCK_METHOD0(start, void());
-        MOCK_METHOD0(stop, void());
-        MOCK_METHOD1(addObserver, void(IObserver* observer));
-        MOCK_METHOD1(spreadMembershipUpdate, void(const membership_protocol::MembershipUpdate& membershipUpdate));
-        MOCK_METHOD1(getGossipsForAddress, std::vector<membership_protocol::Gossip>(const network::Address& address));
-        MOCK_METHOD2(onNewGossips, void(const network::Address& sourceAddress, const std::vector<membership_protocol::Gossip>& gossips));
-    };
 
     class FailureDetectorTests: public testing::Test, public failure_detector::IFailureDetector::IObserver
     {
@@ -40,8 +21,9 @@ namespace
         std::shared_ptr<utils::Log> logger;
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
 
-        MockIMembershipProtocol membershipProtocol;
-        MockIGossipProtocol gossipProtocol;
+        mock::MockIMembershipProtocol membershipProtocol;
+        mock::MockIGossipProtocol gossipProtocol;
+        std::unique_ptr<utils::IThreadPolicy> threadPolicy;
         std::unique_ptr<failure_detector::FailureDetector> failureDectector;
         std::vector<network::Address> failedNodes;
         std::unordered_set<network::Address> aliveNodes;
@@ -52,10 +34,11 @@ namespace
             messageDispatcher(std::make_shared<utils::MessageDispatcher>(address, logger)),
             membershipProtocol(),
             gossipProtocol(),
+            threadPolicy(new testing::NiceMock<mock::MockIThreadPolicy>()),
             failureDectector()
         {
             messageDispatcher->start();
-            failureDectector = std::make_unique<failure_detector::FailureDetector>(address, logger, messageDispatcher, &membershipProtocol, &gossipProtocol);    
+            failureDectector = std::make_unique<failure_detector::FailureDetector>(address, logger, messageDispatcher, &membershipProtocol, &gossipProtocol, threadPolicy);
         }
 
         ~FailureDetectorTests()

@@ -25,9 +25,6 @@ namespace membership_protocol
     {
     }
 
-    Message::~Message(){}
-
-
     MsgTypes Message::getMessageType() const
     {
         return messageType;

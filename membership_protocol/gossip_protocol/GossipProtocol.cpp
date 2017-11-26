@@ -6,10 +6,11 @@
 
 namespace gossip_protocol
 {
-    GossipProtocol::GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol):
+    GossipProtocol::GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy):
         address(addr),
         logger(logger),
         membershipProtocol(membershipProtocol),
+        threadPolicy(std::move(threadPolicy)),
         observers(),
         messageProcessingThread(),
         isRunning(false),
@@ -39,8 +40,7 @@ namespace gossip_protocol
             cleanupMessages();
             ++period;
 
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(100ms);
+            threadPolicy->sleepMilliseconds(100);
         }
     }
 

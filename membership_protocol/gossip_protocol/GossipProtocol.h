@@ -8,6 +8,7 @@
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
 #include "utils/RoundRobinList.h"
+#include "utils/IThreadPolicy.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "membership_protocol/messages/Gossip.h"
 
@@ -34,7 +35,7 @@ namespace gossip_protocol
     class GossipProtocol: public IGossipProtocol//, public membership_protocol::IMembershipProtocol::IObserver
     {
     public:
-        GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol);
+        GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy);
         
         virtual void start();
         virtual void stop();
@@ -46,6 +47,7 @@ namespace gossip_protocol
         network::Address address;
         std::shared_ptr<utils::Log> logger;
         membership_protocol::IMembershipProtocol* membershipProtocol;
+        std::unique_ptr<utils::IThreadPolicy> threadPolicy;
         std::vector<IGossipProtocol::IObserver*> observers;
 
         std::unique_ptr<std::thread> messageProcessingThread;

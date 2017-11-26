@@ -1,4 +1,5 @@
 set(membership_protocol_test_files MessagesTests MembershipProtocolTests FailureDetectorTests GossipProtocolTests)
+# set(membership_protocol_test_files MessagesTests MembershipProtocolTests FailureDetectorTests GossipProtocolTests)
 
 foreach(membership_protocol_test_file ${membership_protocol_test_files})
   target_sources(key_value_store_tests PRIVATE "membership_protocol/${membership_protocol_test_file}.cpp")
