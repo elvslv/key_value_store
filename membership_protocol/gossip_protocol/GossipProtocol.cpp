@@ -100,12 +100,13 @@ namespace gossip_protocol
         std::vector<membership_protocol::Gossip> result;
         int periodsToSpread = getPeriodsToSpread();
         int curPeriod = period;
+        logger->log("Looking for gossips for ", address, " cur period: ", curPeriod, " periods to spread: ", periodsToSpread);
         {
             std::lock_guard<std::mutex> lock(gossipsMutex);
             for (auto it = gossips.begin(); it != gossips.end(); ++it)
             {
                 Gossip& gossip = it->second;
-                if (gossip.period + periodsToSpread < curPeriod)
+                if (gossip.period + periodsToSpread <= curPeriod)
                 {
                     continue;
                 }
@@ -117,9 +118,10 @@ namespace gossip_protocol
     
                 result.emplace_back(gossip.membershipUpdate.address, gossip.membershipUpdate.updateType, gossip.id);
                 gossip.infectedNodes.insert(address);
-            }    
+            }
         }
 
+        logger->log("Found ", result.size(), " gossips for ", address);
         return result;
     }
 

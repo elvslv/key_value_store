@@ -64,9 +64,11 @@ namespace
 
     TEST_F(GossipProtocolTests, AddNode)
     {
-        gossipProtocol->start();
-
-        EXPECT_CALL(membershipProtocol, getMembersNum()).WillRepeatedly(Return(3));
+        EXPECT_CALL(membershipProtocol, getMembersNum())
+            .WillOnce(Return(3)) // no gossips
+            .WillOnce(Return(3)) // gossips only about given node
+            .WillOnce(Return(0)) // no members -> no gossips
+            .WillRepeatedly(Return(3));
 
         network::Address anotherAddr("2.0.0.0:200");
         auto gossips = gossipProtocol->getGossipsForAddress(anotherAddr);
@@ -79,13 +81,14 @@ namespace
         ASSERT_TRUE(gossips.empty());
 
         network::Address thirdAddr("3.0.0.0:300");
+        // membershipProtocol.getMembersNum() will return 0 -> no gossips
+        gossips = gossipProtocol->getGossipsForAddress(thirdAddr);
+        ASSERT_TRUE(gossips.empty());
+
         gossips = gossipProtocol->getGossipsForAddress(thirdAddr);
         ASSERT_EQ(gossips.size(), 1);
-
         auto gossip = gossips[0];
         ASSERT_EQ(gossip.address, membershipUpdate.address);
         ASSERT_EQ(gossip.membershipUpdateType, membershipUpdate.updateType);
-
-        gossipProtocol->stop();
     }
 }
