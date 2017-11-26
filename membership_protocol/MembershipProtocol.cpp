@@ -65,12 +65,20 @@ namespace membership_protocol
 
     std::vector<Member> MembershipProtocol::getMembers()
     {
-        throw utils::NotImplementedException();
+        std::vector<Member> result;
+        std::lock_guard<std::mutex> lock(membersMutex);
+        for (auto it = members.begin(); it != members.end(); ++it)
+        {
+            result.push_back(it->second);
+        }
+
+        return result;
     }
 
     size_t MembershipProtocol::getMembersNum()
     {
-        throw utils::NotImplementedException();        
+        std::lock_guard<std::mutex> lock(membersMutex);
+        return members.size();
     }
 
     void MembershipProtocol::addObserver(IMembershipProtocol::IObserver* observer)
