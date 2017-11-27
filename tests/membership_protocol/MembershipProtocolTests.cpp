@@ -29,6 +29,9 @@ namespace
         std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
         std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
         
-        membership_protocol::MembershipProtocol membershiptProtocol(addr, logger, failureDetectorFactory, goossipProtocolFactory);
+        membership_protocol::MembershipProtocol membershipProtocol(addr, logger, failureDetectorFactory, goossipProtocolFactory);
+        auto members = membershipProtocol.getMembers();
+        ASSERT_TRUE(members.empty());
+        ASSERT_EQ(membershipProtocol.getMembersNum(), 0);
     }
 }
