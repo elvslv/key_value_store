@@ -9,11 +9,12 @@
 #include "network/Message.h"
 #include "network/Network.h"
 #include "membership_protocol/messages/Message.h"
+#include "utils/Runnable.h"
 #include "Log.h"
 
 namespace utils
 {
-    class MessageDispatcher
+    class MessageDispatcher: public utils::Runnable
     {
     public:
         typedef std::function<void(std::unique_ptr<membership_protocol::Message>)> Callback;
@@ -22,8 +23,6 @@ namespace utils
 
         std::string listen(membership_protocol::MsgTypes msgType, const Callback& callback);
         void stopListening(membership_protocol::MsgTypes msgType, const std::string& token);
-        void start();
-        void stop();
         void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress);
     private:
         static const int TOKEN_LENGTH = 10;
@@ -35,9 +34,6 @@ namespace utils
         std::unordered_map<membership_protocol::MsgTypes, Callback> callbacks;
         std::unordered_map<membership_protocol::MsgTypes, std::string> tokens;
         
-        volatile bool isRunning;
-        std::unique_ptr<std::thread> thread;
-
-        void run();
+        virtual void run();
     };
 }

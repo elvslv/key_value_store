@@ -8,6 +8,7 @@
 #include "utils/MessageDispatcher.h"
 #include "utils/RoundRobinList.h"
 #include "utils/IThreadPolicy.h"
+#include "utils/Runnable.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "membership_protocol/gossip_protocol/IGossipProtocol.h"
 
@@ -36,11 +37,11 @@ namespace failure_detector
         utils::AsyncQueue::Callback asyncQueueCallback;
         
         utils::RoundRobinList<network::Address> members;
-        std::unique_ptr<std::thread> messageProcessingThread;
-        volatile bool isRunning;
 
         std::mutex msgIdsMutex;
         std::unordered_map<std::string, bool> msgIds;
+
+        utils::RunnableCallback runnable;
 
         void run();
         void processMessage(const std::unique_ptr<membership_protocol::Message>& message);

@@ -9,6 +9,7 @@
 #include "utils/MessageDispatcher.h"
 #include "utils/RoundRobinList.h"
 #include "utils/IThreadPolicy.h"
+#include "utils/Runnable.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "membership_protocol/messages/Gossip.h"
 
@@ -50,14 +51,13 @@ namespace gossip_protocol
         std::unique_ptr<utils::IThreadPolicy> threadPolicy;
         std::vector<IGossipProtocol::IObserver*> observers;
 
-        std::unique_ptr<std::thread> messageProcessingThread;
-        volatile bool isRunning;
-
-        volatile int period;
+        std::atomic<int> period;
 
         std::unordered_map<std::string, Gossip> gossips;
         // std::unordered_map<int, std::unordered_set<std::string> > periods;
         std::mutex gossipsMutex;
+
+        utils::RunnableCallback runnable;
 
         void run();
         // void processMessage(const std::unique_ptr<membership_protocol::Message>& message);

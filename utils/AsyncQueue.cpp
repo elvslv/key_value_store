@@ -5,22 +5,8 @@ namespace utils
     AsyncQueue::AsyncQueue(const Callback& callback):
         callback(callback),
         messagesMutex(),
-        messages(),
-        messageProcessingThread(),
-        processMessages(false)
+        messages()
     {
-    }
-
-    void AsyncQueue::start()
-    {
-        processMessages = true;
-        messageProcessingThread = std::make_unique<std::thread>(&AsyncQueue::processMessagesQueue, this);
-    }
-
-    void AsyncQueue::stop()
-    {
-        processMessages = false;
-        messageProcessingThread->join();
     }
 
     void AsyncQueue::push(std::unique_ptr<membership_protocol::Message> message)
@@ -29,9 +15,9 @@ namespace utils
         messages.push(std::move(message));
     }
 
-    void AsyncQueue::processMessagesQueue()
+    void AsyncQueue::run()
     {
-        while (processMessages)
+        while (isRunning)
         {
             std::unique_ptr<membership_protocol::Message> message;
             {

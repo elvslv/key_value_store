@@ -18,10 +18,9 @@ namespace failure_detector
         asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1)),
         asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
         members(),
-        messageProcessingThread(),
-        isRunning(false),
         msgIdsMutex(),
-        msgIds()
+        msgIds(),
+        runnable([this](){run();})
     {
     }
     
@@ -32,8 +31,8 @@ namespace failure_detector
         
         // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
         tokens[membership_protocol::ACK] = messageDispatcher->listen(membership_protocol::ACK, asyncQueueCallback);
-        isRunning = true;
-        messageProcessingThread = std::make_unique<std::thread>(&FailureDetector::run, this);
+        
+        runnable.start();
     }
 
     void FailureDetector::stop()
@@ -44,15 +43,14 @@ namespace failure_detector
         }
         asyncQueue.stop();
 
-        isRunning = false;
-        messageProcessingThread->join();
+        runnable.stop();
     }
 
     void FailureDetector::run()
     {
         logger->log("[FailureDetector::run] -- start");
 
-        while (isRunning)
+        while (runnable.shouldRun())
         {
             network::Address address;
             if (!members.getNextElement(address))

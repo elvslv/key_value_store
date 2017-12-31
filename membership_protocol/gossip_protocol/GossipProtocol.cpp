@@ -12,30 +12,27 @@ namespace gossip_protocol
         membershipProtocol(membershipProtocol),
         threadPolicy(std::move(threadPolicy)),
         observers(),
-        messageProcessingThread(),
-        isRunning(false),
         period(0),
         gossips(),
         // periods(),
-        gossipsMutex()
+        gossipsMutex(),
+        runnable([this](){run();})
     {
     }
 
     void GossipProtocol::start()
     {
-        isRunning = true;
-        messageProcessingThread = std::make_unique<std::thread>(&GossipProtocol::run, this);
+        runnable.start();
     }
 
     void GossipProtocol::stop()
     {
-        isRunning = false;
-        messageProcessingThread->join();
+        runnable.stop();
     }
 
     void GossipProtocol::run()
     {
-        while (isRunning)
+        while (runnable.shouldRun())
         {
             cleanupMessages();
             ++period;

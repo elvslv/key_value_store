@@ -44,7 +44,7 @@ namespace membership_protocol
         std::mutex membersMutex;
         std::unordered_map<std::string, Member> members;
 
-        volatile bool joined;
+        std::atomic<bool> joined;
 
         void onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource);
         void onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress);

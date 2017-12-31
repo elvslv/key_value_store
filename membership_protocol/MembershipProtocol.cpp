@@ -17,7 +17,7 @@ namespace membership_protocol
         logger(logger),
         asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),
         asyncQueueCallback([this](std::unique_ptr<Message> message){asyncQueue.push(std::move(message));}),
-        gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, messageDispatcher, this)),
+        gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, this)),
         failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this, gossipProtocol.get())),
         observers(),
         membersMutex(),
@@ -31,10 +31,7 @@ namespace membership_protocol
         asyncQueue.start();
 
         gossipProtocol->addObserver(this);
-        gossipProtocol->start();
-
         failureDetector->addObserver(this);
-        failureDetector->start();
 
         auto targetAddress = getJoinAddress();
         if (targetAddress == node)

@@ -12,9 +12,7 @@ namespace utils
     MessageDispatcher::MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger):
         network(address),
         logger(logger),
-        callbacks(),
-        isRunning(false),
-        thread()
+        callbacks()
     {
     }
 
@@ -57,18 +55,6 @@ namespace utils
 
         callbacks.erase(it);
         tokens.erase(msgType);
-    }
-
-    void MessageDispatcher::start()
-    {
-        isRunning = true;
-        thread = std::make_unique<std::thread>(&MessageDispatcher::run, this);
-    }
-
-    void MessageDispatcher::stop()
-    {
-        isRunning = false;
-        thread->join();
     }
 
     void MessageDispatcher::run()
