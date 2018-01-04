@@ -43,34 +43,18 @@ namespace
         }
     };
 
-    void tmp()
-    {
-            network::Address addr("1.0.0.0:100");
-            auto logger = std::make_shared<utils::Log>();
-            std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
-            std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
-            
-            membership_protocol::MembershipProtocol membershipProtocol(addr, logger, failureDetectorFactory, goossipProtocolFactory);
-            membershipProtocol.start();
-            auto members = membershipProtocol.getMembers();
-            ASSERT_TRUE(members.empty());
-            ASSERT_EQ(membershipProtocol.getMembersNum(), 0);
-            membershipProtocol.stop();
-    }
-
     TEST(MembershipProtocolTests, Consructor)
     {
-        try
-        {
-            tmp();
-        }
-        catch(std::exception const& e)
-        {
-            std::cerr << e.what();
-        }
-        catch(...)
-        {
-            std::cerr << "Exception happened";
-        }
+        network::Address addr("1.0.0.0:100");
+        auto logger = std::make_shared<utils::Log>();
+        std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
+        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
+        
+        membership_protocol::MembershipProtocol membershipProtocol(addr, logger, failureDetectorFactory, goossipProtocolFactory);
+        membershipProtocol.start();
+        auto members = membershipProtocol.getMembers();
+        ASSERT_TRUE(members.empty());
+        ASSERT_EQ(membershipProtocol.getMembersNum(), 0);
+        membershipProtocol.stop();
     }
 }
