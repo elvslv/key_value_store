@@ -9,6 +9,8 @@
 
 namespace
 {
+    using namespace std::chrono_literals;
+
     class FakeFailureDetectorFactory: public failure_detector::IFailureDetectorFactory
     {
         virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol)
@@ -56,5 +58,34 @@ namespace
         ASSERT_TRUE(members.empty());
         ASSERT_EQ(membershipProtocol.getMembersNum(), 0);
         membershipProtocol.stop();
+    }
+
+    TEST(MembershipProtocolTests, TwoNodes)
+    {
+        auto logger = std::make_shared<utils::Log>();
+        std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
+        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
+        
+        network::Address addr1("1.0.0.0:100");
+        membership_protocol::MembershipProtocol membershipProtocol1(addr1, logger, failureDetectorFactory, goossipProtocolFactory);
+        network::Address addr2("2.0.0.0:200");
+        membership_protocol::MembershipProtocol membershipProtocol2(addr2, logger, failureDetectorFactory, goossipProtocolFactory);
+
+        membershipProtocol1.start();
+        membershipProtocol2.start();
+
+		// TODO: replace sleep with wait
+        std::this_thread::sleep_for(2s);
+
+        auto members = membershipProtocol1.getMembers();
+        ASSERT_FALSE(members.empty());
+        ASSERT_EQ(membershipProtocol1.getMembersNum(), 1);
+
+        members = membershipProtocol2.getMembers();
+        ASSERT_FALSE(members.empty());
+        ASSERT_EQ(membershipProtocol2.getMembersNum(), 1);
+
+        membershipProtocol2.stop();
+        membershipProtocol1.stop();
     }
 }

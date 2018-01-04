@@ -29,6 +29,7 @@ namespace membership_protocol
     void MembershipProtocol::start()
     {
         asyncQueue.start();
+        messageDispatcher->start();
 
         gossipProtocol->addObserver(this);
         failureDetector->addObserver(this);
@@ -57,6 +58,7 @@ namespace membership_protocol
         failureDetector->stop();    
         gossipProtocol->stop();
 
+        messageDispatcher->stop();
         asyncQueue.stop();
     }
 
@@ -184,6 +186,7 @@ namespace membership_protocol
 
     void MembershipProtocol::onJoin()
     {
+        log("Joined the group");
         messageDispatcher->listen(PING, asyncQueueCallback);
 
         failureDetector->start();
@@ -232,6 +235,7 @@ namespace membership_protocol
 
     network::Address MembershipProtocol::getJoinAddress()
     {
-        return node;
+        // TODO: how do we figure out join address?
+        return network::Address("1.0.0.0:100");
     }
 }

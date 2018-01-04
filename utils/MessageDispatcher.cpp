@@ -59,6 +59,8 @@ namespace utils
 
     void MessageDispatcher::run()
     {
+        logger->log("<MessageDispatcher::run> -- start");
+
         while (isRunning)
         {
             auto message = network.receive();
@@ -89,6 +91,8 @@ namespace utils
 
             callback(std::move(parsedMessage));
         }
+
+        logger->log("<MessageDispatcher::run> -- stop");
     }
 
     void MessageDispatcher::sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
