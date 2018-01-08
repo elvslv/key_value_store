@@ -6,7 +6,7 @@
                 "type": "cppdbg",
                 "request": "launch",
                 "program": "${workspaceRoot}/tests/key_value_store_tests",
-                "args": [],
+                "args": ["gtest_filter", "FailureDetectorTests.AddNodeAck"],
                 "stopAtEntry": false,
                 "cwd": "${workspaceRoot}",
                 "environment": [],

@@ -39,6 +39,7 @@ namespace failure_detector
         utils::RoundRobinList<network::Address> members;
 
         std::mutex msgIdsMutex;
+        std::condition_variable ackReceivedCondVar;
         std::unordered_map<std::string, bool> msgIds;
 
         utils::RunnableCallback runnable;

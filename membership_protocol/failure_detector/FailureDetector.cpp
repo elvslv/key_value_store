@@ -19,6 +19,7 @@ namespace failure_detector
         asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message){asyncQueue.push(std::move(message));}),
         members(),
         msgIdsMutex(),
+        ackReceivedCondVar(),
         msgIds(),
         runnable([this](){run();})
     {
@@ -37,13 +38,13 @@ namespace failure_detector
 
     void FailureDetector::stop()
     {
+        runnable.stop();
+        asyncQueue.stop();
+
         for (auto token : tokens)
         {
             messageDispatcher->stopListening(token.first, token.second);
         }
-        asyncQueue.stop();
-
-        runnable.stop();
     }
 
     void FailureDetector::run()
@@ -61,6 +62,9 @@ namespace failure_detector
             }
 
             sendPing(address);
+
+            // TODO: add const
+            threadPolicy->sleepMilliseconds(2000);
         }
 
         logger->log("[FailureDetector::run] -- finish");
@@ -79,16 +83,23 @@ namespace failure_detector
         messageDispatcher->sendMessage(std::move(message), destAddress);
         logger->log("<FailureDetector> -- Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
 
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
         bool receivedResponse = false;
+        auto now = std::chrono::steady_clock::now();
+        auto expires = std::chrono::seconds(2) + now;
+        assert(now != expires);
+        while (true)
         {
-            std::lock_guard<std::mutex> lock(msgIdsMutex);
+            std::unique_lock<std::mutex> lock(msgIdsMutex);
+            auto res = ackReceivedCondVar.wait_until(lock, expires);
+
             auto it = msgIds.find(msgId);
             assert(it != msgIds.end());
             receivedResponse = it->second;
-
-            msgIds.erase(it);
+            if (receivedResponse || res == std::cv_status::timeout)
+            {
+                msgIds.erase(it);
+                break;
+            }
         }
 
         if (receivedResponse)
@@ -141,7 +152,7 @@ namespace failure_detector
                 auto ackMessage = static_cast<membership_protocol::AckMessage*>(message.get());
                 auto msgId = ackMessage->getPingMessageId();
                 {
-                    std::lock_guard<std::mutex> lock(msgIdsMutex);
+                    std::unique_lock<std::mutex> lock(msgIdsMutex);
                     auto it = msgIds.find(msgId);
                     if (it == msgIds.end())
                     {
@@ -150,6 +161,9 @@ namespace failure_detector
                     }
 
                     it->second = true;
+
+                    lock.unlock();
+                    ackReceivedCondVar.notify_all();
                 }
 
                 break;

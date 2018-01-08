@@ -158,6 +158,7 @@ namespace membership_protocol
                     auto membershipUpdate = MembershipUpdate(member.address, membership_protocol::FAILED);
                     onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
+                break;
             }
 
             default:
