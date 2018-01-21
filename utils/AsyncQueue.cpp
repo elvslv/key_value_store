@@ -11,8 +11,10 @@ namespace utils
 
     void AsyncQueue::push(std::unique_ptr<membership_protocol::Message> message)
     {
-        std::lock_guard<std::mutex> lock(messagesMutex);
+        std::unique_lock<std::mutex> lock(messagesMutex);
         messages.push(std::move(message));
+        lock.unlock();
+        condVar.notify_one();
     }
 
     void AsyncQueue::run()
@@ -32,7 +34,10 @@ namespace utils
             if (!message)
             {
                 using namespace std::chrono_literals;
-                std::this_thread::sleep_for(100ms);
+                std::unique_lock<std::mutex> lock(messagesMutex);
+                condVar.wait_for(lock, 2s, [this]{
+                    return !messages.empty() || !isRunning;
+                });
                 continue;
             }
 

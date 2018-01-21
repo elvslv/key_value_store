@@ -16,7 +16,8 @@ namespace gossip_protocol
         gossips(),
         // periods(),
         gossipsMutex(),
-        runnable([this](){run();})
+        runnable([this](){run();}),
+        noOpLock()
     {
     }
 
@@ -32,12 +33,15 @@ namespace gossip_protocol
 
     void GossipProtocol::run()
     {
-        while (runnable.shouldRun())
+        while (runnable.isRunning)
         {
             cleanupMessages();
             ++period;
 
-            threadPolicy->sleepMilliseconds(100);
+            using namespace std::chrono_literals;
+            runnable.condVar.wait_for(noOpLock, 100ms, [this]{
+                return !runnable.isRunning;
+            });
         }
     }
 

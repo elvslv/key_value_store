@@ -51,7 +51,7 @@ namespace failure_detector
     {
         logger->log("[FailureDetector::run] -- start");
 
-        while (runnable.shouldRun())
+        while (runnable.isRunning)
         {
             network::Address address;
             if (!members.getNextElement(address))

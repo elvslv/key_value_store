@@ -1,5 +1,6 @@
 #pragma once
 
+#include <condition_variable>
 #include <thread>
 
 namespace utils
@@ -16,9 +17,11 @@ namespace utils
         void stop();
         void start();
 
+        std::atomic<bool> isRunning;
+        std::condition_variable_any condVar;
+
     protected:
         virtual void run() = 0;
-        std::atomic<bool> isRunning;
 
     private:
         std::thread thread;
@@ -31,7 +34,6 @@ namespace utils
         RunnableCallback(const Callback& callback);
 
         virtual void run();
-        bool shouldRun();
     private:
         Callback callback;
     };

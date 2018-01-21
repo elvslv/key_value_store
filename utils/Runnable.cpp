@@ -3,7 +3,8 @@
 namespace utils 
 {
     Runnable::Runnable():
-        isRunning(),
+        isRunning(false),
+        condVar(),
         thread() 
     {
 
@@ -22,6 +23,7 @@ namespace utils
     void Runnable::stop()
     { 
         isRunning = false; 
+        condVar.notify_all();
         thread.join(); 
     }
 
@@ -39,10 +41,5 @@ namespace utils
     void RunnableCallback::run()
     {
         callback();
-    }
-
-    bool RunnableCallback::shouldRun()
-    {
-        return isRunning;
     }
 }

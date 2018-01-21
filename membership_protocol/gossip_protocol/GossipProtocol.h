@@ -9,6 +9,7 @@
 #include "utils/MessageDispatcher.h"
 #include "utils/RoundRobinList.h"
 #include "utils/IThreadPolicy.h"
+#include "utils/NoOpLock.h"
 #include "utils/Runnable.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "membership_protocol/messages/Gossip.h"
@@ -58,6 +59,7 @@ namespace gossip_protocol
         std::mutex gossipsMutex;
 
         utils::RunnableCallback runnable;
+        utils::NoOpLock noOpLock;
 
         void run();
         // void processMessage(const std::unique_ptr<membership_protocol::Message>& message);
