@@ -10,9 +10,9 @@
 
 namespace membership_protocol
 {
-    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory): 
+    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory): 
         node(addr),
-        messageDispatcher(std::make_shared<utils::MessageDispatcher>(addr, logger)),
+        messageDispatcher(messageDispatcher),
         tokens(),
         logger(logger),
         asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1)),

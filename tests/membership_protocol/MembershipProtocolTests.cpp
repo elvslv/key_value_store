@@ -45,14 +45,34 @@ namespace
         }
     };
 
+    class FakeMessageDispatcher: public utils::MessageDispatcher
+    {
+    public:
+        FakeMessageDispatcher(const network::Address& address, const std::shared_ptr<utils::Log>& logger):
+            utils::MessageDispatcher(address, logger)
+        {
+        }
+
+        virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
+        {
+            if (message->getMessageType() == membership_protocol::ACK || message->getMessageType() == membership_protocol::PING)
+            {
+                return;
+            }
+
+            utils::MessageDispatcher::sendMessage(message, destAddress);
+        } 
+    };
+
     TEST(MembershipProtocolTests, Consructor)
     {
         network::Address addr("1.0.0.0:100");
         auto logger = std::make_shared<utils::Log>();
         std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
         std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
-        
-        membership_protocol::MembershipProtocol membershipProtocol(addr, logger, failureDetectorFactory, goossipProtocolFactory);
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
+
+        membership_protocol::MembershipProtocol membershipProtocol(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory);
         membershipProtocol.start();
         auto members = membershipProtocol.getMembers();
         ASSERT_TRUE(members.empty());
@@ -67,14 +87,17 @@ namespace
         std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
         
         network::Address addr1("1.0.0.0:100");
-        membership_protocol::MembershipProtocol membershipProtocol1(addr1, logger, failureDetectorFactory, goossipProtocolFactory);
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher1 = std::make_shared<utils::MessageDispatcher>(addr1, logger);
+        membership_protocol::MembershipProtocol membershipProtocol1(addr1, logger, messageDispatcher1, failureDetectorFactory, goossipProtocolFactory);
+
         network::Address addr2("2.0.0.0:200");
-        membership_protocol::MembershipProtocol membershipProtocol2(addr2, logger, failureDetectorFactory, goossipProtocolFactory);
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher2 = std::make_shared<utils::MessageDispatcher>(addr2, logger);
+        membership_protocol::MembershipProtocol membershipProtocol2(addr2, logger, messageDispatcher2, failureDetectorFactory, goossipProtocolFactory);
 
         membershipProtocol1.start();
         membershipProtocol2.start();
 
-		// TODO: replace sleep with wait
+        // TODO: replace sleep with wait
         std::this_thread::sleep_for(2s);
 
         auto members = membershipProtocol1.getMembers();
@@ -84,6 +107,38 @@ namespace
         members = membershipProtocol2.getMembers();
         ASSERT_FALSE(members.empty());
         ASSERT_EQ(membershipProtocol2.getMembersNum(), 1);
+
+        membershipProtocol2.stop();
+        membershipProtocol1.stop();
+    }
+
+    TEST(MembershipProtocolTests, NoAck)
+    {
+        auto logger = std::make_shared<utils::Log>();
+        std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
+        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
+        
+        network::Address addr1("1.0.0.0:100");
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher1 = std::make_shared<utils::MessageDispatcher>(addr1, logger);
+        membership_protocol::MembershipProtocol membershipProtocol1(addr1, logger, messageDispatcher1, failureDetectorFactory, goossipProtocolFactory);
+
+        network::Address addr2("2.0.0.0:200");
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher2 = std::make_shared<FakeMessageDispatcher>(addr2, logger);
+        membership_protocol::MembershipProtocol membershipProtocol2(addr2, logger, messageDispatcher2, failureDetectorFactory, goossipProtocolFactory);
+
+        membershipProtocol1.start();
+        membershipProtocol2.start();
+
+        // TODO: replace sleep with wait
+        std::this_thread::sleep_for(5s);
+
+        auto members = membershipProtocol1.getMembers();
+        ASSERT_TRUE(members.empty());
+        ASSERT_EQ(membershipProtocol1.getMembersNum(), 0);
+
+        members = membershipProtocol2.getMembers();
+        ASSERT_TRUE(members.empty());
+        ASSERT_EQ(membershipProtocol2.getMembersNum(), 0);
 
         membershipProtocol2.stop();
         membershipProtocol1.stop();
