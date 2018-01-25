@@ -64,6 +64,41 @@ namespace
         } 
     };
 
+    void test_n_nodes(unsigned char n)
+    {
+        auto logger = std::make_shared<utils::Log>();
+        std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
+        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
+        
+        std::vector<std::unique_ptr<membership_protocol::MembershipProtocol>> membershipProtocols;
+        for (unsigned char i = 0; i < n; ++i)
+        {
+            network::Address addr(std::array<unsigned char, 4>{{static_cast<unsigned char>(i + 1), 0, 0, 0}}, (i + 1) * 100);
+            std::shared_ptr<utils::MessageDispatcher> messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
+            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+        }
+
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
+        {
+            (*it)->start();
+        }
+
+        // TODO: replace sleep with wait
+        std::this_thread::sleep_for(n * 1s);
+
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
+        {
+            auto members = (*it)->getMembers();
+            ASSERT_FALSE(members.empty());
+            ASSERT_EQ((*it)->getMembersNum(), n - 1);
+        }
+
+        for (auto it = membershipProtocols.rbegin(); it != membershipProtocols.rend(); ++it)
+        {
+            (*it)->stop();
+        }
+    }
+
     TEST(MembershipProtocolTests, Consructor)
     {
         network::Address addr("1.0.0.0:100");
@@ -82,34 +117,7 @@ namespace
 
     TEST(MembershipProtocolTests, TwoNodes)
     {
-        auto logger = std::make_shared<utils::Log>();
-        std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
-        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
-        
-        network::Address addr1("1.0.0.0:100");
-        std::shared_ptr<utils::MessageDispatcher> messageDispatcher1 = std::make_shared<utils::MessageDispatcher>(addr1, logger);
-        membership_protocol::MembershipProtocol membershipProtocol1(addr1, logger, messageDispatcher1, failureDetectorFactory, goossipProtocolFactory);
-
-        network::Address addr2("2.0.0.0:200");
-        std::shared_ptr<utils::MessageDispatcher> messageDispatcher2 = std::make_shared<utils::MessageDispatcher>(addr2, logger);
-        membership_protocol::MembershipProtocol membershipProtocol2(addr2, logger, messageDispatcher2, failureDetectorFactory, goossipProtocolFactory);
-
-        membershipProtocol1.start();
-        membershipProtocol2.start();
-
-        // TODO: replace sleep with wait
-        std::this_thread::sleep_for(2s);
-
-        auto members = membershipProtocol1.getMembers();
-        ASSERT_FALSE(members.empty());
-        ASSERT_EQ(membershipProtocol1.getMembersNum(), 1);
-
-        members = membershipProtocol2.getMembers();
-        ASSERT_FALSE(members.empty());
-        ASSERT_EQ(membershipProtocol2.getMembersNum(), 1);
-
-        membershipProtocol2.stop();
-        membershipProtocol1.stop();
+        test_n_nodes(2);
     }
 
     TEST(MembershipProtocolTests, NoAck)
