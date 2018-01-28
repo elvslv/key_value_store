@@ -39,7 +39,7 @@ namespace gossip_protocol
             ++period;
 
             using namespace std::chrono_literals;
-            runnable.condVar.wait_for(noOpLock, 100ms, [this]{
+            runnable.condVar.wait_for(noOpLock, 1s, [this]{
                 return !runnable.isRunning;
             });
         }
@@ -71,6 +71,7 @@ namespace gossip_protocol
     void GossipProtocol::spreadMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
         auto gossipId = utils::Utils::getRandomString(16);
+        logger->log(address, "Adding gossip ", gossipId, ": ", membership_protocol::MembershipUpdate::UPDATE_TO_STR[membershipUpdate.updateType], "about ", membershipUpdate.address);
         std::lock_guard<std::mutex> lock(gossipsMutex);
         gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {membershipUpdate.address});
     }
@@ -83,11 +84,12 @@ namespace gossip_protocol
             std::lock_guard<std::mutex> lock(gossipsMutex);
             if (gossips.find(gossipId) != gossips.end())
             {
-                logger->log("Already received gossip ", gossipId);
+                logger->log(address, "Already received gossip ", gossipId);
                 continue;
             }
 
             auto membershipUpdate = membership_protocol::MembershipUpdate(it->address, it->membershipUpdateType);
+            logger->log(address, "Received gossip ", gossipId, " from ", it->address, " update ", membership_protocol::MembershipUpdate::UPDATE_TO_STR[it->membershipUpdateType]);
             gossips[gossipId] = Gossip(period, gossipId, membershipUpdate, {sourceAddress});
             for (auto jt = observers.begin(); jt != observers.end(); ++jt)
             {
@@ -96,12 +98,12 @@ namespace gossip_protocol
         }
     }
 
-    std::vector<membership_protocol::Gossip> GossipProtocol::getGossipsForAddress(const network::Address& address)
+    std::vector<membership_protocol::Gossip> GossipProtocol::getGossipsForAddress(const network::Address& destAddress)
     {
         std::vector<membership_protocol::Gossip> result;
         int periodsToSpread = getPeriodsToSpread();
         int curPeriod = period;
-        logger->log("Looking for gossips for ", address, " cur period: ", curPeriod, " periods to spread: ", periodsToSpread);
+        logger->log(address, "Looking for gossips for ", destAddress, " cur period: ", curPeriod, " periods to spread: ", periodsToSpread);
         {
             std::lock_guard<std::mutex> lock(gossipsMutex);
             for (auto it = gossips.begin(); it != gossips.end(); ++it)
@@ -112,17 +114,17 @@ namespace gossip_protocol
                     continue;
                 }
 
-                if (gossip.infectedNodes.find(address) != gossip.infectedNodes.end())
+                if (gossip.infectedNodes.find(destAddress) != gossip.infectedNodes.end())
                 {
                     continue;
                 }
     
                 result.emplace_back(gossip.membershipUpdate.address, gossip.membershipUpdate.updateType, gossip.id);
-                gossip.infectedNodes.insert(address);
+                gossip.infectedNodes.insert(destAddress);
             }
         }
 
-        logger->log("Found ", result.size(), " gossips for ", address);
+        logger->log(address, "Found ", result.size(), " gossips for ", destAddress);
         return result;
     }
 

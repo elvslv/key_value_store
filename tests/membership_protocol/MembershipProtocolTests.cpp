@@ -64,7 +64,8 @@ namespace
         } 
     };
 
-    void test_n_nodes(unsigned char n)
+    template <class Rep, class Period>
+    void test_n_nodes(unsigned char n, const std::chrono::duration<Rep, Period>& timeout)
     {
         auto logger = std::make_shared<utils::Log>();
         std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
@@ -84,13 +85,16 @@ namespace
         }
 
         // TODO: replace sleep with wait
-        std::this_thread::sleep_for(n * 1s);
+        std::this_thread::sleep_for(timeout);
 
-        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
+        int i = 0;
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it, ++i)
         {
             auto members = (*it)->getMembers();
             ASSERT_FALSE(members.empty());
-            ASSERT_EQ((*it)->getMembersNum(), n - 1);
+            auto membersNum = (*it)->getMembersNum();
+            ASSERT_EQ(members.size(), membersNum);
+            ASSERT_EQ(membersNum, n - 1);
         }
 
         for (auto it = membershipProtocols.rbegin(); it != membershipProtocols.rend(); ++it)
@@ -117,7 +121,12 @@ namespace
 
     TEST(MembershipProtocolTests, TwoNodes)
     {
-        test_n_nodes(2);
+        test_n_nodes(2, 5s);
+    }
+
+    TEST(MembershipProtocolTests, ThreeNodes)
+    {
+        test_n_nodes(3, 7s);
     }
 
     TEST(MembershipProtocolTests, NoAck)

@@ -12,9 +12,10 @@ namespace membership_protocol
         MessageWithGossipsBase(MsgTypes msgType, const network::Address& from, const network::Address& to, const std::string& id, const std::vector<Gossip>& gossips);
 
         const std::vector<Gossip>& getGossips() const;
+        static std::vector<Gossip> parseGossips(const gen::Message& message);
     protected:
         virtual gen::Message serializeToProtobuf() const;
-        
+
     private:
         std::vector<Gossip> gossips;
     };

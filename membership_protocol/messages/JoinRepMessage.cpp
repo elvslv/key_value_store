@@ -4,13 +4,13 @@
 
 namespace membership_protocol
 {
-    JoinRepMessage::JoinRepMessage(const network::Address& from, const network::Address& to):
-        Message(JOINREP, from, to)
+    JoinRepMessage::JoinRepMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips):
+        MessageWithGossipsBase(JOINREP, from, to, gossips)
     {
     }
 
-    JoinRepMessage::JoinRepMessage(const network::Address& from, const network::Address& to, const std::string& id):
-        Message(JOINREP, from, to, id)
+    JoinRepMessage::JoinRepMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips, const std::string& id):
+        MessageWithGossipsBase(JOINREP, from, to, id, gossips)
     {
     }
 

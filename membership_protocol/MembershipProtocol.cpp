@@ -34,6 +34,9 @@ namespace membership_protocol
         gossipProtocol->addObserver(this);
         failureDetector->addObserver(this);
 
+        // is it a good place?
+        tokens[PING] = messageDispatcher->listen(PING, asyncQueueCallback);
+
         auto targetAddress = getJoinAddress();
         if (targetAddress == node)
         {
@@ -127,7 +130,7 @@ namespace membership_protocol
         }
 
         auto addressStr = sourceAddress.toString();
-        log("Received membership update ", membershipUpdateType, " from ",  membershipUpdateSource, ", node address: ", addressStr);
+        log("Received membership update ", MembershipUpdate::UPDATE_TO_STR[membershipUpdateType], " from ",  MembershipUpdate::SOURCE_TO_STR[membershipUpdateSource], ", node address: ", addressStr);
 
         switch (membershipUpdateType)
         {
@@ -177,7 +180,7 @@ namespace membership_protocol
             observer->onMembershipUpdate(membershipUpdate);
         }
 
-        if (membershipUpdateSource == FAILURE_DETECTOR)
+        if (membershipUpdateSource == FAILURE_DETECTOR || membershipUpdateSource == MEMBERSHIP_PROTOCOL || membershipUpdateSource == INITIAL_SYNC)
         {
             gossipProtocol->spreadMembershipUpdate(membershipUpdate);
         }
@@ -188,7 +191,6 @@ namespace membership_protocol
     void MembershipProtocol::onJoin()
     {
         log("Joined the group");
-        messageDispatcher->listen(PING, asyncQueueCallback);
 
         failureDetector->start();
         gossipProtocol->start();
@@ -205,21 +207,27 @@ namespace membership_protocol
             case JOINREP:
             {
                 onJoin();
-                break;
+
+                auto joinRepMessage = static_cast<membership_protocol::JoinRepMessage*>(message.get());
+                gossipProtocol->onNewGossips(joinRepMessage->getSourceAddress(), joinRepMessage->getGossips());
+
+                break; 
             }
 
             case JOINREQ:
             {
-                messageDispatcher->sendMessage(std::make_unique<JoinRepMessage>(node, sourceAddress), sourceAddress);
-                
                 onMembershipUpdate(JOINED, INITIAL_SYNC, sourceAddress);
+                
+                auto gossips = gossipProtocol->getGossipsForAddress(sourceAddress);
+                messageDispatcher->sendMessage(std::make_unique<JoinRepMessage>(node, sourceAddress, gossips), sourceAddress);
 
                 break;
             }
 
             case PING:
             {
-                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress, std::vector<Gossip>(), message->getId()), sourceAddress);
+                auto gossips = gossipProtocol->getGossipsForAddress(sourceAddress);
+                messageDispatcher->sendMessage(std::make_unique<AckMessage>(node, sourceAddress, gossips, message->getId()), sourceAddress);
 
                 onMembershipUpdate(JOINED, MEMBERSHIP_PROTOCOL, sourceAddress);
                 

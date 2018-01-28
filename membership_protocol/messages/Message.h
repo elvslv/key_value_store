@@ -30,6 +30,7 @@ namespace membership_protocol
         Message& operator = (const Message&) = default;
     
         MsgTypes getMessageType() const;
+        std::string getMessageTypeDescription() const;
 
         static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage); 
         virtual std::string toString() const;

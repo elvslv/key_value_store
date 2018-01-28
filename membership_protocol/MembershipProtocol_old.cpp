@@ -196,7 +196,7 @@ namespace membership_protocol
     void MembershipProtocol::sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress)
     {
         auto msg = message->serialize();
-        log("Sending message", msg.content.get());
+        log("Sending message to ", destAddress);
 
         network.send(destAddress, msg);
     }

@@ -8,7 +8,9 @@
 #include "proto/Message.pb.h"
 #include "PingMessage.h"
 #include "AckMessage.h"
+#include "MessageWithGossipsBase.h"
 #include "utils/Utils.h"
+#include "utils/Exceptions.h"
 
 namespace membership_protocol
 {
@@ -30,6 +32,30 @@ namespace membership_protocol
         return messageType;
     }
 
+    std::string Message::getMessageTypeDescription() const
+    {
+        switch(messageType)
+        {
+            case JOINREQ:
+                return "JOINREQ";
+            
+            case JOINREP:
+                return "JOINREP";
+
+            case PING:
+                return "PING";
+
+            case ACK:
+                return "ACK";
+
+            case PING_REQ:
+                return "PING_REQ";
+
+            default:
+                throw utils::NotImplementedException();
+        }
+    }
+
     std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMessage)
     {
         gen::Message message;
@@ -47,12 +73,14 @@ namespace membership_protocol
 
             case gen::JOINREP:
             {
-                return std::make_unique<JoinRepMessage>(srcAddress, destAddress, message.id());
+                auto gossips = MessageWithGossipsBase::parseGossips(message);
+                return std::make_unique<JoinRepMessage>(srcAddress, destAddress, gossips, message.id());
             }
 
             case gen::PING:
             {
-                return std::make_unique<PingMessage>(srcAddress, destAddress, std::vector<Gossip>(), message.id());
+                auto gossips = MessageWithGossipsBase::parseGossips(message);
+                return std::make_unique<PingMessage>(srcAddress, destAddress, gossips, message.id());
             }
 
             case gen::ACK:
@@ -63,7 +91,8 @@ namespace membership_protocol
                 }
 
                 auto ackFields = message.ackfields();
-                return std::make_unique<AckMessage>(srcAddress, destAddress, std::vector<Gossip>(), message.id(), ackFields.originalid());
+                auto gossips = MessageWithGossipsBase::parseGossips(message);
+                return std::make_unique<AckMessage>(srcAddress, destAddress, gossips, message.id(), ackFields.originalid());
             }
 
             case gen::PING_REQ:
@@ -89,6 +118,8 @@ namespace membership_protocol
     {
         return id;
     }
+
+
 
     network::Message Message::serialize() const
     {

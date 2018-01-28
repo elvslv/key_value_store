@@ -30,5 +30,8 @@ namespace membership_protocol
 
         network::Address address;
         MembershipUpdateType updateType;
+
+        static std::map<MembershipUpdateType, std::string> UPDATE_TO_STR;
+        static std::map<MembershipUpdateSource, std::string> SOURCE_TO_STR;
     };
 }

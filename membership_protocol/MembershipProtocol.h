@@ -60,7 +60,7 @@ namespace membership_protocol
         template <typename T, typename ... args >
         void log(T current, args... next )
         {
-            logger->log(node.toString(), next...);
+            logger->log(node.toString(), current, next...);
         }
     };
 }

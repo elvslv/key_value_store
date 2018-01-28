@@ -6,7 +6,7 @@
                 "type": "cppdbg",
                 "request": "launch",
                 "program": "${workspaceRoot}/tests/key_value_store_tests",
-                "args": ["gtest_filter", "MembershipProtocolTests.TwoNodes"],
+                "args": ["--gtest_filter=MembershipProtocolTests.ThreeNodes"],
                 "stopAtEntry": false,
                 "cwd": "${workspaceRoot}",
                 "environment": [],

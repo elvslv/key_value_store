@@ -49,7 +49,7 @@ namespace failure_detector
 
     void FailureDetector::run()
     {
-        logger->log("[FailureDetector::run] -- start");
+        logger->log(address, "[FailureDetector::run] -- start");
 
         while (runnable.isRunning)
         {
@@ -64,10 +64,10 @@ namespace failure_detector
             sendPing(address);
 
             // TODO: add const
-            threadPolicy->sleepMilliseconds(2000);
+            threadPolicy->sleepMilliseconds(1000);
         }
 
-        logger->log("[FailureDetector::run] -- finish");
+        logger->log(address, "[FailureDetector::run] -- finish");
     }
 
     void FailureDetector::sendPing(const network::Address destAddress)
@@ -81,7 +81,7 @@ namespace failure_detector
         }
 
         messageDispatcher->sendMessage(std::move(message), destAddress);
-        logger->log("<FailureDetector> -- Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
+        logger->log(address, "<FailureDetector> -- Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
 
         bool receivedResponse = false;
         auto now = std::chrono::steady_clock::now();
@@ -104,11 +104,11 @@ namespace failure_detector
 
         if (receivedResponse)
         {
-            logger->log("Received ACK for message ", msgId);
+            logger->log(address, "Received ACK for message ", msgId);
         }
         else
         {
-            logger->log("Haven't received ACK for message ", msgId);
+            logger->log(address, "Haven't received ACK for message ", msgId);
         }
 
         failure_detector::FailureDetectorEvent failureDetectorEvent{ destAddress, receivedResponse ? failure_detector::ALIVE : failure_detector::FAILED };
@@ -144,7 +144,7 @@ namespace failure_detector
 
     void FailureDetector::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
     {
-        logger->log("<FailureDetector> -- received message ", message->getMessageType(), " from ", message->getSourceAddress());
+        logger->log(address, "<FailureDetector> -- received message ", message->getMessageTypeDescription(), " from ", message->getSourceAddress());
         switch (message->getMessageType())
         {
             case membership_protocol::ACK:
@@ -156,10 +156,11 @@ namespace failure_detector
                     auto it = msgIds.find(msgId);
                     if (it == msgIds.end())
                     {
-                        logger->log("Unexpected ACK message ", ackMessage->getPingMessageId());
+                        logger->log(address, "Unexpected ACK message ", ackMessage->getPingMessageId());
                         return;
                     }
 
+                    gossipProtocol->onNewGossips(ackMessage->getSourceAddress(), ackMessage->getGossips());
                     it->second = true;
 
                     lock.unlock();
@@ -170,7 +171,7 @@ namespace failure_detector
             }
 
             default:
-                logger->log("Unexpected message ", message->toString());
+                logger->log(address, "Unexpected message ", message->toString());
                 break;
         }
     }
