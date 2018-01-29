@@ -190,4 +190,9 @@ namespace
     {
         test_n_nodes_one_failed(2, 5s);
     }
+
+    TEST(MembershipProtocolTests, ThreeNodesOneFailed)
+    {
+        test_n_nodes_one_failed(3, 10s);
+    }
 }
