@@ -129,35 +129,65 @@ namespace
         test_n_nodes(3, 7s);
     }
 
-    TEST(MembershipProtocolTests, NoAck)
+    template <class Rep, class Period>
+    void test_n_nodes_one_failed(int n, const std::chrono::duration<Rep, Period>& timeout)
     {
         auto logger = std::make_shared<utils::Log>();
         std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
         std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
         
-        network::Address addr1("1.0.0.0:100");
-        std::shared_ptr<utils::MessageDispatcher> messageDispatcher1 = std::make_shared<utils::MessageDispatcher>(addr1, logger);
-        membership_protocol::MembershipProtocol membershipProtocol1(addr1, logger, messageDispatcher1, failureDetectorFactory, goossipProtocolFactory);
+        std::vector<std::unique_ptr<membership_protocol::MembershipProtocol>> membershipProtocols;
+        for (unsigned char i = 0; i < n; ++i)
+        {
+            network::Address addr(std::array<unsigned char, 4>{{static_cast<unsigned char>(i + 1), 0, 0, 0}}, (i + 1) * 100);
+            std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
+            if (i < n - 1)
+            {
+                messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
+            }
+            else
+            {
+                messageDispatcher = std::make_shared<FakeMessageDispatcher>(addr, logger);
+            }
+            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+        }
 
-        network::Address addr2("2.0.0.0:200");
-        std::shared_ptr<utils::MessageDispatcher> messageDispatcher2 = std::make_shared<FakeMessageDispatcher>(addr2, logger);
-        membership_protocol::MembershipProtocol membershipProtocol2(addr2, logger, messageDispatcher2, failureDetectorFactory, goossipProtocolFactory);
-
-        membershipProtocol1.start();
-        membershipProtocol2.start();
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
+        {
+            (*it)->start();
+        }
 
         // TODO: replace sleep with wait
-        std::this_thread::sleep_for(5s);
+        std::this_thread::sleep_for(timeout);
 
-        auto members = membershipProtocol1.getMembers();
-        ASSERT_TRUE(members.empty());
-        ASSERT_EQ(membershipProtocol1.getMembersNum(), 0);
+        int i = 0;
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it, ++i)
+        {
+            auto members = (*it)->getMembers();
 
-        members = membershipProtocol2.getMembers();
-        ASSERT_TRUE(members.empty());
-        ASSERT_EQ(membershipProtocol2.getMembersNum(), 0);
+            if (n == 2)
+            {
+                ASSERT_TRUE(members.empty());
+            }
+            else
+            {
+                ASSERT_FALSE(members.empty());
+            }
 
-        membershipProtocol2.stop();
-        membershipProtocol1.stop();
+            auto membersNum = (*it)->getMembersNum();
+            ASSERT_EQ(members.size(), membersNum);
+            ASSERT_EQ(membersNum, n - 2);
+        }
+
+
+        for (auto it = membershipProtocols.rbegin(); it != membershipProtocols.rend(); ++it)
+        {
+            (*it)->stop();
+        }
+    }
+
+    TEST(MembershipProtocolTests, NoAck)
+    {
+        test_n_nodes_one_failed(2, 5s);
     }
 }
