@@ -164,19 +164,19 @@ namespace
         for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it, ++i)
         {
             auto members = (*it)->getMembers();
+            auto membersNum = (*it)->getMembersNum();
+            ASSERT_EQ(members.size(), membersNum);
 
-            if (n == 2)
+            if (n == 2 || i == n - 1)
             {
                 ASSERT_TRUE(members.empty());
+                ASSERT_EQ(membersNum, 0);
             }
             else
             {
                 ASSERT_FALSE(members.empty());
+                ASSERT_EQ(membersNum, n - 2);
             }
-
-            auto membersNum = (*it)->getMembersNum();
-            ASSERT_EQ(members.size(), membersNum);
-            ASSERT_EQ(membersNum, n - 2);
         }
 
 
