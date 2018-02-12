@@ -119,8 +119,6 @@ namespace membership_protocol
         return id;
     }
 
-
-
     network::Message Message::serialize() const
     {
         gen::Message message = serializeToProtobuf();

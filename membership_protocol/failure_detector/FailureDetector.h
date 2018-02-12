@@ -11,6 +11,7 @@
 #include "utils/Runnable.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "membership_protocol/gossip_protocol/IGossipProtocol.h"
+#include "membership_protocol/messages/PingReqMessage.h"
 
 namespace failure_detector
 {
@@ -43,9 +44,13 @@ namespace failure_detector
         std::unordered_map<std::string, bool> msgIds;
 
         utils::RunnableCallback runnable;
+        std::list<std::thread> pingReqThreads;
 
         void run();
-        void processMessage(const std::unique_ptr<membership_protocol::Message>& message);
-        void sendPing(const network::Address destAddress);
+        void onPingReq(std::unique_ptr<membership_protocol::Message> message);
+        void processMessage(std::unique_ptr<membership_protocol::Message> message);
+        bool sendPing(const network::Address& destAddress, int k);
+        bool sendPingReq(const network::Address& destAddress, const network::Address& target);
+        bool sendMessage(std::unique_ptr<membership_protocol::Message> message, const network::Address& destAddress, int timeoutSeconds);
     };
 }

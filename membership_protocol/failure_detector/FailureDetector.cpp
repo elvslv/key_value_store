@@ -3,6 +3,7 @@
 #include "utils/Utils.h"
 #include "membership_protocol/messages/AckMessage.h"
 #include "membership_protocol/messages/PingMessage.h"
+#include "membership_protocol/messages/PingReqMessage.h"
 
 namespace failure_detector
 {
@@ -21,7 +22,8 @@ namespace failure_detector
         msgIdsMutex(),
         ackReceivedCondVar(),
         msgIds(),
-        runnable([this](){run();})
+        runnable([this](){run();}),
+        pingReqThreads()
     {
     }
     
@@ -30,7 +32,7 @@ namespace failure_detector
         membershipProtocol->addObserver(this);
         asyncQueue.start();
         
-        // tokens[PING_REQ] = messageDispatcher->listen(PING_REQ, asyncQueueCallback);
+        tokens[membership_protocol::PING_REQ] = messageDispatcher->listen(membership_protocol::PING_REQ, asyncQueueCallback);
         tokens[membership_protocol::ACK] = messageDispatcher->listen(membership_protocol::ACK, asyncQueueCallback);
         
         runnable.start();
@@ -44,6 +46,12 @@ namespace failure_detector
         for (auto token : tokens)
         {
             messageDispatcher->stopListening(token.first, token.second);
+        }
+
+        // TODO: cleanup when thread finishes
+        for (auto it = pingReqThreads.begin(); it != pingReqThreads.end(); ++it)
+        {
+            it->join();
         }
     }
 
@@ -61,7 +69,12 @@ namespace failure_detector
                 continue;
             }
 
-            sendPing(address);
+            auto result = sendPing(address, 1);
+            failure_detector::FailureDetectorEvent failureDetectorEvent{ address, result ? failure_detector::ALIVE : failure_detector::FAILED };
+            for (auto observer : observers)
+            {
+                observer->onFailureDetectorEvent(failureDetectorEvent);
+            }
 
             // TODO: add const
             threadPolicy->sleepMilliseconds(1000);
@@ -70,22 +83,20 @@ namespace failure_detector
         logger->log(address, "[FailureDetector::run] -- finish");
     }
 
-    void FailureDetector::sendPing(const network::Address destAddress)
+    bool FailureDetector::sendMessage(std::unique_ptr<membership_protocol::Message> message, const network::Address& destAddress, int timeoutSeconds)
     {
-        auto message = std::make_unique<membership_protocol::PingMessage>(address, destAddress, gossipProtocol->getGossipsForAddress(destAddress));
         auto msgId = message->getId();
-
         {
             std::lock_guard<std::mutex> lock(msgIdsMutex);
             msgIds.insert({msgId, false});
         }
 
         messageDispatcher->sendMessage(std::move(message), destAddress);
-        logger->log(address, "<FailureDetector> -- Successfully sent ping message to ", destAddress.toString(), " message id: ", msgId);
+        logger->log(address, "<FailureDetector> -- Successfully sent ", message->toString());
 
         bool receivedResponse = false;
         auto now = std::chrono::steady_clock::now();
-        auto expires = std::chrono::seconds(2) + now;
+        auto expires = std::chrono::seconds(timeoutSeconds) + now;
         assert(now != expires);
         while (true)
         {
@@ -111,11 +122,36 @@ namespace failure_detector
             logger->log(address, "Haven't received ACK for message ", msgId);
         }
 
-        failure_detector::FailureDetectorEvent failureDetectorEvent{ destAddress, receivedResponse ? failure_detector::ALIVE : failure_detector::FAILED };
-        for (auto observer : observers)
+        return receivedResponse;
+    }
+
+    bool FailureDetector::sendPing(const network::Address& destAddress, int k)
+    {
+        auto message = std::make_unique<membership_protocol::PingMessage>(address, destAddress, gossipProtocol->getGossipsForAddress(destAddress));
+        // TODO: figure out timeout
+        if (sendMessage(std::move(message), destAddress, 2))
         {
-            observer->onFailureDetectorEvent(failureDetectorEvent);
+            return true;
         }
+
+        // TODO: add a const with number of hops 
+        auto otherNodes = members.getKHops(k, destAddress);
+        for (auto it = otherNodes.begin(); it != otherNodes.end(); ++it)
+        {
+            if (sendPingReq(*it, destAddress) == failure_detector::ALIVE)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool FailureDetector::sendPingReq(const network::Address& destAddress, const network::Address& target)
+    {
+        auto message = std::make_unique<membership_protocol::PingReqMessage>(address, destAddress, gossipProtocol->getGossipsForAddress(destAddress), target);
+        // figure out timeout
+        return sendMessage(std::move(message), destAddress, 5);
     }
 
     void FailureDetector::addObserver(IFailureDetector::IObserver* observer)
@@ -142,7 +178,19 @@ namespace failure_detector
         }
     }
 
-    void FailureDetector::processMessage(const std::unique_ptr<membership_protocol::Message>& message)
+    void FailureDetector::onPingReq(std::unique_ptr<membership_protocol::Message> message)
+    {
+        auto pingReqMessage = static_cast<membership_protocol::PingReqMessage*>(message.get());
+        auto result = sendPing(pingReqMessage->getTargetAddress(), 0);
+        if (result == failure_detector::ALIVE)
+        {
+            auto sourceAddress = message->getSourceAddress();
+            auto gossips = gossipProtocol->getGossipsForAddress(sourceAddress);
+            messageDispatcher->sendMessage(std::make_unique<membership_protocol::AckMessage>(address, sourceAddress, gossips, message->getId()), sourceAddress);
+        }
+    }
+
+    void FailureDetector::processMessage(std::unique_ptr<membership_protocol::Message> message)
     {
         logger->log(address, "<FailureDetector> -- received message ", message->getMessageTypeDescription(), " from ", message->getSourceAddress());
         switch (message->getMessageType())
@@ -167,6 +215,12 @@ namespace failure_detector
                     ackReceivedCondVar.notify_all();
                 }
 
+                break;
+            }
+
+            case membership_protocol::PING_REQ:
+            {
+                pingReqThreads.push_back(std::thread(&FailureDetector::onPingReq, this, std::move(message)));
                 break;
             }
 

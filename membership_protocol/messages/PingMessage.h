@@ -8,7 +8,7 @@ namespace membership_protocol
     {
     public:
         PingMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips);
-        PingMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips, const std::string& id);        
+        PingMessage(const network::Address& from, const network::Address& to, const std::vector<Gossip>& gossips, const std::string& id);   
     protected:
         virtual gen::MessageType getProtobufMessageType() const;
     };

@@ -1,3 +1,4 @@
+#include <sstream>
 #include "PingReqMessage.h"
 
 namespace membership_protocol
@@ -29,5 +30,17 @@ namespace membership_protocol
     gen::MessageType PingReqMessage::getProtobufMessageType() const
     {
         return gen::PING_REQ;
+    }
+
+    std::string PingReqMessage::toString() const
+    {
+        std::stringstream ss;
+        ss << getMsgTypeStr(PING_REQ) << " from " << from << " to " << to << " id " << getId() << " about " << targetAddress << std::endl;
+        return ss.str();
+    }
+
+    const network::Address& PingReqMessage::getTargetAddress() const
+    {
+        return targetAddress;
     }
 }

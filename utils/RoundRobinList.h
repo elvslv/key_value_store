@@ -89,6 +89,27 @@ namespace utils
             return true;
         }
 
+        std::list<T> getKHops(int k, const T& target)
+        {
+            std::list<T> result;
+
+            std::lock_guard<std::mutex> lock(elementsMutex);
+            auto num = std::max(std::min(k, (int)elements.size() - 1), 0);
+            auto it = currentElement;
+            for (int i = 0; i < num; ++i)
+            {
+                while (*it == target)
+                {
+                    advanceIterator(it);
+                }
+
+                result.push_back(*it);
+                advanceIterator(it);
+            }
+
+            return result;
+        }
+
     private:
         void advanceCurrentElement()
         {
@@ -96,6 +117,14 @@ namespace utils
             {
                 // kick of on a separate thread?
                 shuffle();
+            }
+        }
+
+        void advanceIterator(typename std::list<T>::iterator& it)
+        {
+            if (++it == elements.end())
+            {
+                it = elements.begin();
             }
         }
         
