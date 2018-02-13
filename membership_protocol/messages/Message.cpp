@@ -7,6 +7,7 @@
 #include "JoinRepMessage.h"
 #include "proto/Message.pb.h"
 #include "PingMessage.h"
+#include "PingReqMessage.h"
 #include "AckMessage.h"
 #include "MessageWithGossipsBase.h"
 #include "utils/Utils.h"
@@ -97,7 +98,14 @@ namespace membership_protocol
 
             case gen::PING_REQ:
             {
-                throw std::logic_error("not impelemnted");
+                if (!message.has_pingreqfields())
+                {
+                    throw std::logic_error("PingReq fields are expected");
+                }
+
+                auto pingReqFields = message.pingreqfields();
+                auto gossips = MessageWithGossipsBase::parseGossips(message);
+                return std::make_unique<PingReqMessage>(srcAddress, destAddress, message.id(), gossips, pingReqFields.targetaddress());
             }
         }
 
