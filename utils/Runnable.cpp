@@ -1,13 +1,15 @@
 #include "Runnable.h"
+#include <iostream>
+#include "utils/Utils.h"
 
 namespace utils 
 {
     Runnable::Runnable():
         isRunning(false),
         condVar(),
-        thread() 
+        str(Utils::getRandomString(8)),
+        thread()
     {
-
     }
     Runnable::~Runnable()
     {
@@ -22,6 +24,11 @@ namespace utils
 
     void Runnable::stop()
     { 
+        if (!isRunning)
+        {
+            return;
+        }
+
         isRunning = false; 
         condVar.notify_all();
         thread.join(); 

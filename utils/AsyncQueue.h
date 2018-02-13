@@ -15,6 +15,7 @@ namespace utils
     public:
         typedef std::function<void(std::unique_ptr<membership_protocol::Message>)> Callback;
         AsyncQueue(const Callback& callback);
+        virtual ~AsyncQueue();
 
         AsyncQueue(AsyncQueue const&) = delete;
         AsyncQueue& operator =(AsyncQueue const&) = delete;

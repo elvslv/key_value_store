@@ -22,8 +22,8 @@ namespace utils
 
         MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger);
 
-        std::string listen(membership_protocol::MsgTypes msgType, const Callback& callback);
-        void stopListening(membership_protocol::MsgTypes msgType, const std::string& token);
+        virtual std::string listen(membership_protocol::MsgTypes msgType, const Callback& callback);
+        virtual void stopListening(membership_protocol::MsgTypes msgType, const std::string& token);
         virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress);
     private:
         static const int TOKEN_LENGTH = 10;

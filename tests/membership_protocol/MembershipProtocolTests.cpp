@@ -6,6 +6,8 @@
 #include "membership_protocol/gossip_protocol/GossipProtocol.h"
 #include "membership_protocol/failure_detector/FailureDetector.h"
 #include "utils/ThreadPolicy.h"
+#include "utils/Utils.h"
+
 
 namespace
 {
@@ -55,13 +57,23 @@ namespace
 
         virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
         {
-            if (message->getMessageType() == membership_protocol::ACK || message->getMessageType() == membership_protocol::PING)
+            if (message->getMessageType() == membership_protocol::ACK || message->getMessageType() == membership_protocol::PING || message->getMessageType() == membership_protocol::JOINREQ)
             {
                 return;
             }
 
             utils::MessageDispatcher::sendMessage(message, destAddress);
         } 
+
+        virtual std::string listen(membership_protocol::MsgTypes msgType, const Callback& callback)
+        {
+            return utils::Utils::getRandomString(8);
+        }
+
+        virtual void stopListening(membership_protocol::MsgTypes msgType, const std::string& token)
+        {
+            return;
+        }
     };
 
     template <class Rep, class Period>

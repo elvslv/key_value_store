@@ -22,12 +22,22 @@ namespace membership_protocol
         observers(),
         membersMutex(),
         members(),
-        joined(false)
+        joined(false),
+        stopped(false)
     {
+    }
+
+    MembershipProtocol::~MembershipProtocol()
+    {
+        stop();
+
+        log("[~FailureDetector]");
     }
 
     void MembershipProtocol::start()
     {
+        log("[MembershipProtocol::start]");
+
         asyncQueue.start();
         messageDispatcher->start();
 
@@ -51,6 +61,11 @@ namespace membership_protocol
 
     void MembershipProtocol::stop()
     {
+        if (stopped)
+        {
+            return;
+        }
+
         for (auto it = tokens.begin(); it != tokens.end(); ++it)
         {
             messageDispatcher->stopListening(it->first, it->second);
@@ -63,6 +78,9 @@ namespace membership_protocol
 
         messageDispatcher->stop();
         asyncQueue.stop();
+
+        stopped = true;
+        log("[MembershipProtocol::stop]");
     }
 
     std::vector<Member> MembershipProtocol::getMembers()

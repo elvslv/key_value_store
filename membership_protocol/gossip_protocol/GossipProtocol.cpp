@@ -17,18 +17,35 @@ namespace gossip_protocol
         // periods(),
         gossipsMutex(),
         runnable([this](){run();}),
-        noOpLock()
+        noOpLock(),
+        stopped(false)
     {
+    }
+
+    GossipProtocol::~GossipProtocol()
+    {
+        stop();
+        logger->log(address, "[~GossipProtocol]");
     }
 
     void GossipProtocol::start()
     {
+        logger->log(address, "[GossipProtocol::start]");
+
         runnable.start();
     }
 
     void GossipProtocol::stop()
     {
+        if (stopped)
+        {
+            return;
+        }
+
         runnable.stop();
+
+        stopped = true;
+        logger->log(address, "[GossipProtocol::stop]");
     }
 
     void GossipProtocol::run()

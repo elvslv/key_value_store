@@ -2,6 +2,7 @@
 
 #include <condition_variable>
 #include <thread>
+#include <string>
 
 namespace utils
 {
@@ -22,6 +23,7 @@ namespace utils
 
     protected:
         virtual void run() = 0;
+        std::string str;
 
     private:
         std::thread thread;

@@ -19,7 +19,7 @@ namespace membership_protocol
     {
     public:
         MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory);
-        virtual ~MembershipProtocol() {}
+        virtual ~MembershipProtocol();
 
         virtual void start();
         virtual void stop();
@@ -45,6 +45,7 @@ namespace membership_protocol
         std::unordered_map<std::string, Member> members;
 
         std::atomic<bool> joined;
+        bool stopped;
 
         void onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource);
         void onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress);

@@ -38,7 +38,8 @@ namespace gossip_protocol
     {
     public:
         GossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy);
-        
+        virtual ~GossipProtocol();
+
         virtual void start();
         virtual void stop();
         virtual void addObserver(IGossipProtocol::IObserver* observer);
@@ -60,6 +61,8 @@ namespace gossip_protocol
 
         utils::RunnableCallback runnable;
         utils::NoOpLock noOpLock;
+
+        bool stopped;
 
         void run();
         // void processMessage(const std::unique_ptr<membership_protocol::Message>& message);

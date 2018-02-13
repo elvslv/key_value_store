@@ -9,6 +9,17 @@ namespace utils
     {
     }
 
+    AsyncQueue::~AsyncQueue()
+    {
+        try
+        { 
+            stop();
+        } catch(...) 
+        { 
+            /*??*/ 
+        }
+    }
+
     void AsyncQueue::push(std::unique_ptr<membership_protocol::Message> message)
     {
         std::unique_lock<std::mutex> lock(messagesMutex);

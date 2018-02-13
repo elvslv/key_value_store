@@ -19,6 +19,7 @@ namespace failure_detector
     {
     public:
         FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy);
+        virtual ~FailureDetector();
 
         virtual void start();
         virtual void stop();
@@ -45,6 +46,7 @@ namespace failure_detector
 
         utils::RunnableCallback runnable;
         std::list<std::thread> pingReqThreads;
+        bool stopped;
 
         void run();
         void onPingReq(std::unique_ptr<membership_protocol::Message> message);

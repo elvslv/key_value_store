@@ -23,12 +23,22 @@ namespace failure_detector
         ackReceivedCondVar(),
         msgIds(),
         runnable([this](){run();}),
-        pingReqThreads()
+        pingReqThreads(),
+        stopped(false)
     {
+    }
+
+    FailureDetector::~FailureDetector()
+    {
+        stop();
+
+        logger->log(address, "~FailureDetector");
     }
     
     void FailureDetector::start()
     {
+        logger->log(address, "[FailureDetector::start]");
+        
         membershipProtocol->addObserver(this);
         asyncQueue.start();
         
@@ -40,6 +50,11 @@ namespace failure_detector
 
     void FailureDetector::stop()
     {
+        if (stopped)
+        {
+            return;
+        }
+
         runnable.stop();
         asyncQueue.stop();
 
@@ -53,6 +68,9 @@ namespace failure_detector
         {
             it->join();
         }
+
+        stopped = true;
+        logger->log(address, "[FailureDetector::stop]");
     }
 
     void FailureDetector::run()
