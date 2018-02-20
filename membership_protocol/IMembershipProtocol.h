@@ -18,6 +18,7 @@ namespace membership_protocol
         virtual ~IMembershipProtocol(){}
         virtual void start() = 0;
         virtual void stop() = 0;
+        virtual void requestStop() = 0;
         virtual std::vector<Member> getMembers() = 0;
         virtual void addObserver(IMembershipProtocol::IObserver* observer) = 0; 
         virtual size_t getMembersNum() = 0;

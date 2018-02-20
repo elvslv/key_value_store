@@ -142,6 +142,10 @@ namespace gossip_protocol
         }
 
         logger->log(address, "Found ", result.size(), " gossips for ", destAddress);
+        for (int i = 0; i < result.size(); ++i)
+        {
+            logger->log(address, "Found gossip", result[i].id, "for ", destAddress);
+        }
         return result;
     }
 

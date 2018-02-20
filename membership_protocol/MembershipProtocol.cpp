@@ -5,6 +5,7 @@
 #include "messages/JoinReqMessage.h"
 #include "messages/JoinRepMessage.h"
 #include "messages/AckMessage.h"
+#include "messages/PingMessage.h"
 #include "utils/Exceptions.h"
 
 
@@ -31,7 +32,7 @@ namespace membership_protocol
     {
         stop();
 
-        log("[~FailureDetector]");
+        log("[~MembershipProtocol]");
     }
 
     void MembershipProtocol::start()
@@ -83,6 +84,11 @@ namespace membership_protocol
         log("[MembershipProtocol::stop]");
     }
 
+    void MembershipProtocol::requestStop() 
+    {
+        failureDetector->requestStop();
+    }
+
     std::vector<Member> MembershipProtocol::getMembers()
     {
         std::vector<Member> result;
@@ -131,15 +137,15 @@ namespace membership_protocol
             }
         }
 
-        onMembershipUpdate(membershipUpdateType, FAILURE_DETECTOR, failureDetectorEvent.address);
+        onMembershipUpdate(membershipUpdateType, FAILURE_DETECTOR, failureDetectorEvent.address, true);
     }
 
     void MembershipProtocol::onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
-        onMembershipUpdate(membershipUpdate.updateType, GOSSIP_PROTOCOL, membershipUpdate.address);
+        onMembershipUpdate(membershipUpdate.updateType, GOSSIP_PROTOCOL, membershipUpdate.address, true);
     }
 
-    void MembershipProtocol::onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress)
+    void MembershipProtocol::onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress, bool spreadGossips = true)
     {
         if (sourceAddress == node)
         {
@@ -161,7 +167,7 @@ namespace membership_protocol
                     auto result = members.emplace(addressStr, sourceAddress);
 
                     auto membershipUpdate = MembershipUpdate(result.first->second.address, membership_protocol::JOINED);
-                    onMembershipUpdate(membershipUpdate, membershipUpdateSource);
+                    onMembershipUpdate(membershipUpdate, membershipUpdateSource, spreadGossips);
                 }
                 
                 break;
@@ -177,7 +183,7 @@ namespace membership_protocol
                     members.erase(addressStr);
 
                     auto membershipUpdate = MembershipUpdate(member.address, membership_protocol::FAILED);
-                    onMembershipUpdate(membershipUpdate, membershipUpdateSource);
+                    onMembershipUpdate(membershipUpdate, membershipUpdateSource, spreadGossips);
                 }
                 break;
             }
@@ -191,14 +197,14 @@ namespace membership_protocol
         }
     }
     
-    void MembershipProtocol::onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource)
+    void MembershipProtocol::onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource, bool spreadGossips)
     {
         for (auto observer : observers)
         {
             observer->onMembershipUpdate(membershipUpdate);
         }
 
-        if (membershipUpdateSource == FAILURE_DETECTOR || membershipUpdateSource == MEMBERSHIP_PROTOCOL || membershipUpdateSource == INITIAL_SYNC)
+        if (spreadGossips && (membershipUpdateSource == FAILURE_DETECTOR || membershipUpdateSource == MEMBERSHIP_PROTOCOL || membershipUpdateSource == INITIAL_SYNC))
         {
             gossipProtocol->spreadMembershipUpdate(membershipUpdate);
         }
@@ -225,6 +231,7 @@ namespace membership_protocol
             case JOINREP:
             {
                 onJoin();
+                onMembershipUpdate(JOINED, INITIAL_SYNC, sourceAddress, false);
 
                 auto joinRepMessage = static_cast<membership_protocol::JoinRepMessage*>(message.get());
                 gossipProtocol->onNewGossips(joinRepMessage->getSourceAddress(), joinRepMessage->getGossips());
@@ -249,6 +256,9 @@ namespace membership_protocol
 
                 onMembershipUpdate(JOINED, MEMBERSHIP_PROTOCOL, sourceAddress);
                 
+                auto pingMessage = static_cast<membership_protocol::PingMessage*>(message.get());
+                gossipProtocol->onNewGossips(pingMessage->getSourceAddress(), pingMessage->getGossips());
+
                 break;
             }
 

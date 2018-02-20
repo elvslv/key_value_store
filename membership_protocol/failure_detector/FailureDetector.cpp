@@ -7,6 +7,12 @@
 
 namespace failure_detector
 {
+    class StopRequestedException: std::exception
+    {
+    public:
+        StopRequestedException() {}
+    };
+
     FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy):
         address(addr),
         logger(logger),
@@ -24,7 +30,8 @@ namespace failure_detector
         msgIds(),
         runnable([this](){run();}),
         pingReqThreads(),
-        stopped(false)
+        stopped(false),
+        stopRequested(false)
     {
     }
 
@@ -73,6 +80,11 @@ namespace failure_detector
         logger->log(address, "[FailureDetector::stop]");
     }
 
+    void FailureDetector::requestStop() 
+    {
+        stopRequested = true;
+    }
+
     void FailureDetector::run()
     {
         logger->log(address, "[FailureDetector::run] -- start");
@@ -87,7 +99,17 @@ namespace failure_detector
                 continue;
             }
 
-            auto result = sendPing(address, 1);
+            bool result;
+            try
+            {
+                result = sendPing(address, 1);
+            }
+            catch (StopRequestedException)
+            {
+                logger->log(address, "[FailureDetector::run] -- stop requested, exiting");
+                return;
+            }
+
             failure_detector::FailureDetectorEvent failureDetectorEvent{ address, result ? failure_detector::ALIVE : failure_detector::FAILED };
             for (auto observer : observers)
             {
@@ -124,6 +146,11 @@ namespace failure_detector
             auto it = msgIds.find(msgId);
             assert(it != msgIds.end());
             receivedResponse = it->second;
+            if (stopRequested) 
+            {
+                throw StopRequestedException();
+            }
+
             if (receivedResponse || res == std::cv_status::timeout)
             {
                 msgIds.erase(it);
@@ -154,9 +181,11 @@ namespace failure_detector
 
         // TODO: add a const with number of hops 
         auto otherNodes = members.getKHops(k, destAddress);
+        logger->log(address, "Found ", otherNodes.size(), " for ", destAddress);
+
         for (auto it = otherNodes.begin(); it != otherNodes.end(); ++it)
         {
-            if (sendPingReq(*it, destAddress) == failure_detector::ALIVE)
+            if (sendPingReq(*it, destAddress))
             {
                 return true;
             }
@@ -200,7 +229,7 @@ namespace failure_detector
     {
         auto pingReqMessage = static_cast<membership_protocol::PingReqMessage*>(message.get());
         auto result = sendPing(pingReqMessage->getTargetAddress(), 0);
-        if (result == failure_detector::ALIVE)
+        if (result)
         {
             auto sourceAddress = message->getSourceAddress();
             auto gossips = gossipProtocol->getGossipsForAddress(sourceAddress);

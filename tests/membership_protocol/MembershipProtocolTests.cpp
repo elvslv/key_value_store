@@ -76,6 +76,30 @@ namespace
         }
     };
 
+    class BrokenLinkMessageDispatcher: public utils::MessageDispatcher
+    {
+    public:
+        BrokenLinkMessageDispatcher(const network::Address& address, const network::Address& otherAddress, const std::shared_ptr<utils::Log>& logger):
+            utils::MessageDispatcher(address, logger),
+            otherAddress(otherAddress)
+        {
+        }
+
+        virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
+        {
+            if (destAddress == otherAddress)
+            {
+                return;
+            }
+
+            utils::MessageDispatcher::sendMessage(message, destAddress);
+        }
+
+    private:
+        network::Address otherAddress;
+    };
+
+
     template <class Rep, class Period>
     void test_n_nodes(unsigned char n, const std::chrono::duration<Rep, Period>& timeout)
     {
@@ -206,5 +230,60 @@ namespace
     TEST(MembershipProtocolTests, ThreeNodesOneFailed)
     {
         test_n_nodes_one_failed(3, 10s);
+    }
+
+    TEST(MembershipProtocolTests, BrokenLink) 
+    {
+        int n = 3;
+        auto timeout = 10s;
+
+        auto logger = std::make_shared<utils::Log>();
+        std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
+        std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
+        
+        std::vector<std::unique_ptr<membership_protocol::MembershipProtocol>> membershipProtocols;
+        for (unsigned char i = 0; i < n; ++i)
+        {
+            network::Address addr(std::array<unsigned char, 4>{{static_cast<unsigned char>(i + 1), 0, 0, 0}}, (i + 1) * 100);
+            std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
+            if (i < n - 1)
+            {
+                messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
+            }
+            else
+            {
+                network::Address otherAddress(std::array<unsigned char, 4>{{static_cast<unsigned char>(i), 0, 0, 0}}, (i) * 100);
+                messageDispatcher = std::make_shared<BrokenLinkMessageDispatcher>(addr, otherAddress, logger);
+            }
+            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+        }
+
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
+        {
+            (*it)->start();
+        }
+
+        // TODO: replace sleep with wait
+        std::this_thread::sleep_for(timeout);
+
+        int i = 0;
+        for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it, ++i)
+        {
+            auto members = (*it)->getMembers();
+            ASSERT_FALSE(members.empty());
+            auto membersNum = (*it)->getMembersNum();
+            ASSERT_EQ(members.size(), membersNum);
+            ASSERT_EQ(membersNum, n - 1);
+        }
+
+        for (auto it = membershipProtocols.rbegin(); it != membershipProtocols.rend(); ++it)
+        {
+            (*it)->requestStop();
+        }
+
+        for (auto it = membershipProtocols.rbegin(); it != membershipProtocols.rend(); ++it)
+        {
+            (*it)->stop();
+        }
     }
 }

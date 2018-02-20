@@ -17,6 +17,7 @@ namespace failure_detector
         virtual ~IFailureDetector(){};
         virtual void start() = 0;
         virtual void stop() = 0;
+        virtual void requestStop() = 0;
         virtual void addObserver(IObserver* observer) = 0;
     };
 }

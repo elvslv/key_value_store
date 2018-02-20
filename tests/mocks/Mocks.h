@@ -13,6 +13,8 @@ namespace mock
             void());
         MOCK_METHOD0(stop,
             void());
+        MOCK_METHOD0(requestStop,
+            void());
         MOCK_METHOD0(getMembers,
             std::vector<membership_protocol::Member>());
         MOCK_METHOD1(addObserver,
@@ -42,6 +44,8 @@ namespace mock
         MOCK_METHOD0(start,
             void());
         MOCK_METHOD0(stop,
+            void());
+        MOCK_METHOD0(requestStop,
             void());
         MOCK_METHOD1(addObserver,
             void(IObserver* observer));

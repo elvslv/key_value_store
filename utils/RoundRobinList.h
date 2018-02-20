@@ -94,6 +94,7 @@ namespace utils
             std::list<T> result;
 
             std::lock_guard<std::mutex> lock(elementsMutex);
+
             auto num = std::max(std::min(k, (int)elements.size() - 1), 0);
             auto it = currentElement;
             for (int i = 0; i < num; ++i)

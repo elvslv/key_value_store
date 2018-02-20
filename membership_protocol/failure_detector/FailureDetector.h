@@ -24,7 +24,8 @@ namespace failure_detector
         virtual void start();
         virtual void stop();
         virtual void addObserver(IFailureDetector::IObserver* observer);
-
+        virtual void requestStop();
+        
         virtual void onMembershipUpdate(const membership_protocol::MembershipUpdate& membershipUpdate);
     private:
         network::Address address;
@@ -47,6 +48,7 @@ namespace failure_detector
         utils::RunnableCallback runnable;
         std::list<std::thread> pingReqThreads;
         bool stopped;
+        bool stopRequested;
 
         void run();
         void onPingReq(std::unique_ptr<membership_protocol::Message> message);

@@ -23,6 +23,8 @@ namespace membership_protocol
 
         virtual void start();
         virtual void stop();
+        virtual void requestStop();
+
         virtual std::vector<Member> getMembers();
         virtual size_t getMembersNum();
         virtual void addObserver(IMembershipProtocol::IObserver* observer);
@@ -47,8 +49,8 @@ namespace membership_protocol
         std::atomic<bool> joined;
         bool stopped;
 
-        void onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource);
-        void onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress);
+        void onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource, bool spreadGossips = true);
+        void onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress, bool spreadGossips);
 
         void sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress);        
 
