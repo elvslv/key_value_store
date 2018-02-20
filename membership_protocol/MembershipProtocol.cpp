@@ -137,15 +137,15 @@ namespace membership_protocol
             }
         }
 
-        onMembershipUpdate(membershipUpdateType, FAILURE_DETECTOR, failureDetectorEvent.address, true);
+        onMembershipUpdate(membershipUpdateType, FAILURE_DETECTOR, failureDetectorEvent.address);
     }
 
     void MembershipProtocol::onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate)
     {
-        onMembershipUpdate(membershipUpdate.updateType, GOSSIP_PROTOCOL, membershipUpdate.address, true);
+        onMembershipUpdate(membershipUpdate.updateType, GOSSIP_PROTOCOL, membershipUpdate.address);
     }
 
-    void MembershipProtocol::onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress, bool spreadGossips = true)
+    void MembershipProtocol::onMembershipUpdate(MembershipUpdateType membershipUpdateType, MembershipUpdateSource membershipUpdateSource, const network::Address& sourceAddress)
     {
         if (sourceAddress == node)
         {
@@ -167,7 +167,7 @@ namespace membership_protocol
                     auto result = members.emplace(addressStr, sourceAddress);
 
                     auto membershipUpdate = MembershipUpdate(result.first->second.address, membership_protocol::JOINED);
-                    onMembershipUpdate(membershipUpdate, membershipUpdateSource, spreadGossips);
+                    onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
                 
                 break;
@@ -183,7 +183,7 @@ namespace membership_protocol
                     members.erase(addressStr);
 
                     auto membershipUpdate = MembershipUpdate(member.address, membership_protocol::FAILED);
-                    onMembershipUpdate(membershipUpdate, membershipUpdateSource, spreadGossips);
+                    onMembershipUpdate(membershipUpdate, membershipUpdateSource);
                 }
                 break;
             }
@@ -197,14 +197,14 @@ namespace membership_protocol
         }
     }
     
-    void MembershipProtocol::onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource, bool spreadGossips)
+    void MembershipProtocol::onMembershipUpdate(const MembershipUpdate& membershipUpdate, MembershipUpdateSource membershipUpdateSource)
     {
         for (auto observer : observers)
         {
             observer->onMembershipUpdate(membershipUpdate);
         }
 
-        if (spreadGossips && (membershipUpdateSource == FAILURE_DETECTOR || membershipUpdateSource == MEMBERSHIP_PROTOCOL || membershipUpdateSource == INITIAL_SYNC))
+        if (membershipUpdateSource == FAILURE_DETECTOR || membershipUpdateSource == MEMBERSHIP_PROTOCOL || membershipUpdateSource == INITIAL_SYNC)
         {
             gossipProtocol->spreadMembershipUpdate(membershipUpdate);
         }
@@ -231,7 +231,7 @@ namespace membership_protocol
             case JOINREP:
             {
                 onJoin();
-                onMembershipUpdate(JOINED, INITIAL_SYNC, sourceAddress, false);
+                onMembershipUpdate(JOINED, INITIAL_SYNC, sourceAddress);
 
                 auto joinRepMessage = static_cast<membership_protocol::JoinRepMessage*>(message.get());
                 gossipProtocol->onNewGossips(joinRepMessage->getSourceAddress(), joinRepMessage->getGossips());

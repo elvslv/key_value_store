@@ -232,11 +232,9 @@ namespace
         test_n_nodes_one_failed(3, 10s);
     }
 
-    TEST(MembershipProtocolTests, BrokenLink) 
+    template <class Rep, class Period>
+    void test_broken_link(int n, const std::chrono::duration<Rep, Period>& timeout)
     {
-        int n = 3;
-        auto timeout = 10s;
-
         auto logger = std::make_shared<utils::Log>();
         std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
         std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
@@ -285,5 +283,15 @@ namespace
         {
             (*it)->stop();
         }
+    }
+
+    TEST(MembershipProtocolTests, BrokenLink_3nodes) 
+    {
+        test_broken_link(3, 10s);
+    }
+
+    TEST(MembershipProtocolTests, BrokenLink_5nodes) 
+    {
+        test_broken_link(5, 20s);
     }
 }
