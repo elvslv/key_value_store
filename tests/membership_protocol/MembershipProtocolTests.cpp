@@ -112,7 +112,7 @@ namespace
         {
             network::Address addr(std::array<unsigned char, 4>{{static_cast<unsigned char>(i + 1), 0, 0, 0}}, (i + 1) * 100);
             std::shared_ptr<utils::MessageDispatcher> messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
-            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
         }
 
         for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
@@ -147,7 +147,7 @@ namespace
         std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
 
-        membership_protocol::MembershipProtocol membershipProtocol(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory);
+        membership_protocol::MembershipProtocol membershipProtocol(addr, logger,  membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory);
         membershipProtocol.start();
         auto members = membershipProtocol.getMembers();
         ASSERT_TRUE(members.empty());
@@ -185,7 +185,7 @@ namespace
             {
                 messageDispatcher = std::make_shared<FakeMessageDispatcher>(addr, logger);
             }
-            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
         }
 
         for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
@@ -253,7 +253,7 @@ namespace
                 network::Address otherAddress(std::array<unsigned char, 4>{{static_cast<unsigned char>(i), 0, 0, 0}}, (i) * 100);
                 messageDispatcher = std::make_shared<BrokenLinkMessageDispatcher>(addr, otherAddress, logger);
             }
-            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+            membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
         }
 
         for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)

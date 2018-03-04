@@ -11,8 +11,9 @@
 
 namespace membership_protocol
 {
-    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory): 
+    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const Config& config, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory): 
         node(addr),
+        config(config),
         messageDispatcher(messageDispatcher),
         tokens(),
         logger(logger),
@@ -48,16 +49,22 @@ namespace membership_protocol
         // is it a good place?
         tokens[PING] = messageDispatcher->listen(PING, asyncQueueCallback);
 
-        auto targetAddress = getJoinAddress();
-        if (targetAddress == node)
+        auto addressesToJoin = config.getAddressesToJoin();
+        for (auto it = addressesToJoin.begin(); it != addressesToJoin.end(); ++it)
         {
-            tokens[JOINREQ] = messageDispatcher->listen(JOINREQ, asyncQueueCallback);
-            onJoin();
-            return;
-        }
+            if (*it == node)
+            {
+                tokens[JOINREQ] = messageDispatcher->listen(JOINREQ, asyncQueueCallback);
+                onJoin();
+                return;
+            }
 
-        tokens[JOINREP] = messageDispatcher->listen(JOINREP, asyncQueueCallback);
-        messageDispatcher->sendMessage(std::make_unique<JoinReqMessage>(node, targetAddress), targetAddress);
+            if (tokens.find(JOINREP) == tokens.end())
+            {
+                tokens[JOINREP] = messageDispatcher->listen(JOINREP, asyncQueueCallback);
+            }
+            messageDispatcher->sendMessage(std::make_unique<JoinReqMessage>(node, *it), *it);
+        }
     }
 
     void MembershipProtocol::stop()
@@ -214,6 +221,12 @@ namespace membership_protocol
 
     void MembershipProtocol::onJoin()
     {
+        if (joined)
+        {
+            log("Already joined the group");
+            return;
+        }
+
         log("Joined the group");
 
         failureDetector->start();
@@ -268,11 +281,5 @@ namespace membership_protocol
                 break;
             }
         }
-    }
-
-    network::Address MembershipProtocol::getJoinAddress()
-    {
-        // TODO: how do we figure out join address?
-        return network::Address("1.0.0.0:100");
     }
 }

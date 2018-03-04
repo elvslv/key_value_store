@@ -12,13 +12,14 @@
 #include "utils/AsyncQueue.h"
 #include "Member.h"
 #include "messages/Message.h"
+#include "Config.h"
 
 namespace membership_protocol
 {
     class MembershipProtocol: public IMembershipProtocol, failure_detector::IFailureDetector::IObserver, gossip_protocol::IGossipProtocol::IObserver
     {
     public:
-        MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory);
+        MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const Config& config, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory);
         virtual ~MembershipProtocol();
 
         virtual void start();
@@ -33,6 +34,7 @@ namespace membership_protocol
         virtual void onGossipEvent(const membership_protocol::MembershipUpdate& membershipUpdate);
     private:
         network::Address node;
+        Config config;
         std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
         std::unordered_map<MsgTypes, std::string> tokens;
         std::shared_ptr<utils::Log> logger;
@@ -54,7 +56,6 @@ namespace membership_protocol
 
         void sendMessage(const std::unique_ptr<Message>& message, const network::Address& destAddress);        
 
-        network::Address getJoinAddress();
         void onJoin();
         void addMember(const network::Address& address);
 
