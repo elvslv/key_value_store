@@ -16,6 +16,7 @@ add_subdirectory(network)
 add_subdirectory(utils)
 add_subdirectory(membership_protocol)
 add_subdirectory(proto)
+add_subdirectory(key_value_store)
 
 add_executable(app main.cpp)
 target_link_libraries(app key_value_store_lib proto)

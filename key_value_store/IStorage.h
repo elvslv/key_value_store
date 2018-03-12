@@ -1,0 +1,22 @@
+#pragma once
+
+#include <string>
+
+namespace key_value_store
+{
+    struct Record
+    {
+        std::string value;
+    };
+
+    class IStorage
+    {
+    public:
+        virtual ~IStorage(){}
+
+        virtual Record get(const std::string& key) = 0;
+        virtual void insert(const std::string& key, const Record& value) = 0;
+        virtual void update(const std::string& key, const Record& value) = 0;
+        virtual void remove(const std::string& key) = 0;
+    };
+}
