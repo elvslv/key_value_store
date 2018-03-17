@@ -1,16 +1,26 @@
 #pragma once
+#include <list>
 #include <stdexcept>
 
 namespace utils
 {
-    class NotImplementedException: public std::logic_error
+class ComplexException : public std::exception
+{
+public:
+    ComplexException(){};
+    void addException(std::exception_ptr exc)
     {
-    public:
-        NotImplementedException() :
-            std::logic_error("Function not yet implemented") 
-        {
-        };
-    };    
+        exceptions.push_back(exc);
+    }
+
+private:
+    std::list<std::exception_ptr> exceptions;
+};
+
+class NotImplementedException : public std::logic_error
+{
+public:
+    NotImplementedException()
+        : std::logic_error("Function not yet implemented"){};
+};
 }
-
-

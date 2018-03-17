@@ -6,6 +6,10 @@ namespace key_value_store
 {
     struct Record
     {
+        Record(const std::string& value):
+            value(value)
+        {
+        }
         std::string value;
     };
 
