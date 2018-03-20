@@ -67,8 +67,8 @@ void Node::processClientRequest(const std::string& key, std::function<bool()> lo
         throw std::logic_error("Not enough nodes!!!");
     }
 
-    std::atomic<int> count = 0;
-    std::atomic<int> succeeded = 0;
+    std::atomic<int> count(0);
+    std::atomic<int> succeeded(0);
 
     std::mutex mutex;
     std::condition_variable cv;
