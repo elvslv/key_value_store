@@ -8,7 +8,7 @@ Partitioner::Partitioner(size_t ringSize)
 {
 }
 
-std::vector<network::Address> Partitioner::getTargetNodes(const std::string& key, const std::vector<membership_protocol::Member>& members)
+std::vector<network::Address> Partitioner::getTargetNodes(const std::string& key, std::vector<membership_protocol::Member> members)
 {
     std::sort(members.begin(), members.end(), [this](const membership_protocol::Member& member1, const membership_protocol::Member& member2) {
         return member1.hash(ringSize) < member2.hash(ringSize);

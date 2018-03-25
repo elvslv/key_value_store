@@ -68,6 +68,8 @@
         "bitset": "cpp",
         "random": "cpp",
         "condition_variable": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "string_view": "cpp",
+        "__nullptr": "cpp"
     }
 }
