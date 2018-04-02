@@ -1,40 +1,130 @@
 #pragma once
 
+#include <chrono>
 #include <functional>
 #include <memory>
 #include <thread>
 #include <unordered_map>
-#include <chrono>
 
+#include "Log.h"
 #include "network/Message.h"
 #include "network/Network.h"
-#include "membership_protocol/messages/Message.h"
 #include "utils/MessageDispatcher.h"
 #include "utils/Runnable.h"
-#include "Log.h"
+#include "utils/Utils.h"
 
 namespace utils
 {
-    class MessageDispatcher: public Runnable
+template <typename MessageT>
+class MessageDispatcher : public Runnable
+{
+public:
+    typedef std::function<void(std::unique_ptr<MessageT>)> Callback;
+
+    MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger)
+        : network(address)
+        , logger(logger)
+        , callbacks()
     {
-    public:
-        typedef std::function<void(std::unique_ptr<membership_protocol::Message>)> Callback;
+    }
 
-        MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger);
+    virtual std::string listen(typename MessageT::MsgTypes msgType, const Callback& callback)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
 
-        virtual std::string listen(membership_protocol::MsgTypes msgType, const Callback& callback);
-        virtual void stopListening(membership_protocol::MsgTypes msgType, const std::string& token);
-        virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress);
-    private:
-        static const int TOKEN_LENGTH = 10;
-        static const std::chrono::duration<long long, std::milli> SLEEP_DELAY;
+        if (callbacks.find(msgType) != callbacks.end())
+        {
+            std::stringstream ss;
+            ss << "Listener to message " << msgType << " already exists";
+            throw std::logic_error(ss.str());
+        }
 
-        network::Network network;
-        std::shared_ptr<Log> logger;
-        std::mutex mutex;
-        std::unordered_map<membership_protocol::MsgTypes, Callback> callbacks;
-        std::unordered_map<membership_protocol::MsgTypes, std::string> tokens;
-        
-        virtual void run();
-    };
+        std::string token = Utils::getRandomString(TOKEN_LENGTH);
+        callbacks[msgType] = callback;
+        tokens[msgType] = token;
+
+        return token;
+    }
+
+    virtual void stopListening(typename MessageT::MsgTypes msgType, const std::string& token)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+
+        auto it = callbacks.find(msgType);
+        if (it == callbacks.end())
+        {
+            std::stringstream ss;
+            ss << "Listener to message " << msgType << " not found";
+            throw std::logic_error(ss.str());
+        }
+
+        if (tokens[msgType] != token)
+        {
+            std::stringstream ss;
+            ss << "Given listener " << token << " of message " << msgType << " doesn't match registered listener " << tokens[msgType];
+            throw std::logic_error(ss.str());
+        }
+
+        callbacks.erase(it);
+        tokens.erase(msgType);
+    }
+
+    virtual void sendMessage(const std::unique_ptr<MessageT>& message, const network::Address& destAddress)
+    {
+        auto msg = message->serialize();
+        logger->log("Sending message to ", destAddress.toString());
+
+        network.send(destAddress, msg);
+    }
+
+private:
+    static const int TOKEN_LENGTH = 10;
+    static constexpr std::chrono::duration<long long, std::milli> SLEEP_DELAY = std::chrono::milliseconds(100);
+
+    network::Network network;
+    std::shared_ptr<Log> logger;
+    std::mutex mutex;
+    std::unordered_map<typename MessageT::MsgTypes, Callback> callbacks;
+    std::unordered_map<typename MessageT::MsgTypes, std::string> tokens;
+
+    virtual void run()
+    {
+        logger->log("<MessageDispatcher::run> -- start");
+
+        while (isRunning)
+        {
+            auto message = network.receive();
+            if (message.empty())
+            {
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(MessageDispatcher::SLEEP_DELAY);
+                continue;
+            }
+
+            auto parsedMessage = MessageT::parseMessage(message);
+            logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageTypeDescription(), " from ", parsedMessage->getSourceAddress().toString(), " to ", parsedMessage->getDestinationAddress(), " id ", parsedMessage->getId());
+
+            Callback callback;
+            {
+                std::lock_guard<std::mutex> lock(mutex);
+
+                auto it = callbacks.find(parsedMessage->getMessageType());
+                if (it == callbacks.end())
+                {
+                    logger->log("<MessageDispatcher> -- listeners of ", parsedMessage->getMessageTypeDescription(), " not found. Discarding this message");
+                    continue;
+                }
+
+                callback = it->second;
+            }
+
+            callback(std::move(parsedMessage));
+        }
+
+        logger->log("<MessageDispatcher::run> -- stop");
+    }
+};
+
+template <typename MessageT>
+constexpr std::chrono::duration<long long, std::milli> MessageDispatcher<MessageT>::SLEEP_DELAY;
 }

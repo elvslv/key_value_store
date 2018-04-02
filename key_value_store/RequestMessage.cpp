@@ -10,24 +10,21 @@
 
 namespace key_value_store
 {
-RequestMessage::RequestMessage(RequestMessageType messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
-    : messageType(messageType)
-    , sourceAddress(sourceAddress)
-    , destinationAddress(destinationAddress)
-    , key(key)
-    , id(id)
-{
-}
-
-RequestMessage::RequestMessage(RequestMessageType messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
-    : messageType(messageType)
-    , sourceAddress(sourceAddress)
-    , destinationAddress(destinationAddress)
+RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
+    : utils::Message(sourceAddress, destinationAddress, id)
+    , messageType(messageType)
     , key(key)
 {
 }
 
-RequestMessageType RequestMessage::getMessageType() const
+RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
+    : utils::Message(sourceAddress, destinationAddress)
+    , messageType(messageType)
+    , key(key)
+{
+}
+
+RequestMessage::MsgTypes RequestMessage::getMessageType() const
 {
     return messageType;
 }
@@ -152,7 +149,7 @@ gen::RequestMessageType RequestMessage::getProtobufMessageType() const
     throw utils::NotImplementedException();
 }
 
-std::string RequestMessage::getMsgTypeStr(RequestMessageType msgType)
+std::string RequestMessage::getMsgTypeStr(MsgTypes msgType)
 {
     switch (msgType)
     {

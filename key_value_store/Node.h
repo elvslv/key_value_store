@@ -3,10 +3,13 @@
 #include "INode.h"
 #include "IPartitioner.h"
 #include "IStorage.h"
+#include "RequestMessage.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "network/Address.h"
 #include "utils/Log.h"
+#include "utils/MessageDispatcher.h"
 #include "utils/Runnable.h"
+
 #include <list>
 
 namespace key_value_store
@@ -14,7 +17,7 @@ namespace key_value_store
 class Node : INode
 {
 public:
-    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner);
+    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher<RequestMessage>>& messageDispatcher);
 
     virtual ~Node() {}
 
@@ -41,6 +44,7 @@ private:
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
     std::unique_ptr<IStorage> storage;
     std::unique_ptr<IPartitioner> partitioner;
+    std::shared_ptr<utils::MessageDispatcher<RequestMessage>> messageDispatcher;
 
     utils::RunnableCallback runnable;
 };

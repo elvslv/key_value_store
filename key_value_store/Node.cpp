@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "CreateRequestMessage.h"
 #include "utils/Exceptions.h"
 #include <array>
 #include <exception>
@@ -13,12 +14,14 @@ Node::Node(const network::Address& address,
     std::unique_ptr<membership_protocol::IMembershipProtocol>
         membershipProtocol,
     std::unique_ptr<IStorage> storage,
-    std::unique_ptr<IPartitioner> partitioner)
+    std::unique_ptr<IPartitioner> partitioner,
+    const std::shared_ptr<utils::MessageDispatcher<RequestMessage>>& messageDispatcher)
     : address(address)
     , logger(logger)
     , membershipProtocol(std::move(membershipProtocol))
     , storage(std::move(storage))
     , partitioner(std::move(partitioner))
+    , messageDispatcher(messageDispatcher)
     , runnable([this]() { run(); })
 {
 }
@@ -135,7 +138,7 @@ bool Node::createLocally(const std::string& key, const std::string& value)
 bool Node::sendCreateMessage(const network::Address& target,
     const std::string& key, const std::string& value)
 {
-    throw utils::NotImplementedException();
+    messageDispatcher->sendMessage(std::make_unique<CreateRequestMessage>(address, target, key, value), target);
 }
 
 std::string Node::read(const std::string& key)

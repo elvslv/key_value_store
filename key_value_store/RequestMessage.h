@@ -3,31 +3,27 @@
 #include "network/Address.h"
 #include "network/Message.h"
 #include "proto/KeyValueStoreMessage.pb.h"
+#include "utils/Message.h"
 
 #include <memory>
 
 namespace key_value_store
 {
 
-enum RequestMessageType
-{
-    CREATE,
-    UPDATE,
-    READ,
-    DELETE,
-};
-
-class RequestMessage
+class RequestMessage : public utils::Message
 {
 public:
+    enum MsgTypes
+    {
+        CREATE,
+        UPDATE,
+        READ,
+        DELETE,
+    };
+
     virtual ~RequestMessage(){};
-    RequestMessage(RequestMessage&&) = default;
-    RequestMessage& operator=(RequestMessage&&) = default;
 
-    RequestMessage(const RequestMessage&) = default;
-    RequestMessage& operator=(const RequestMessage&) = default;
-
-    RequestMessageType getMessageType() const;
+    MsgTypes getMessageType() const;
     network::Address getDestinationAddress() const;
     network::Address getSourceAddress() const;
     std::string getKey() const;
@@ -38,18 +34,15 @@ public:
     virtual network::Message serialize() const;
 
 protected:
-    RequestMessage(RequestMessageType messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id);
-    RequestMessage(RequestMessageType messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key);
+    RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id);
+    RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key);
 
     virtual gen::RequestMessage serializeToProtobuf() const;
     gen::RequestMessageType getProtobufMessageType() const;
-    static std::string getMsgTypeStr(RequestMessageType msgType);
+    static std::string getMsgTypeStr(MsgTypes msgType);
 
 private:
-    RequestMessageType messageType;
-    network::Address sourceAddress;
-    network::Address destinationAddress;
+    MsgTypes messageType;
     std::string key;
-    std::string id;
 };
 }

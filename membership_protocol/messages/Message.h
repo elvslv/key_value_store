@@ -3,31 +3,27 @@
 #include "network/Address.h"
 #include "network/Message.h"
 #include "proto/MembershipProtocolMessage.pb.h"
+#include "utils/Message.h"
 #include <iostream>
 #include <memory>
 #include <string>
 
 namespace membership_protocol
 {
-enum MsgTypes
-{
-    JOINREQ,
-    JOINREP,
-    PING,
-    ACK,
-    PING_REQ,
-    // DUMMYLASTMSGTYPE
-};
-
-class Message
+class Message : public utils::Message
 {
 public:
-    virtual ~Message(){};
-    Message(Message&&) = default;
-    Message& operator=(Message&&) = default;
+    enum MsgTypes
+    {
+        JOINREQ,
+        JOINREP,
+        PING,
+        ACK,
+        PING_REQ,
+        // DUMMYLASTMSGTYPE
+    };
 
-    Message(const Message&) = default;
-    Message& operator=(const Message&) = default;
+    virtual ~Message(){};
 
     MsgTypes getMessageType() const;
     std::string getMessageTypeDescription() const;
@@ -35,9 +31,6 @@ public:
     static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage);
     virtual std::string toString() const;
     virtual network::Message serialize() const;
-    const network::Address& getSourceAddress() const;
-    const network::Address& getDestinationAddress() const;
-    const std::string& getId() const;
 
 protected:
     Message(MsgTypes messageType, const network::Address& srcAddress, const network::Address& destAddress);
@@ -46,11 +39,7 @@ protected:
     virtual gen::MessageType getProtobufMessageType() const = 0;
     static std::string getMsgTypeStr(MsgTypes msgType);
 
-    network::Address from;
-    network::Address to;
-
 private:
     MsgTypes messageType;
-    std::string id;
 };
 }

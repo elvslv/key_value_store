@@ -21,14 +21,12 @@ Message::Message(MsgTypes msgType, const network::Address& srcAddress, const net
 }
 
 Message::Message(MsgTypes msgType, const network::Address& srcAddress, const network::Address& destAddress, const std::string& id)
-    : from(srcAddress)
-    , to(destAddress)
+    : utils::Message(srcAddress, destAddress, id)
     , messageType(msgType)
-    , id(id)
 {
 }
 
-MsgTypes Message::getMessageType() const
+Message::MsgTypes Message::getMessageType() const
 {
     return messageType;
 }
@@ -112,21 +110,6 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
     throw std::logic_error("not impelemnted");
 }
 
-const network::Address& Message::getSourceAddress() const
-{
-    return from;
-}
-
-const network::Address& Message::getDestinationAddress() const
-{
-    return to;
-}
-
-const std::string& Message::getId() const
-{
-    return id;
-}
-
 network::Message Message::serialize() const
 {
     gen::Message message = serializeToProtobuf();
@@ -140,8 +123,8 @@ network::Message Message::serialize() const
 
 gen::Message Message::serializeToProtobuf() const
 {
-    auto srcAddress = from.serialize();
-    auto destAddress = to.serialize();
+    auto srcAddress = sourceAddress.serialize();
+    auto destAddress = destinationAddress.serialize();
 
     gen::Message message;
     message.set_messagetype(getProtobufMessageType());
@@ -155,7 +138,7 @@ gen::Message Message::serializeToProtobuf() const
 std::string Message::toString() const
 {
     std::stringstream ss;
-    ss << getMsgTypeStr(messageType) << " from " << from.toString() << " to " << to.toString() << "id " << id << std::endl;
+    ss << getMsgTypeStr(messageType) << " from " << sourceAddress.toString() << " to " << destinationAddress.toString() << "id " << id << std::endl;
     return ss.str();
 }
 
