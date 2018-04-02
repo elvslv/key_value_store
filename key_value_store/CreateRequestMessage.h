@@ -1,3 +1,4 @@
+#pragma once
 #include "RequestMessage.h"
 
 namespace key_value_store
