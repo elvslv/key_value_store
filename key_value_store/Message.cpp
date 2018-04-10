@@ -6,6 +6,8 @@
 #include "UpdateRequestMessage.h"
 #include "utils/Exceptions.h"
 
+#include <sstream>
+
 namespace key_value_store
 {
 std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMessage)
@@ -72,5 +74,23 @@ gen::Message Message::serializeToProtobuf() const
     message.set_id(id);
 
     return message;
+}
+
+network::Message Message::serialize() const
+{
+    gen::Message message = serializeToProtobuf();
+
+    unsigned int size = message.ByteSize();
+    char* data = new char[size];
+    message.SerializeToArray(data, size);
+
+    return network::Message(data, size);
+}
+
+std::string Message::toString() const
+{
+    std::stringstream ss;
+    ss << getMsgTypeStr() << " request from " << sourceAddress.toString() << " to " << destinationAddress.toString() << "id " << id << std::endl;
+    return ss.str();
 }
 }

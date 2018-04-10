@@ -32,24 +32,6 @@ std::string RequestMessage::getKey() const
     return key;
 }
 
-std::string RequestMessage::toString() const
-{
-    std::stringstream ss;
-    ss << getMsgTypeStr(messageType) << " request from " << sourceAddress.toString() << " to " << destinationAddress.toString() << "id " << id << std::endl;
-    return ss.str();
-}
-
-network::Message RequestMessage::serialize() const
-{
-    gen::Message message = serializeToProtobuf();
-
-    unsigned int size = message.ByteSize();
-    char* data = new char[size];
-    message.SerializeToArray(data, size);
-
-    return network::Message(data, size);
-}
-
 gen::Message RequestMessage::serializeToProtobuf() const
 {
     auto message = Message::serializeToProtobuf();
@@ -81,9 +63,9 @@ gen::RequestMessageType RequestMessage::getProtobufMessageType() const
     throw utils::NotImplementedException();
 }
 
-std::string RequestMessage::getMsgTypeStr(MsgTypes msgType)
+std::string RequestMessage::getMsgTypeStr() const
 {
-    switch (msgType)
+    switch (messageType)
     {
     case CREATE:
         return "CREATE";
