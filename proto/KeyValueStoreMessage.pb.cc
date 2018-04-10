@@ -48,13 +48,18 @@ class ResponseMessageDefaultTypeInternal : public ::google::protobuf::internal::
   const ::gen::ReadResponseFields* readfields_;
   const ::gen::DeleteResponseFields* deletefields_;
 } _ResponseMessage_default_instance_;
+class MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Message> {
+  public:
+  const ::gen::RequestMessage* requestmessage_;
+  const ::gen::ResponseMessage* responsemessage_;
+} _Message_default_instance_;
 
 namespace protobuf_KeyValueStoreMessage_2eproto {
 
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[10];
+::google::protobuf::Metadata file_level_metadata[11];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 }  // namespace
@@ -70,6 +75,7 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
 };
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
     TableStruct::schema[] = {
+  { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
@@ -111,9 +117,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, messagetype_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, sourceaddress_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, destinationaddress_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, key_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), createfields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), updatefields_),
@@ -146,9 +149,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, messagetype_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, sourceaddress_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, destinationaddress_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, originalmessageid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, responsecode_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), createfields_),
@@ -156,6 +156,17 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), readfields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), deletefields_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, customFields_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, _internal_metadata_),
+  ~0u,  // no _extensions_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, _oneof_case_[0]),
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, sourceaddress_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, destinationaddress_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, id_),
+  GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_Message_default_instance_), requestmessage_),
+  GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_Message_default_instance_), responsemessage_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, messageInternal_),
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
@@ -164,11 +175,12 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 12, -1, sizeof(ReadRequestFields)},
   { 17, -1, sizeof(DeleteRequestFields)},
   { 22, -1, sizeof(RequestMessage)},
-  { 37, -1, sizeof(CreateResponseFields)},
-  { 42, -1, sizeof(UpdateResponseFields)},
-  { 47, -1, sizeof(ReadResponseFields)},
-  { 52, -1, sizeof(DeleteResponseFields)},
-  { 57, -1, sizeof(ResponseMessage)},
+  { 34, -1, sizeof(CreateResponseFields)},
+  { 39, -1, sizeof(UpdateResponseFields)},
+  { 44, -1, sizeof(ReadResponseFields)},
+  { 49, -1, sizeof(DeleteResponseFields)},
+  { 54, -1, sizeof(ResponseMessage)},
+  { 67, -1, sizeof(Message)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -182,6 +194,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_ReadResponseFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_DeleteResponseFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ResponseMessage_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_Message_default_instance_),
 };
 
 namespace {
@@ -202,7 +215,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 10);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 11);
 }
 
 }  // namespace
@@ -228,6 +241,8 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[8].reflection;
   _ResponseMessage_default_instance_.Shutdown();
   delete file_level_metadata[9].reflection;
+  _Message_default_instance_.Shutdown();
+  delete file_level_metadata[10].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -245,10 +260,7 @@ void TableStruct::InitDefaultsImpl() {
   _ReadResponseFields_default_instance_.DefaultConstruct();
   _DeleteResponseFields_default_instance_.DefaultConstruct();
   _ResponseMessage_default_instance_.DefaultConstruct();
-  _RequestMessage_default_instance_.get_mutable()->sourceaddress_ = const_cast< ::gen::Address*>(
-      ::gen::Address::internal_default_instance());
-  _RequestMessage_default_instance_.get_mutable()->destinationaddress_ = const_cast< ::gen::Address*>(
-      ::gen::Address::internal_default_instance());
+  _Message_default_instance_.DefaultConstruct();
   _RequestMessage_default_instance_.createfields_ = const_cast< ::gen::CreateRequestFields*>(
       ::gen::CreateRequestFields::internal_default_instance());
   _RequestMessage_default_instance_.updatefields_ = const_cast< ::gen::UpdateRequestFields*>(
@@ -257,10 +269,6 @@ void TableStruct::InitDefaultsImpl() {
       ::gen::ReadRequestFields::internal_default_instance());
   _RequestMessage_default_instance_.deletefields_ = const_cast< ::gen::DeleteRequestFields*>(
       ::gen::DeleteRequestFields::internal_default_instance());
-  _ResponseMessage_default_instance_.get_mutable()->sourceaddress_ = const_cast< ::gen::Address*>(
-      ::gen::Address::internal_default_instance());
-  _ResponseMessage_default_instance_.get_mutable()->destinationaddress_ = const_cast< ::gen::Address*>(
-      ::gen::Address::internal_default_instance());
   _ResponseMessage_default_instance_.createfields_ = const_cast< ::gen::CreateResponseFields*>(
       ::gen::CreateResponseFields::internal_default_instance());
   _ResponseMessage_default_instance_.updatefields_ = const_cast< ::gen::UpdateResponseFields*>(
@@ -269,6 +277,14 @@ void TableStruct::InitDefaultsImpl() {
       ::gen::ReadResponseFields::internal_default_instance());
   _ResponseMessage_default_instance_.deletefields_ = const_cast< ::gen::DeleteResponseFields*>(
       ::gen::DeleteResponseFields::internal_default_instance());
+  _Message_default_instance_.get_mutable()->sourceaddress_ = const_cast< ::gen::Address*>(
+      ::gen::Address::internal_default_instance());
+  _Message_default_instance_.get_mutable()->destinationaddress_ = const_cast< ::gen::Address*>(
+      ::gen::Address::internal_default_instance());
+  _Message_default_instance_.requestmessage_ = const_cast< ::gen::RequestMessage*>(
+      ::gen::RequestMessage::internal_default_instance());
+  _Message_default_instance_.responsemessage_ = const_cast< ::gen::ResponseMessage*>(
+      ::gen::ResponseMessage::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -282,37 +298,38 @@ void AddDescriptorsImpl() {
       "ss.proto\"$\n\023CreateRequestFields\022\r\n\005value"
       "\030\001 \001(\t\"$\n\023UpdateRequestFields\022\r\n\005value\030\001"
       " \001(\t\"\023\n\021ReadRequestFields\"\025\n\023DeleteReque"
-      "stFields\"\372\002\n\016RequestMessage\022,\n\013messageTy"
-      "pe\030\001 \001(\0162\027.gen.RequestMessageType\022#\n\rsou"
-      "rceAddress\030\002 \001(\0132\014.gen.Address\022(\n\022destin"
-      "ationAddress\030\003 \001(\0132\014.gen.Address\022\n\n\002id\030\004"
-      " \001(\t\022\013\n\003key\030\005 \001(\t\0220\n\014createFields\030\006 \001(\0132"
-      "\030.gen.CreateRequestFieldsH\000\0220\n\014updateFie"
-      "lds\030\007 \001(\0132\030.gen.UpdateRequestFieldsH\000\022,\n"
-      "\nreadFields\030\010 \001(\0132\026.gen.ReadRequestField"
-      "sH\000\0220\n\014deleteFields\030\t \001(\0132\030.gen.DeleteRe"
-      "questFieldsH\000B\016\n\014customFields\"\026\n\024CreateR"
-      "esponseFields\"\026\n\024UpdateResponseFields\"\024\n"
-      "\022ReadResponseFields\"\026\n\024DeleteResponseFie"
-      "lds\"\244\003\n\017ResponseMessage\022-\n\013messageType\030\001"
-      " \001(\0162\030.gen.ResponseMessageType\022#\n\rsource"
-      "Address\030\002 \001(\0132\014.gen.Address\022(\n\022destinati"
-      "onAddress\030\003 \001(\0132\014.gen.Address\022\n\n\002id\030\004 \001("
-      "\t\022\031\n\021originalMessageId\030\005 \001(\t\022\024\n\014response"
-      "Code\030\006 \001(\005\0221\n\014createFields\030\007 \001(\0132\031.gen.C"
-      "reateResponseFieldsH\000\0221\n\014updateFields\030\010 "
-      "\001(\0132\031.gen.UpdateResponseFieldsH\000\022-\n\nread"
-      "Fields\030\t \001(\0132\027.gen.ReadResponseFieldsH\000\022"
-      "1\n\014deleteFields\030\n \001(\0132\031.gen.DeleteRespon"
-      "seFieldsH\000B\016\n\014customFields*b\n\022RequestMes"
-      "sageType\022\022\n\016CREATE_REQUEST\020\000\022\022\n\016UPDATE_R"
-      "EQUEST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n\016DELETE_REQ"
-      "UEST\020\003*g\n\023ResponseMessageType\022\023\n\017CREATE_"
-      "RESPONSE\020\000\022\023\n\017UPDATE_RESPONSE\020\001\022\021\n\rREAD_"
-      "RESPONSE\020\002\022\023\n\017DELETE_RESPONSE\020\003b\006proto3"
+      "stFields\"\237\002\n\016RequestMessage\022,\n\013messageTy"
+      "pe\030\001 \001(\0162\027.gen.RequestMessageType\022\013\n\003key"
+      "\030\002 \001(\t\0220\n\014createFields\030\003 \001(\0132\030.gen.Creat"
+      "eRequestFieldsH\000\0220\n\014updateFields\030\004 \001(\0132\030"
+      ".gen.UpdateRequestFieldsH\000\022,\n\nreadFields"
+      "\030\005 \001(\0132\026.gen.ReadRequestFieldsH\000\0220\n\014dele"
+      "teFields\030\006 \001(\0132\030.gen.DeleteRequestFields"
+      "H\000B\016\n\014customFields\"\026\n\024CreateResponseFiel"
+      "ds\"\026\n\024UpdateResponseFields\"\024\n\022ReadRespon"
+      "seFields\"\026\n\024DeleteResponseFields\"\311\002\n\017Res"
+      "ponseMessage\022-\n\013messageType\030\001 \001(\0162\030.gen."
+      "ResponseMessageType\022\031\n\021originalMessageId"
+      "\030\002 \001(\t\022\024\n\014responseCode\030\003 \001(\005\0221\n\014createFi"
+      "elds\030\004 \001(\0132\031.gen.CreateResponseFieldsH\000\022"
+      "1\n\014updateFields\030\005 \001(\0132\031.gen.UpdateRespon"
+      "seFieldsH\000\022-\n\nreadFields\030\006 \001(\0132\027.gen.Rea"
+      "dResponseFieldsH\000\0221\n\014deleteFields\030\007 \001(\0132"
+      "\031.gen.DeleteResponseFieldsH\000B\016\n\014customFi"
+      "elds\"\327\001\n\007Message\022#\n\rsourceAddress\030\001 \001(\0132"
+      "\014.gen.Address\022(\n\022destinationAddress\030\002 \001("
+      "\0132\014.gen.Address\022\n\n\002id\030\003 \001(\t\022-\n\016requestMe"
+      "ssage\030\004 \001(\0132\023.gen.RequestMessageH\000\022/\n\017re"
+      "sponseMessage\030\005 \001(\0132\024.gen.ResponseMessag"
+      "eH\000B\021\n\017messageInternal*b\n\022RequestMessage"
+      "Type\022\022\n\016CREATE_REQUEST\020\000\022\022\n\016UPDATE_REQUE"
+      "ST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n\016DELETE_REQUEST"
+      "\020\003*g\n\023ResponseMessageType\022\023\n\017CREATE_RESP"
+      "ONSE\020\000\022\023\n\017UPDATE_RESPONSE\020\001\022\021\n\rREAD_RESP"
+      "ONSE\020\002\022\023\n\017DELETE_RESPONSE\020\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1279);
+      descriptor, 1315);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KeyValueStoreMessage.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -1303,9 +1320,6 @@ void DeleteRequestFields::InternalSwap(DeleteRequestFields* other) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RequestMessage::kMessageTypeFieldNumber;
-const int RequestMessage::kSourceAddressFieldNumber;
-const int RequestMessage::kDestinationAddressFieldNumber;
-const int RequestMessage::kIdFieldNumber;
 const int RequestMessage::kKeyFieldNumber;
 const int RequestMessage::kCreateFieldsFieldNumber;
 const int RequestMessage::kUpdateFieldsFieldNumber;
@@ -1326,23 +1340,9 @@ RequestMessage::RequestMessage(const RequestMessage& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.id().size() > 0) {
-    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
-  }
   key_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.key().size() > 0) {
     key_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.key_);
-  }
-  if (from.has_sourceaddress()) {
-    sourceaddress_ = new ::gen::Address(*from.sourceaddress_);
-  } else {
-    sourceaddress_ = NULL;
-  }
-  if (from.has_destinationaddress()) {
-    destinationaddress_ = new ::gen::Address(*from.destinationaddress_);
-  } else {
-    destinationaddress_ = NULL;
   }
   messagetype_ = from.messagetype_;
   clear_has_customFields();
@@ -1371,10 +1371,8 @@ RequestMessage::RequestMessage(const RequestMessage& from)
 }
 
 void RequestMessage::SharedCtor() {
-  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   key_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&sourceaddress_, 0, reinterpret_cast<char*>(&messagetype_) -
-    reinterpret_cast<char*>(&sourceaddress_) + sizeof(messagetype_));
+  messagetype_ = 0;
   clear_has_customFields();
   _cached_size_ = 0;
 }
@@ -1385,14 +1383,7 @@ RequestMessage::~RequestMessage() {
 }
 
 void RequestMessage::SharedDtor() {
-  id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   key_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) {
-    delete sourceaddress_;
-  }
-  if (this != internal_default_instance()) {
-    delete destinationaddress_;
-  }
   if (has_customFields()) {
     clear_customFields();
   }
@@ -1450,16 +1441,7 @@ void RequestMessage::clear_customFields() {
 
 void RequestMessage::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.RequestMessage)
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) {
-    delete sourceaddress_;
-  }
-  sourceaddress_ = NULL;
-  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) {
-    delete destinationaddress_;
-  }
-  destinationaddress_ = NULL;
   messagetype_ = 0;
   clear_customFields();
 }
@@ -1489,50 +1471,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.Address sourceAddress = 2;
+      // string key = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_sourceaddress()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .gen.Address destinationAddress = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_destinationaddress()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string id = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_id()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->id().data(), this->id().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.RequestMessage.id"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string key = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_key()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1545,10 +1487,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.CreateRequestFields createFields = 6;
-      case 6: {
+      // .gen.CreateRequestFields createFields = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(50u)) {
+            static_cast< ::google::protobuf::uint8>(26u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_createfields()));
         } else {
@@ -1557,10 +1499,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.UpdateRequestFields updateFields = 7;
-      case 7: {
+      // .gen.UpdateRequestFields updateFields = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(58u)) {
+            static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_updatefields()));
         } else {
@@ -1569,10 +1511,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.ReadRequestFields readFields = 8;
-      case 8: {
+      // .gen.ReadRequestFields readFields = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(66u)) {
+            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_readfields()));
         } else {
@@ -1581,10 +1523,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.DeleteRequestFields deleteFields = 9;
-      case 9: {
+      // .gen.DeleteRequestFields deleteFields = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(74u)) {
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_deletefields()));
         } else {
@@ -1626,60 +1568,38 @@ void RequestMessage::SerializeWithCachedSizes(
       1, this->messagetype(), output);
   }
 
-  // .gen.Address sourceAddress = 2;
-  if (this->has_sourceaddress()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->sourceaddress_, output);
-  }
-
-  // .gen.Address destinationAddress = 3;
-  if (this->has_destinationaddress()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->destinationaddress_, output);
-  }
-
-  // string id = 4;
-  if (this->id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.RequestMessage.id");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->id(), output);
-  }
-
-  // string key = 5;
+  // string key = 2;
   if (this->key().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->key().data(), this->key().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "gen.RequestMessage.key");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      5, this->key(), output);
+      2, this->key(), output);
   }
 
-  // .gen.CreateRequestFields createFields = 6;
+  // .gen.CreateRequestFields createFields = 3;
   if (has_createfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, *customFields_.createfields_, output);
+      3, *customFields_.createfields_, output);
   }
 
-  // .gen.UpdateRequestFields updateFields = 7;
+  // .gen.UpdateRequestFields updateFields = 4;
   if (has_updatefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, *customFields_.updatefields_, output);
+      4, *customFields_.updatefields_, output);
   }
 
-  // .gen.ReadRequestFields readFields = 8;
+  // .gen.ReadRequestFields readFields = 5;
   if (has_readfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      8, *customFields_.readfields_, output);
+      5, *customFields_.readfields_, output);
   }
 
-  // .gen.DeleteRequestFields deleteFields = 9;
+  // .gen.DeleteRequestFields deleteFields = 6;
   if (has_deletefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      9, *customFields_.deletefields_, output);
+      6, *customFields_.deletefields_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:gen.RequestMessage)
@@ -1697,32 +1617,7 @@ void RequestMessage::SerializeWithCachedSizes(
       1, this->messagetype(), target);
   }
 
-  // .gen.Address sourceAddress = 2;
-  if (this->has_sourceaddress()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        2, *this->sourceaddress_, deterministic, target);
-  }
-
-  // .gen.Address destinationAddress = 3;
-  if (this->has_destinationaddress()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        3, *this->destinationaddress_, deterministic, target);
-  }
-
-  // string id = 4;
-  if (this->id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.RequestMessage.id");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->id(), target);
-  }
-
-  // string key = 5;
+  // string key = 2;
   if (this->key().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->key().data(), this->key().length(),
@@ -1730,35 +1625,35 @@ void RequestMessage::SerializeWithCachedSizes(
       "gen.RequestMessage.key");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->key(), target);
+        2, this->key(), target);
   }
 
-  // .gen.CreateRequestFields createFields = 6;
+  // .gen.CreateRequestFields createFields = 3;
   if (has_createfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, *customFields_.createfields_, deterministic, target);
+        3, *customFields_.createfields_, deterministic, target);
   }
 
-  // .gen.UpdateRequestFields updateFields = 7;
+  // .gen.UpdateRequestFields updateFields = 4;
   if (has_updatefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        7, *customFields_.updatefields_, deterministic, target);
+        4, *customFields_.updatefields_, deterministic, target);
   }
 
-  // .gen.ReadRequestFields readFields = 8;
+  // .gen.ReadRequestFields readFields = 5;
   if (has_readfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        8, *customFields_.readfields_, deterministic, target);
+        5, *customFields_.readfields_, deterministic, target);
   }
 
-  // .gen.DeleteRequestFields deleteFields = 9;
+  // .gen.DeleteRequestFields deleteFields = 6;
   if (has_deletefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        9, *customFields_.deletefields_, deterministic, target);
+        6, *customFields_.deletefields_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:gen.RequestMessage)
@@ -1769,32 +1664,11 @@ size_t RequestMessage::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:gen.RequestMessage)
   size_t total_size = 0;
 
-  // string id = 4;
-  if (this->id().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->id());
-  }
-
-  // string key = 5;
+  // string key = 2;
   if (this->key().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->key());
-  }
-
-  // .gen.Address sourceAddress = 2;
-  if (this->has_sourceaddress()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->sourceaddress_);
-  }
-
-  // .gen.Address destinationAddress = 3;
-  if (this->has_destinationaddress()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->destinationaddress_);
   }
 
   // .gen.RequestMessageType messageType = 1;
@@ -1804,28 +1678,28 @@ size_t RequestMessage::ByteSizeLong() const {
   }
 
   switch (customFields_case()) {
-    // .gen.CreateRequestFields createFields = 6;
+    // .gen.CreateRequestFields createFields = 3;
     case kCreateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.createfields_);
       break;
     }
-    // .gen.UpdateRequestFields updateFields = 7;
+    // .gen.UpdateRequestFields updateFields = 4;
     case kUpdateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.updatefields_);
       break;
     }
-    // .gen.ReadRequestFields readFields = 8;
+    // .gen.ReadRequestFields readFields = 5;
     case kReadFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.readfields_);
       break;
     }
-    // .gen.DeleteRequestFields deleteFields = 9;
+    // .gen.DeleteRequestFields deleteFields = 6;
     case kDeleteFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1865,19 +1739,9 @@ void RequestMessage::MergeFrom(const RequestMessage& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.id().size() > 0) {
-
-    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
-  }
   if (from.key().size() > 0) {
 
     key_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.key_);
-  }
-  if (from.has_sourceaddress()) {
-    mutable_sourceaddress()->::gen::Address::MergeFrom(from.sourceaddress());
-  }
-  if (from.has_destinationaddress()) {
-    mutable_destinationaddress()->::gen::Address::MergeFrom(from.destinationaddress());
   }
   if (from.messagetype() != 0) {
     set_messagetype(from.messagetype());
@@ -1928,10 +1792,7 @@ void RequestMessage::Swap(RequestMessage* other) {
   InternalSwap(other);
 }
 void RequestMessage::InternalSwap(RequestMessage* other) {
-  id_.Swap(&other->id_);
   key_.Swap(&other->key_);
-  std::swap(sourceaddress_, other->sourceaddress_);
-  std::swap(destinationaddress_, other->destinationaddress_);
   std::swap(messagetype_, other->messagetype_);
   std::swap(customFields_, other->customFields_);
   std::swap(_oneof_case_[0], other->_oneof_case_[0]);
@@ -1960,138 +1821,7 @@ void RequestMessage::set_messagetype(::gen::RequestMessageType value) {
   // @@protoc_insertion_point(field_set:gen.RequestMessage.messageType)
 }
 
-// .gen.Address sourceAddress = 2;
-bool RequestMessage::has_sourceaddress() const {
-  return this != internal_default_instance() && sourceaddress_ != NULL;
-}
-void RequestMessage::clear_sourceaddress() {
-  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) delete sourceaddress_;
-  sourceaddress_ = NULL;
-}
-const ::gen::Address& RequestMessage::sourceaddress() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.sourceAddress)
-  return sourceaddress_ != NULL ? *sourceaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-::gen::Address* RequestMessage::mutable_sourceaddress() {
-  
-  if (sourceaddress_ == NULL) {
-    sourceaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.sourceAddress)
-  return sourceaddress_;
-}
-::gen::Address* RequestMessage::release_sourceaddress() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.sourceAddress)
-  
-  ::gen::Address* temp = sourceaddress_;
-  sourceaddress_ = NULL;
-  return temp;
-}
-void RequestMessage::set_allocated_sourceaddress(::gen::Address* sourceaddress) {
-  delete sourceaddress_;
-  sourceaddress_ = sourceaddress;
-  if (sourceaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.sourceAddress)
-}
-
-// .gen.Address destinationAddress = 3;
-bool RequestMessage::has_destinationaddress() const {
-  return this != internal_default_instance() && destinationaddress_ != NULL;
-}
-void RequestMessage::clear_destinationaddress() {
-  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) delete destinationaddress_;
-  destinationaddress_ = NULL;
-}
-const ::gen::Address& RequestMessage::destinationaddress() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.destinationAddress)
-  return destinationaddress_ != NULL ? *destinationaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-::gen::Address* RequestMessage::mutable_destinationaddress() {
-  
-  if (destinationaddress_ == NULL) {
-    destinationaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.destinationAddress)
-  return destinationaddress_;
-}
-::gen::Address* RequestMessage::release_destinationaddress() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.destinationAddress)
-  
-  ::gen::Address* temp = destinationaddress_;
-  destinationaddress_ = NULL;
-  return temp;
-}
-void RequestMessage::set_allocated_destinationaddress(::gen::Address* destinationaddress) {
-  delete destinationaddress_;
-  destinationaddress_ = destinationaddress;
-  if (destinationaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.destinationAddress)
-}
-
-// string id = 4;
-void RequestMessage::clear_id() {
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-const ::std::string& RequestMessage::id() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.id)
-  return id_.GetNoArena();
-}
-void RequestMessage::set_id(const ::std::string& value) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.RequestMessage.id)
-}
-#if LANG_CXX11
-void RequestMessage::set_id(::std::string&& value) {
-  
-  id_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.RequestMessage.id)
-}
-#endif
-void RequestMessage::set_id(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.RequestMessage.id)
-}
-void RequestMessage::set_id(const char* value, size_t size) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.RequestMessage.id)
-}
-::std::string* RequestMessage::mutable_id() {
-  
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.id)
-  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* RequestMessage::release_id() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.id)
-  
-  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void RequestMessage::set_allocated_id(::std::string* id) {
-  if (id != NULL) {
-    
-  } else {
-    
-  }
-  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.id)
-}
-
-// string key = 5;
+// string key = 2;
 void RequestMessage::clear_key() {
   key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -2144,7 +1874,7 @@ void RequestMessage::set_allocated_key(::std::string* key) {
   // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.key)
 }
 
-// .gen.CreateRequestFields createFields = 6;
+// .gen.CreateRequestFields createFields = 3;
 bool RequestMessage::has_createfields() const {
   return customFields_case() == kCreateFields;
 }
@@ -2192,7 +1922,7 @@ void RequestMessage::set_allocated_createfields(::gen::CreateRequestFields* crea
   // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.createFields)
 }
 
-// .gen.UpdateRequestFields updateFields = 7;
+// .gen.UpdateRequestFields updateFields = 4;
 bool RequestMessage::has_updatefields() const {
   return customFields_case() == kUpdateFields;
 }
@@ -2240,7 +1970,7 @@ void RequestMessage::set_allocated_updatefields(::gen::UpdateRequestFields* upda
   // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.updateFields)
 }
 
-// .gen.ReadRequestFields readFields = 8;
+// .gen.ReadRequestFields readFields = 5;
 bool RequestMessage::has_readfields() const {
   return customFields_case() == kReadFields;
 }
@@ -2288,7 +2018,7 @@ void RequestMessage::set_allocated_readfields(::gen::ReadRequestFields* readfiel
   // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.readFields)
 }
 
-// .gen.DeleteRequestFields deleteFields = 9;
+// .gen.DeleteRequestFields deleteFields = 6;
 bool RequestMessage::has_deletefields() const {
   return customFields_case() == kDeleteFields;
 }
@@ -3055,9 +2785,6 @@ void DeleteResponseFields::InternalSwap(DeleteResponseFields* other) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ResponseMessage::kMessageTypeFieldNumber;
-const int ResponseMessage::kSourceAddressFieldNumber;
-const int ResponseMessage::kDestinationAddressFieldNumber;
-const int ResponseMessage::kIdFieldNumber;
 const int ResponseMessage::kOriginalMessageIdFieldNumber;
 const int ResponseMessage::kResponseCodeFieldNumber;
 const int ResponseMessage::kCreateFieldsFieldNumber;
@@ -3079,23 +2806,9 @@ ResponseMessage::ResponseMessage(const ResponseMessage& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.id().size() > 0) {
-    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
-  }
   originalmessageid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.originalmessageid().size() > 0) {
     originalmessageid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.originalmessageid_);
-  }
-  if (from.has_sourceaddress()) {
-    sourceaddress_ = new ::gen::Address(*from.sourceaddress_);
-  } else {
-    sourceaddress_ = NULL;
-  }
-  if (from.has_destinationaddress()) {
-    destinationaddress_ = new ::gen::Address(*from.destinationaddress_);
-  } else {
-    destinationaddress_ = NULL;
   }
   ::memcpy(&messagetype_, &from.messagetype_,
     reinterpret_cast<char*>(&responsecode_) -
@@ -3126,10 +2839,9 @@ ResponseMessage::ResponseMessage(const ResponseMessage& from)
 }
 
 void ResponseMessage::SharedCtor() {
-  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   originalmessageid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&sourceaddress_, 0, reinterpret_cast<char*>(&responsecode_) -
-    reinterpret_cast<char*>(&sourceaddress_) + sizeof(responsecode_));
+  ::memset(&messagetype_, 0, reinterpret_cast<char*>(&responsecode_) -
+    reinterpret_cast<char*>(&messagetype_) + sizeof(responsecode_));
   clear_has_customFields();
   _cached_size_ = 0;
 }
@@ -3140,14 +2852,7 @@ ResponseMessage::~ResponseMessage() {
 }
 
 void ResponseMessage::SharedDtor() {
-  id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   originalmessageid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) {
-    delete sourceaddress_;
-  }
-  if (this != internal_default_instance()) {
-    delete destinationaddress_;
-  }
   if (has_customFields()) {
     clear_customFields();
   }
@@ -3205,16 +2910,7 @@ void ResponseMessage::clear_customFields() {
 
 void ResponseMessage::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.ResponseMessage)
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   originalmessageid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) {
-    delete sourceaddress_;
-  }
-  sourceaddress_ = NULL;
-  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) {
-    delete destinationaddress_;
-  }
-  destinationaddress_ = NULL;
   ::memset(&messagetype_, 0, reinterpret_cast<char*>(&responsecode_) -
     reinterpret_cast<char*>(&messagetype_) + sizeof(responsecode_));
   clear_customFields();
@@ -3245,50 +2941,10 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.Address sourceAddress = 2;
+      // string originalMessageId = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_sourceaddress()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .gen.Address destinationAddress = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_destinationaddress()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string id = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_id()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->id().data(), this->id().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.ResponseMessage.id"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string originalMessageId = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_originalmessageid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3301,10 +2957,10 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 responseCode = 6;
-      case 6: {
+      // int32 responseCode = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(48u)) {
+            static_cast< ::google::protobuf::uint8>(24u)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -3315,10 +2971,10 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.CreateResponseFields createFields = 7;
-      case 7: {
+      // .gen.CreateResponseFields createFields = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(58u)) {
+            static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_createfields()));
         } else {
@@ -3327,10 +2983,10 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.UpdateResponseFields updateFields = 8;
-      case 8: {
+      // .gen.UpdateResponseFields updateFields = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(66u)) {
+            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_updatefields()));
         } else {
@@ -3339,10 +2995,10 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.ReadResponseFields readFields = 9;
-      case 9: {
+      // .gen.ReadResponseFields readFields = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(74u)) {
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_readfields()));
         } else {
@@ -3351,10 +3007,10 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.DeleteResponseFields deleteFields = 10;
-      case 10: {
+      // .gen.DeleteResponseFields deleteFields = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(82u)) {
+            static_cast< ::google::protobuf::uint8>(58u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_deletefields()));
         } else {
@@ -3396,65 +3052,43 @@ void ResponseMessage::SerializeWithCachedSizes(
       1, this->messagetype(), output);
   }
 
-  // .gen.Address sourceAddress = 2;
-  if (this->has_sourceaddress()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->sourceaddress_, output);
-  }
-
-  // .gen.Address destinationAddress = 3;
-  if (this->has_destinationaddress()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->destinationaddress_, output);
-  }
-
-  // string id = 4;
-  if (this->id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.ResponseMessage.id");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->id(), output);
-  }
-
-  // string originalMessageId = 5;
+  // string originalMessageId = 2;
   if (this->originalmessageid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->originalmessageid().data(), this->originalmessageid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "gen.ResponseMessage.originalMessageId");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      5, this->originalmessageid(), output);
+      2, this->originalmessageid(), output);
   }
 
-  // int32 responseCode = 6;
+  // int32 responseCode = 3;
   if (this->responsecode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->responsecode(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->responsecode(), output);
   }
 
-  // .gen.CreateResponseFields createFields = 7;
+  // .gen.CreateResponseFields createFields = 4;
   if (has_createfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, *customFields_.createfields_, output);
+      4, *customFields_.createfields_, output);
   }
 
-  // .gen.UpdateResponseFields updateFields = 8;
+  // .gen.UpdateResponseFields updateFields = 5;
   if (has_updatefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      8, *customFields_.updatefields_, output);
+      5, *customFields_.updatefields_, output);
   }
 
-  // .gen.ReadResponseFields readFields = 9;
+  // .gen.ReadResponseFields readFields = 6;
   if (has_readfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      9, *customFields_.readfields_, output);
+      6, *customFields_.readfields_, output);
   }
 
-  // .gen.DeleteResponseFields deleteFields = 10;
+  // .gen.DeleteResponseFields deleteFields = 7;
   if (has_deletefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      10, *customFields_.deletefields_, output);
+      7, *customFields_.deletefields_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:gen.ResponseMessage)
@@ -3472,32 +3106,7 @@ void ResponseMessage::SerializeWithCachedSizes(
       1, this->messagetype(), target);
   }
 
-  // .gen.Address sourceAddress = 2;
-  if (this->has_sourceaddress()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        2, *this->sourceaddress_, deterministic, target);
-  }
-
-  // .gen.Address destinationAddress = 3;
-  if (this->has_destinationaddress()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        3, *this->destinationaddress_, deterministic, target);
-  }
-
-  // string id = 4;
-  if (this->id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.ResponseMessage.id");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->id(), target);
-  }
-
-  // string originalMessageId = 5;
+  // string originalMessageId = 2;
   if (this->originalmessageid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->originalmessageid().data(), this->originalmessageid().length(),
@@ -3505,40 +3114,40 @@ void ResponseMessage::SerializeWithCachedSizes(
       "gen.ResponseMessage.originalMessageId");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->originalmessageid(), target);
+        2, this->originalmessageid(), target);
   }
 
-  // int32 responseCode = 6;
+  // int32 responseCode = 3;
   if (this->responsecode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->responsecode(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->responsecode(), target);
   }
 
-  // .gen.CreateResponseFields createFields = 7;
+  // .gen.CreateResponseFields createFields = 4;
   if (has_createfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        7, *customFields_.createfields_, deterministic, target);
+        4, *customFields_.createfields_, deterministic, target);
   }
 
-  // .gen.UpdateResponseFields updateFields = 8;
+  // .gen.UpdateResponseFields updateFields = 5;
   if (has_updatefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        8, *customFields_.updatefields_, deterministic, target);
+        5, *customFields_.updatefields_, deterministic, target);
   }
 
-  // .gen.ReadResponseFields readFields = 9;
+  // .gen.ReadResponseFields readFields = 6;
   if (has_readfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        9, *customFields_.readfields_, deterministic, target);
+        6, *customFields_.readfields_, deterministic, target);
   }
 
-  // .gen.DeleteResponseFields deleteFields = 10;
+  // .gen.DeleteResponseFields deleteFields = 7;
   if (has_deletefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        10, *customFields_.deletefields_, deterministic, target);
+        7, *customFields_.deletefields_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:gen.ResponseMessage)
@@ -3549,32 +3158,11 @@ size_t ResponseMessage::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:gen.ResponseMessage)
   size_t total_size = 0;
 
-  // string id = 4;
-  if (this->id().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->id());
-  }
-
-  // string originalMessageId = 5;
+  // string originalMessageId = 2;
   if (this->originalmessageid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->originalmessageid());
-  }
-
-  // .gen.Address sourceAddress = 2;
-  if (this->has_sourceaddress()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->sourceaddress_);
-  }
-
-  // .gen.Address destinationAddress = 3;
-  if (this->has_destinationaddress()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->destinationaddress_);
   }
 
   // .gen.ResponseMessageType messageType = 1;
@@ -3583,7 +3171,7 @@ size_t ResponseMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->messagetype());
   }
 
-  // int32 responseCode = 6;
+  // int32 responseCode = 3;
   if (this->responsecode() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -3591,28 +3179,28 @@ size_t ResponseMessage::ByteSizeLong() const {
   }
 
   switch (customFields_case()) {
-    // .gen.CreateResponseFields createFields = 7;
+    // .gen.CreateResponseFields createFields = 4;
     case kCreateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.createfields_);
       break;
     }
-    // .gen.UpdateResponseFields updateFields = 8;
+    // .gen.UpdateResponseFields updateFields = 5;
     case kUpdateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.updatefields_);
       break;
     }
-    // .gen.ReadResponseFields readFields = 9;
+    // .gen.ReadResponseFields readFields = 6;
     case kReadFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.readfields_);
       break;
     }
-    // .gen.DeleteResponseFields deleteFields = 10;
+    // .gen.DeleteResponseFields deleteFields = 7;
     case kDeleteFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -3652,19 +3240,9 @@ void ResponseMessage::MergeFrom(const ResponseMessage& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.id().size() > 0) {
-
-    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
-  }
   if (from.originalmessageid().size() > 0) {
 
     originalmessageid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.originalmessageid_);
-  }
-  if (from.has_sourceaddress()) {
-    mutable_sourceaddress()->::gen::Address::MergeFrom(from.sourceaddress());
-  }
-  if (from.has_destinationaddress()) {
-    mutable_destinationaddress()->::gen::Address::MergeFrom(from.destinationaddress());
   }
   if (from.messagetype() != 0) {
     set_messagetype(from.messagetype());
@@ -3718,10 +3296,7 @@ void ResponseMessage::Swap(ResponseMessage* other) {
   InternalSwap(other);
 }
 void ResponseMessage::InternalSwap(ResponseMessage* other) {
-  id_.Swap(&other->id_);
   originalmessageid_.Swap(&other->originalmessageid_);
-  std::swap(sourceaddress_, other->sourceaddress_);
-  std::swap(destinationaddress_, other->destinationaddress_);
   std::swap(messagetype_, other->messagetype_);
   std::swap(responsecode_, other->responsecode_);
   std::swap(customFields_, other->customFields_);
@@ -3751,138 +3326,7 @@ void ResponseMessage::set_messagetype(::gen::ResponseMessageType value) {
   // @@protoc_insertion_point(field_set:gen.ResponseMessage.messageType)
 }
 
-// .gen.Address sourceAddress = 2;
-bool ResponseMessage::has_sourceaddress() const {
-  return this != internal_default_instance() && sourceaddress_ != NULL;
-}
-void ResponseMessage::clear_sourceaddress() {
-  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) delete sourceaddress_;
-  sourceaddress_ = NULL;
-}
-const ::gen::Address& ResponseMessage::sourceaddress() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.sourceAddress)
-  return sourceaddress_ != NULL ? *sourceaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-::gen::Address* ResponseMessage::mutable_sourceaddress() {
-  
-  if (sourceaddress_ == NULL) {
-    sourceaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.sourceAddress)
-  return sourceaddress_;
-}
-::gen::Address* ResponseMessage::release_sourceaddress() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.sourceAddress)
-  
-  ::gen::Address* temp = sourceaddress_;
-  sourceaddress_ = NULL;
-  return temp;
-}
-void ResponseMessage::set_allocated_sourceaddress(::gen::Address* sourceaddress) {
-  delete sourceaddress_;
-  sourceaddress_ = sourceaddress;
-  if (sourceaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.sourceAddress)
-}
-
-// .gen.Address destinationAddress = 3;
-bool ResponseMessage::has_destinationaddress() const {
-  return this != internal_default_instance() && destinationaddress_ != NULL;
-}
-void ResponseMessage::clear_destinationaddress() {
-  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) delete destinationaddress_;
-  destinationaddress_ = NULL;
-}
-const ::gen::Address& ResponseMessage::destinationaddress() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.destinationAddress)
-  return destinationaddress_ != NULL ? *destinationaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-::gen::Address* ResponseMessage::mutable_destinationaddress() {
-  
-  if (destinationaddress_ == NULL) {
-    destinationaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.destinationAddress)
-  return destinationaddress_;
-}
-::gen::Address* ResponseMessage::release_destinationaddress() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.destinationAddress)
-  
-  ::gen::Address* temp = destinationaddress_;
-  destinationaddress_ = NULL;
-  return temp;
-}
-void ResponseMessage::set_allocated_destinationaddress(::gen::Address* destinationaddress) {
-  delete destinationaddress_;
-  destinationaddress_ = destinationaddress;
-  if (destinationaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.destinationAddress)
-}
-
-// string id = 4;
-void ResponseMessage::clear_id() {
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-const ::std::string& ResponseMessage::id() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.id)
-  return id_.GetNoArena();
-}
-void ResponseMessage::set_id(const ::std::string& value) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.ResponseMessage.id)
-}
-#if LANG_CXX11
-void ResponseMessage::set_id(::std::string&& value) {
-  
-  id_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.ResponseMessage.id)
-}
-#endif
-void ResponseMessage::set_id(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.ResponseMessage.id)
-}
-void ResponseMessage::set_id(const char* value, size_t size) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.ResponseMessage.id)
-}
-::std::string* ResponseMessage::mutable_id() {
-  
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.id)
-  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* ResponseMessage::release_id() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.id)
-  
-  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void ResponseMessage::set_allocated_id(::std::string* id) {
-  if (id != NULL) {
-    
-  } else {
-    
-  }
-  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.id)
-}
-
-// string originalMessageId = 5;
+// string originalMessageId = 2;
 void ResponseMessage::clear_originalmessageid() {
   originalmessageid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -3935,7 +3379,7 @@ void ResponseMessage::set_allocated_originalmessageid(::std::string* originalmes
   // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.originalMessageId)
 }
 
-// int32 responseCode = 6;
+// int32 responseCode = 3;
 void ResponseMessage::clear_responsecode() {
   responsecode_ = 0;
 }
@@ -3949,7 +3393,7 @@ void ResponseMessage::set_responsecode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:gen.ResponseMessage.responseCode)
 }
 
-// .gen.CreateResponseFields createFields = 7;
+// .gen.CreateResponseFields createFields = 4;
 bool ResponseMessage::has_createfields() const {
   return customFields_case() == kCreateFields;
 }
@@ -3997,7 +3441,7 @@ void ResponseMessage::set_allocated_createfields(::gen::CreateResponseFields* cr
   // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.createFields)
 }
 
-// .gen.UpdateResponseFields updateFields = 8;
+// .gen.UpdateResponseFields updateFields = 5;
 bool ResponseMessage::has_updatefields() const {
   return customFields_case() == kUpdateFields;
 }
@@ -4045,7 +3489,7 @@ void ResponseMessage::set_allocated_updatefields(::gen::UpdateResponseFields* up
   // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.updateFields)
 }
 
-// .gen.ReadResponseFields readFields = 9;
+// .gen.ReadResponseFields readFields = 6;
 bool ResponseMessage::has_readfields() const {
   return customFields_case() == kReadFields;
 }
@@ -4093,7 +3537,7 @@ void ResponseMessage::set_allocated_readfields(::gen::ReadResponseFields* readfi
   // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.readFields)
 }
 
-// .gen.DeleteResponseFields deleteFields = 10;
+// .gen.DeleteResponseFields deleteFields = 7;
 bool ResponseMessage::has_deletefields() const {
   return customFields_case() == kDeleteFields;
 }
@@ -4149,6 +3593,704 @@ void ResponseMessage::clear_has_customFields() {
 }
 ResponseMessage::CustomFieldsCase ResponseMessage::customFields_case() const {
   return ResponseMessage::CustomFieldsCase(_oneof_case_[0]);
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Message::kSourceAddressFieldNumber;
+const int Message::kDestinationAddressFieldNumber;
+const int Message::kIdFieldNumber;
+const int Message::kRequestMessageFieldNumber;
+const int Message::kResponseMessageFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Message::Message()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:gen.Message)
+}
+Message::Message(const Message& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.id().size() > 0) {
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  if (from.has_sourceaddress()) {
+    sourceaddress_ = new ::gen::Address(*from.sourceaddress_);
+  } else {
+    sourceaddress_ = NULL;
+  }
+  if (from.has_destinationaddress()) {
+    destinationaddress_ = new ::gen::Address(*from.destinationaddress_);
+  } else {
+    destinationaddress_ = NULL;
+  }
+  clear_has_messageInternal();
+  switch (from.messageInternal_case()) {
+    case kRequestMessage: {
+      mutable_requestmessage()->::gen::RequestMessage::MergeFrom(from.requestmessage());
+      break;
+    }
+    case kResponseMessage: {
+      mutable_responsemessage()->::gen::ResponseMessage::MergeFrom(from.responsemessage());
+      break;
+    }
+    case MESSAGEINTERNAL_NOT_SET: {
+      break;
+    }
+  }
+  // @@protoc_insertion_point(copy_constructor:gen.Message)
+}
+
+void Message::SharedCtor() {
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&sourceaddress_, 0, reinterpret_cast<char*>(&destinationaddress_) -
+    reinterpret_cast<char*>(&sourceaddress_) + sizeof(destinationaddress_));
+  clear_has_messageInternal();
+  _cached_size_ = 0;
+}
+
+Message::~Message() {
+  // @@protoc_insertion_point(destructor:gen.Message)
+  SharedDtor();
+}
+
+void Message::SharedDtor() {
+  id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
+    delete sourceaddress_;
+  }
+  if (this != internal_default_instance()) {
+    delete destinationaddress_;
+  }
+  if (has_messageInternal()) {
+    clear_messageInternal();
+  }
+}
+
+void Message::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Message::descriptor() {
+  protobuf_KeyValueStoreMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_KeyValueStoreMessage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const Message& Message::default_instance() {
+  protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+Message* Message::New(::google::protobuf::Arena* arena) const {
+  Message* n = new Message;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Message::clear_messageInternal() {
+// @@protoc_insertion_point(one_of_clear_start:gen.Message)
+  switch (messageInternal_case()) {
+    case kRequestMessage: {
+      delete messageInternal_.requestmessage_;
+      break;
+    }
+    case kResponseMessage: {
+      delete messageInternal_.responsemessage_;
+      break;
+    }
+    case MESSAGEINTERNAL_NOT_SET: {
+      break;
+    }
+  }
+  _oneof_case_[0] = MESSAGEINTERNAL_NOT_SET;
+}
+
+
+void Message::Clear() {
+// @@protoc_insertion_point(message_clear_start:gen.Message)
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) {
+    delete sourceaddress_;
+  }
+  sourceaddress_ = NULL;
+  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) {
+    delete destinationaddress_;
+  }
+  destinationaddress_ = NULL;
+  clear_messageInternal();
+}
+
+bool Message::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:gen.Message)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .gen.Address sourceAddress = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_sourceaddress()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .gen.Address destinationAddress = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_destinationaddress()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string id = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_id()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->id().data(), this->id().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "gen.Message.id"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .gen.RequestMessage requestMessage = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_requestmessage()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .gen.ResponseMessage responseMessage = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_responsemessage()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:gen.Message)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:gen.Message)
+  return false;
+#undef DO_
+}
+
+void Message::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:gen.Message)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .gen.Address sourceAddress = 1;
+  if (this->has_sourceaddress()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->sourceaddress_, output);
+  }
+
+  // .gen.Address destinationAddress = 2;
+  if (this->has_destinationaddress()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->destinationaddress_, output);
+  }
+
+  // string id = 3;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), this->id().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.Message.id");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->id(), output);
+  }
+
+  // .gen.RequestMessage requestMessage = 4;
+  if (has_requestmessage()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, *messageInternal_.requestmessage_, output);
+  }
+
+  // .gen.ResponseMessage responseMessage = 5;
+  if (has_responsemessage()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      5, *messageInternal_.responsemessage_, output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:gen.Message)
+}
+
+::google::protobuf::uint8* Message::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:gen.Message)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .gen.Address sourceAddress = 1;
+  if (this->has_sourceaddress()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->sourceaddress_, deterministic, target);
+  }
+
+  // .gen.Address destinationAddress = 2;
+  if (this->has_destinationaddress()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        2, *this->destinationaddress_, deterministic, target);
+  }
+
+  // string id = 3;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), this->id().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.Message.id");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->id(), target);
+  }
+
+  // .gen.RequestMessage requestMessage = 4;
+  if (has_requestmessage()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        4, *messageInternal_.requestmessage_, deterministic, target);
+  }
+
+  // .gen.ResponseMessage responseMessage = 5;
+  if (has_responsemessage()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        5, *messageInternal_.responsemessage_, deterministic, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:gen.Message)
+  return target;
+}
+
+size_t Message::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:gen.Message)
+  size_t total_size = 0;
+
+  // string id = 3;
+  if (this->id().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->id());
+  }
+
+  // .gen.Address sourceAddress = 1;
+  if (this->has_sourceaddress()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->sourceaddress_);
+  }
+
+  // .gen.Address destinationAddress = 2;
+  if (this->has_destinationaddress()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->destinationaddress_);
+  }
+
+  switch (messageInternal_case()) {
+    // .gen.RequestMessage requestMessage = 4;
+    case kRequestMessage: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *messageInternal_.requestmessage_);
+      break;
+    }
+    // .gen.ResponseMessage responseMessage = 5;
+    case kResponseMessage: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *messageInternal_.responsemessage_);
+      break;
+    }
+    case MESSAGEINTERNAL_NOT_SET: {
+      break;
+    }
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Message::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:gen.Message)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Message* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const Message>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.Message)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.Message)
+    MergeFrom(*source);
+  }
+}
+
+void Message::MergeFrom(const Message& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.Message)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.id().size() > 0) {
+
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  if (from.has_sourceaddress()) {
+    mutable_sourceaddress()->::gen::Address::MergeFrom(from.sourceaddress());
+  }
+  if (from.has_destinationaddress()) {
+    mutable_destinationaddress()->::gen::Address::MergeFrom(from.destinationaddress());
+  }
+  switch (from.messageInternal_case()) {
+    case kRequestMessage: {
+      mutable_requestmessage()->::gen::RequestMessage::MergeFrom(from.requestmessage());
+      break;
+    }
+    case kResponseMessage: {
+      mutable_responsemessage()->::gen::ResponseMessage::MergeFrom(from.responsemessage());
+      break;
+    }
+    case MESSAGEINTERNAL_NOT_SET: {
+      break;
+    }
+  }
+}
+
+void Message::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:gen.Message)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Message::CopyFrom(const Message& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.Message)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Message::IsInitialized() const {
+  return true;
+}
+
+void Message::Swap(Message* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Message::InternalSwap(Message* other) {
+  id_.Swap(&other->id_);
+  std::swap(sourceaddress_, other->sourceaddress_);
+  std::swap(destinationaddress_, other->destinationaddress_);
+  std::swap(messageInternal_, other->messageInternal_);
+  std::swap(_oneof_case_[0], other->_oneof_case_[0]);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata Message::GetMetadata() const {
+  protobuf_KeyValueStoreMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_KeyValueStoreMessage_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// Message
+
+// .gen.Address sourceAddress = 1;
+bool Message::has_sourceaddress() const {
+  return this != internal_default_instance() && sourceaddress_ != NULL;
+}
+void Message::clear_sourceaddress() {
+  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) delete sourceaddress_;
+  sourceaddress_ = NULL;
+}
+const ::gen::Address& Message::sourceaddress() const {
+  // @@protoc_insertion_point(field_get:gen.Message.sourceAddress)
+  return sourceaddress_ != NULL ? *sourceaddress_
+                         : *::gen::Address::internal_default_instance();
+}
+::gen::Address* Message::mutable_sourceaddress() {
+  
+  if (sourceaddress_ == NULL) {
+    sourceaddress_ = new ::gen::Address;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.Message.sourceAddress)
+  return sourceaddress_;
+}
+::gen::Address* Message::release_sourceaddress() {
+  // @@protoc_insertion_point(field_release:gen.Message.sourceAddress)
+  
+  ::gen::Address* temp = sourceaddress_;
+  sourceaddress_ = NULL;
+  return temp;
+}
+void Message::set_allocated_sourceaddress(::gen::Address* sourceaddress) {
+  delete sourceaddress_;
+  sourceaddress_ = sourceaddress;
+  if (sourceaddress) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.sourceAddress)
+}
+
+// .gen.Address destinationAddress = 2;
+bool Message::has_destinationaddress() const {
+  return this != internal_default_instance() && destinationaddress_ != NULL;
+}
+void Message::clear_destinationaddress() {
+  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) delete destinationaddress_;
+  destinationaddress_ = NULL;
+}
+const ::gen::Address& Message::destinationaddress() const {
+  // @@protoc_insertion_point(field_get:gen.Message.destinationAddress)
+  return destinationaddress_ != NULL ? *destinationaddress_
+                         : *::gen::Address::internal_default_instance();
+}
+::gen::Address* Message::mutable_destinationaddress() {
+  
+  if (destinationaddress_ == NULL) {
+    destinationaddress_ = new ::gen::Address;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.Message.destinationAddress)
+  return destinationaddress_;
+}
+::gen::Address* Message::release_destinationaddress() {
+  // @@protoc_insertion_point(field_release:gen.Message.destinationAddress)
+  
+  ::gen::Address* temp = destinationaddress_;
+  destinationaddress_ = NULL;
+  return temp;
+}
+void Message::set_allocated_destinationaddress(::gen::Address* destinationaddress) {
+  delete destinationaddress_;
+  destinationaddress_ = destinationaddress;
+  if (destinationaddress) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.destinationAddress)
+}
+
+// string id = 3;
+void Message::clear_id() {
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& Message::id() const {
+  // @@protoc_insertion_point(field_get:gen.Message.id)
+  return id_.GetNoArena();
+}
+void Message::set_id(const ::std::string& value) {
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.Message.id)
+}
+#if LANG_CXX11
+void Message::set_id(::std::string&& value) {
+  
+  id_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.Message.id)
+}
+#endif
+void Message::set_id(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.Message.id)
+}
+void Message::set_id(const char* value, size_t size) {
+  
+  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.Message.id)
+}
+::std::string* Message::mutable_id() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.Message.id)
+  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* Message::release_id() {
+  // @@protoc_insertion_point(field_release:gen.Message.id)
+  
+  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Message::set_allocated_id(::std::string* id) {
+  if (id != NULL) {
+    
+  } else {
+    
+  }
+  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.id)
+}
+
+// .gen.RequestMessage requestMessage = 4;
+bool Message::has_requestmessage() const {
+  return messageInternal_case() == kRequestMessage;
+}
+void Message::set_has_requestmessage() {
+  _oneof_case_[0] = kRequestMessage;
+}
+void Message::clear_requestmessage() {
+  if (has_requestmessage()) {
+    delete messageInternal_.requestmessage_;
+    clear_has_messageInternal();
+  }
+}
+ const ::gen::RequestMessage& Message::requestmessage() const {
+  // @@protoc_insertion_point(field_get:gen.Message.requestMessage)
+  return has_requestmessage()
+      ? *messageInternal_.requestmessage_
+      : ::gen::RequestMessage::default_instance();
+}
+::gen::RequestMessage* Message::mutable_requestmessage() {
+  if (!has_requestmessage()) {
+    clear_messageInternal();
+    set_has_requestmessage();
+    messageInternal_.requestmessage_ = new ::gen::RequestMessage;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.Message.requestMessage)
+  return messageInternal_.requestmessage_;
+}
+::gen::RequestMessage* Message::release_requestmessage() {
+  // @@protoc_insertion_point(field_release:gen.Message.requestMessage)
+  if (has_requestmessage()) {
+    clear_has_messageInternal();
+    ::gen::RequestMessage* temp = messageInternal_.requestmessage_;
+    messageInternal_.requestmessage_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Message::set_allocated_requestmessage(::gen::RequestMessage* requestmessage) {
+  clear_messageInternal();
+  if (requestmessage) {
+    set_has_requestmessage();
+    messageInternal_.requestmessage_ = requestmessage;
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.requestMessage)
+}
+
+// .gen.ResponseMessage responseMessage = 5;
+bool Message::has_responsemessage() const {
+  return messageInternal_case() == kResponseMessage;
+}
+void Message::set_has_responsemessage() {
+  _oneof_case_[0] = kResponseMessage;
+}
+void Message::clear_responsemessage() {
+  if (has_responsemessage()) {
+    delete messageInternal_.responsemessage_;
+    clear_has_messageInternal();
+  }
+}
+ const ::gen::ResponseMessage& Message::responsemessage() const {
+  // @@protoc_insertion_point(field_get:gen.Message.responseMessage)
+  return has_responsemessage()
+      ? *messageInternal_.responsemessage_
+      : ::gen::ResponseMessage::default_instance();
+}
+::gen::ResponseMessage* Message::mutable_responsemessage() {
+  if (!has_responsemessage()) {
+    clear_messageInternal();
+    set_has_responsemessage();
+    messageInternal_.responsemessage_ = new ::gen::ResponseMessage;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.Message.responseMessage)
+  return messageInternal_.responsemessage_;
+}
+::gen::ResponseMessage* Message::release_responsemessage() {
+  // @@protoc_insertion_point(field_release:gen.Message.responseMessage)
+  if (has_responsemessage()) {
+    clear_has_messageInternal();
+    ::gen::ResponseMessage* temp = messageInternal_.responsemessage_;
+    messageInternal_.responsemessage_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Message::set_allocated_responsemessage(::gen::ResponseMessage* responsemessage) {
+  clear_messageInternal();
+  if (responsemessage) {
+    set_has_responsemessage();
+    messageInternal_.responsemessage_ = responsemessage;
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.Message.responseMessage)
+}
+
+bool Message::has_messageInternal() const {
+  return messageInternal_case() != MESSAGEINTERNAL_NOT_SET;
+}
+void Message::clear_has_messageInternal() {
+  _oneof_case_[0] = MESSAGEINTERNAL_NOT_SET;
+}
+Message::MessageInternalCase Message::messageInternal_case() const {
+  return Message::MessageInternalCase(_oneof_case_[0]);
 }
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 

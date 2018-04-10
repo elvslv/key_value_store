@@ -57,6 +57,7 @@ bool Node::createLocally(const std::string& key, const std::string& value)
 bool Node::sendCreateMessage(const network::Address& target, const std::string& key, const std::string& value)
 {
     messageDispatcher->sendMessage(std::make_unique<CreateRequestMessage>(address, target, key, value), target);
+    throw utils::NotImplementedException();
 }
 
 std::string Node::read(const std::string& key)

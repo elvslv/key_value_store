@@ -14,13 +14,15 @@ CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress
 {
 }
 
-gen::RequestMessage CreateRequestMessage::serializeToProtobuf() const
+gen::Message CreateRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 
     auto createRequestFields = std::make_unique<gen::CreateRequestFields>();
     auto val = std::make_unique<std::string>(value);
     createRequestFields->set_allocated_value(val.release());
-    message.set_allocated_createfields(createRequestFields.release());
+
+    auto requestMessage = getRequestMessage(message);
+    requestMessage.set_allocated_createfields(createRequestFields.release());
 }
 }

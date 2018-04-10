@@ -9,6 +9,6 @@ public:
     ReadRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key);
 
 protected:
-    virtual gen::RequestMessage serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const;
 };
 }

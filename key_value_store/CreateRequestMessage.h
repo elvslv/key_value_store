@@ -10,7 +10,7 @@ public:
     CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value);
 
 protected:
-    virtual gen::RequestMessage serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const;
 
 private:
     std::string value;

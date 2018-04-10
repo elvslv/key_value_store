@@ -26,24 +26,14 @@ message DeleteRequestFields {
 
 message RequestMessage {
     RequestMessageType messageType = 1;
-    Address sourceAddress = 2;
-    Address destinationAddress = 3;
-    string id = 4;
-    string key = 5;
+    string key = 2;
 
     oneof customFields {
-        CreateRequestFields createFields = 6;
-        UpdateRequestFields updateFields = 7;
-        ReadRequestFields readFields = 8;
-        DeleteRequestFields deleteFields = 9;
+        CreateRequestFields createFields = 3;
+        UpdateRequestFields updateFields = 4;
+        ReadRequestFields readFields = 5;
+        DeleteRequestFields deleteFields = 6;
     }
-}
-
-enum ResponseMessageType {
-    CREATE_RESPONSE = 0;
-    UPDATE_RESPONSE = 1;
-    READ_RESPONSE = 2;
-    DELETE_RESPONSE = 3;
 }
 
 message CreateResponseFields {
@@ -58,19 +48,34 @@ message ReadResponseFields {
 message DeleteResponseFields {
 }
 
+enum ResponseMessageType {
+    CREATE_RESPONSE = 0;
+    UPDATE_RESPONSE = 1;
+    READ_RESPONSE = 2;
+    DELETE_RESPONSE = 3;
+}
 
 message ResponseMessage {
     ResponseMessageType messageType = 1;
-    Address sourceAddress = 2;
-    Address destinationAddress = 3;
-    string id = 4;
-    string originalMessageId = 5;
-    int32 responseCode = 6;
+    string originalMessageId = 2;
+    int32 responseCode = 3;
 
     oneof customFields {
-        CreateResponseFields createFields = 7;
-        UpdateResponseFields updateFields = 8;
-        ReadResponseFields readFields = 9;
-        DeleteResponseFields deleteFields = 10;
+        CreateResponseFields createFields = 4;
+        UpdateResponseFields updateFields = 5;
+        ReadResponseFields readFields = 6;
+        DeleteResponseFields deleteFields = 7;
     }
 }
+
+message Message {
+    Address sourceAddress = 1;
+    Address destinationAddress = 2;
+    string id = 3;
+
+    oneof messageInternal {
+        RequestMessage requestMessage = 4;
+        ResponseMessage responseMessage = 5;
+    }
+}
+

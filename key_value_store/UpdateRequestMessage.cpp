@@ -14,13 +14,15 @@ UpdateRequestMessage::UpdateRequestMessage(const network::Address& sourceAddress
 {
 }
 
-gen::RequestMessage UpdateRequestMessage::serializeToProtobuf() const
+gen::Message UpdateRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 
     auto updateRequestFields = std::make_unique<gen::UpdateRequestFields>();
     auto val = std::make_unique<std::string>(value);
     updateRequestFields->set_allocated_value(val.release());
-    message.set_allocated_updatefields(updateRequestFields.release());
+
+    auto requestMessage = getRequestMessage(message);
+    requestMessage.set_allocated_updatefields(updateRequestFields.release());
 }
 }
