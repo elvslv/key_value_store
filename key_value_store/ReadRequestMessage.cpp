@@ -19,5 +19,7 @@ gen::Message ReadRequestMessage::serializeToProtobuf() const
     auto requestMessage = getRequestMessage(message);
     auto readRequestFields = std::make_unique<gen::ReadRequestFields>();
     requestMessage.set_allocated_readfields(readRequestFields.release());
+
+    return message;
 }
 }

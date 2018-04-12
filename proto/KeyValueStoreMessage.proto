@@ -43,6 +43,7 @@ message UpdateResponseFields {
 }
 
 message ReadResponseFields {
+    string value = 1;
 }
 
 message DeleteResponseFields {

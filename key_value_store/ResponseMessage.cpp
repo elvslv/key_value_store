@@ -6,21 +6,35 @@
 
 namespace key_value_store
 {
-ResponseMessage::ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
-    : Message(sourceAddress, destinationAddress, key, id)
+ResponseMessage::ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id)
+    : Message(sourceAddress, destinationAddress, id)
     , messageType(messageType)
+    , originalMessageId(originalMessageId)
+    , responseCode(responseCode)
 {
 }
 
-ResponseMessage::ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
-    : Message(sourceAddress, destinationAddress, key)
+ResponseMessage::ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode)
+    : Message(sourceAddress, destinationAddress)
     , messageType(messageType)
+    , originalMessageId(originalMessageId)
+    , responseCode(responseCode)
 {
 }
 
 ResponseMessage::MsgTypes ResponseMessage::getMessageType() const
 {
     return messageType;
+}
+
+std::string ResponseMessage::getOriginalMessageId() const
+{
+    return originalMessageId;
+}
+
+unsigned int ResponseMessage::getResponseCode() const
+{
+    return responseCode;
 }
 
 gen::ResponseMessageType ResponseMessage::getProtobufMessageType() const

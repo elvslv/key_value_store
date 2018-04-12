@@ -30,7 +30,7 @@ protected:
     RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id);
     RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key);
 
-    virtual gen::Message serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const = 0;
     gen::RequestMessageType getProtobufMessageType() const;
     virtual std::string getMsgTypeStr() const;
 

@@ -24,19 +24,21 @@ public:
     virtual ~ResponseMessage(){};
 
     MsgTypes getMessageType() const;
-    std::string getKey() const;
+    std::string getOriginalMessageId() const;
+    unsigned int getResponseCode() const;
 
 protected:
-    ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id);
-    ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key);
+    ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id);
+    ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode);
 
-    virtual gen::Message serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const = 0;
     gen::ResponseMessageType getProtobufMessageType() const;
     virtual std::string getMsgTypeStr() const;
     static gen::ResponseMessage getResponseMessage(const gen::Message& message);
 
 private:
     MsgTypes messageType;
-    std::string key;
+    std::string originalMessageId;
+    unsigned int responseCode;
 };
 }

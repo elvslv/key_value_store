@@ -1,11 +1,16 @@
 #include "Message.h"
 #include "CreateRequestMessage.h"
+#include "CreateResponseMessage.h"
 #include "DeleteRequestMessage.h"
+#include "DeleteResponseMessage.h"
 #include "ReadRequestMessage.h"
+#include "ReadResponseMessage.h"
 #include "RequestMessage.h"
 #include "UpdateRequestMessage.h"
+#include "UpdateResponseMessage.h"
 #include "utils/Exceptions.h"
 
+#include <cassert>
 #include <sstream>
 
 namespace key_value_store
@@ -59,6 +64,37 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
         }
         }
     }
+    else
+    {
+        assert(message.has_responsemessage());
+        auto responseMessage = message.responsemessage();
+        switch (responseMessage.messagetype())
+        {
+        case gen::CREATE_RESPONSE:
+        {
+            return std::make_unique<CreateResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), id);
+        }
+
+        case gen::UPDATE_RESPONSE:
+        {
+            return std::make_unique<UpdateResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), id);
+        }
+        case gen::READ_RESPONSE:
+        {
+            if (!responseMessage.has_readfields())
+            {
+                throw std::logic_error("ReadFields are expected");
+            }
+
+            auto readFields = responseMessage.readfields();
+            return std::make_unique<ReadResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), readFields.value(), id);
+        }
+        case gen::DELETE_RESPONSE:
+        {
+            return std::make_unique<DeleteResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), id);
+        }
+        }
+    }
 
     throw utils::NotImplementedException();
 }
@@ -68,7 +104,7 @@ gen::Message Message::serializeToProtobuf() const
     auto srcAddress = sourceAddress.serialize();
     auto destAddress = destinationAddress.serialize();
 
-    auto message = Message::serializeToProtobuf();
+    gen::Message message;
     message.set_allocated_sourceaddress(srcAddress.release());
     message.set_allocated_destinationaddress(destAddress.release());
     message.set_id(id);

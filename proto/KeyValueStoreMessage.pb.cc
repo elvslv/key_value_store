@@ -138,6 +138,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReadResponseFields, value_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteResponseFields, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -178,9 +179,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 34, -1, sizeof(CreateResponseFields)},
   { 39, -1, sizeof(UpdateResponseFields)},
   { 44, -1, sizeof(ReadResponseFields)},
-  { 49, -1, sizeof(DeleteResponseFields)},
-  { 54, -1, sizeof(ResponseMessage)},
-  { 67, -1, sizeof(Message)},
+  { 50, -1, sizeof(DeleteResponseFields)},
+  { 55, -1, sizeof(ResponseMessage)},
+  { 68, -1, sizeof(Message)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -306,30 +307,31 @@ void AddDescriptorsImpl() {
       "\030\005 \001(\0132\026.gen.ReadRequestFieldsH\000\0220\n\014dele"
       "teFields\030\006 \001(\0132\030.gen.DeleteRequestFields"
       "H\000B\016\n\014customFields\"\026\n\024CreateResponseFiel"
-      "ds\"\026\n\024UpdateResponseFields\"\024\n\022ReadRespon"
-      "seFields\"\026\n\024DeleteResponseFields\"\311\002\n\017Res"
-      "ponseMessage\022-\n\013messageType\030\001 \001(\0162\030.gen."
-      "ResponseMessageType\022\031\n\021originalMessageId"
-      "\030\002 \001(\t\022\024\n\014responseCode\030\003 \001(\005\0221\n\014createFi"
-      "elds\030\004 \001(\0132\031.gen.CreateResponseFieldsH\000\022"
-      "1\n\014updateFields\030\005 \001(\0132\031.gen.UpdateRespon"
-      "seFieldsH\000\022-\n\nreadFields\030\006 \001(\0132\027.gen.Rea"
-      "dResponseFieldsH\000\0221\n\014deleteFields\030\007 \001(\0132"
-      "\031.gen.DeleteResponseFieldsH\000B\016\n\014customFi"
-      "elds\"\327\001\n\007Message\022#\n\rsourceAddress\030\001 \001(\0132"
-      "\014.gen.Address\022(\n\022destinationAddress\030\002 \001("
-      "\0132\014.gen.Address\022\n\n\002id\030\003 \001(\t\022-\n\016requestMe"
-      "ssage\030\004 \001(\0132\023.gen.RequestMessageH\000\022/\n\017re"
-      "sponseMessage\030\005 \001(\0132\024.gen.ResponseMessag"
-      "eH\000B\021\n\017messageInternal*b\n\022RequestMessage"
-      "Type\022\022\n\016CREATE_REQUEST\020\000\022\022\n\016UPDATE_REQUE"
-      "ST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n\016DELETE_REQUEST"
-      "\020\003*g\n\023ResponseMessageType\022\023\n\017CREATE_RESP"
-      "ONSE\020\000\022\023\n\017UPDATE_RESPONSE\020\001\022\021\n\rREAD_RESP"
-      "ONSE\020\002\022\023\n\017DELETE_RESPONSE\020\003b\006proto3"
+      "ds\"\026\n\024UpdateResponseFields\"#\n\022ReadRespon"
+      "seFields\022\r\n\005value\030\001 \001(\t\"\026\n\024DeleteRespons"
+      "eFields\"\311\002\n\017ResponseMessage\022-\n\013messageTy"
+      "pe\030\001 \001(\0162\030.gen.ResponseMessageType\022\031\n\021or"
+      "iginalMessageId\030\002 \001(\t\022\024\n\014responseCode\030\003 "
+      "\001(\005\0221\n\014createFields\030\004 \001(\0132\031.gen.CreateRe"
+      "sponseFieldsH\000\0221\n\014updateFields\030\005 \001(\0132\031.g"
+      "en.UpdateResponseFieldsH\000\022-\n\nreadFields\030"
+      "\006 \001(\0132\027.gen.ReadResponseFieldsH\000\0221\n\014dele"
+      "teFields\030\007 \001(\0132\031.gen.DeleteResponseField"
+      "sH\000B\016\n\014customFields\"\327\001\n\007Message\022#\n\rsourc"
+      "eAddress\030\001 \001(\0132\014.gen.Address\022(\n\022destinat"
+      "ionAddress\030\002 \001(\0132\014.gen.Address\022\n\n\002id\030\003 \001"
+      "(\t\022-\n\016requestMessage\030\004 \001(\0132\023.gen.Request"
+      "MessageH\000\022/\n\017responseMessage\030\005 \001(\0132\024.gen"
+      ".ResponseMessageH\000B\021\n\017messageInternal*b\n"
+      "\022RequestMessageType\022\022\n\016CREATE_REQUEST\020\000\022"
+      "\022\n\016UPDATE_REQUEST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n"
+      "\016DELETE_REQUEST\020\003*g\n\023ResponseMessageType"
+      "\022\023\n\017CREATE_RESPONSE\020\000\022\023\n\017UPDATE_RESPONSE"
+      "\020\001\022\021\n\rREAD_RESPONSE\020\002\022\023\n\017DELETE_RESPONSE"
+      "\020\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1315);
+      descriptor, 1330);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KeyValueStoreMessage.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -2432,6 +2434,7 @@ void UpdateResponseFields::InternalSwap(UpdateResponseFields* other) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ReadResponseFields::kValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ReadResponseFields::ReadResponseFields()
@@ -2447,10 +2450,15 @@ ReadResponseFields::ReadResponseFields(const ReadResponseFields& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.value().size() > 0) {
+    value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
+  }
   // @@protoc_insertion_point(copy_constructor:gen.ReadResponseFields)
 }
 
 void ReadResponseFields::SharedCtor() {
+  value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -2460,6 +2468,7 @@ ReadResponseFields::~ReadResponseFields() {
 }
 
 void ReadResponseFields::SharedDtor() {
+  value_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void ReadResponseFields::SetCachedSize(int size) const {
@@ -2487,6 +2496,7 @@ ReadResponseFields* ReadResponseFields::New(::google::protobuf::Arena* arena) co
 
 void ReadResponseFields::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.ReadResponseFields)
+  value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 bool ReadResponseFields::MergePartialFromCodedStream(
@@ -2498,13 +2508,34 @@ bool ReadResponseFields::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0 ||
-        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string value = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_value()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->value().data(), this->value().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "gen.ReadResponseFields.value"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
   // @@protoc_insertion_point(parse_success:gen.ReadResponseFields)
@@ -2521,6 +2552,16 @@ void ReadResponseFields::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // string value = 1;
+  if (this->value().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->value().data(), this->value().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.ReadResponseFields.value");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->value(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:gen.ReadResponseFields)
 }
 
@@ -2530,6 +2571,17 @@ void ReadResponseFields::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // string value = 1;
+  if (this->value().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->value().data(), this->value().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.ReadResponseFields.value");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->value(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:gen.ReadResponseFields)
   return target;
 }
@@ -2537,6 +2589,13 @@ void ReadResponseFields::SerializeWithCachedSizes(
 size_t ReadResponseFields::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:gen.ReadResponseFields)
   size_t total_size = 0;
+
+  // string value = 1;
+  if (this->value().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->value());
+  }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -2567,6 +2626,10 @@ void ReadResponseFields::MergeFrom(const ReadResponseFields& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.value().size() > 0) {
+
+    value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
+  }
 }
 
 void ReadResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2592,6 +2655,7 @@ void ReadResponseFields::Swap(ReadResponseFields* other) {
   InternalSwap(other);
 }
 void ReadResponseFields::InternalSwap(ReadResponseFields* other) {
+  value_.Swap(&other->value_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -2602,6 +2666,59 @@ void ReadResponseFields::InternalSwap(ReadResponseFields* other) {
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // ReadResponseFields
+
+// string value = 1;
+void ReadResponseFields::clear_value() {
+  value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& ReadResponseFields::value() const {
+  // @@protoc_insertion_point(field_get:gen.ReadResponseFields.value)
+  return value_.GetNoArena();
+}
+void ReadResponseFields::set_value(const ::std::string& value) {
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.ReadResponseFields.value)
+}
+#if LANG_CXX11
+void ReadResponseFields::set_value(::std::string&& value) {
+  
+  value_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.ReadResponseFields.value)
+}
+#endif
+void ReadResponseFields::set_value(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.ReadResponseFields.value)
+}
+void ReadResponseFields::set_value(const char* value, size_t size) {
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.ReadResponseFields.value)
+}
+::std::string* ReadResponseFields::mutable_value() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.ReadResponseFields.value)
+  return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* ReadResponseFields::release_value() {
+  // @@protoc_insertion_point(field_release:gen.ReadResponseFields.value)
+  
+  return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ReadResponseFields::set_allocated_value(::std::string* value) {
+  if (value != NULL) {
+    
+  } else {
+    
+  }
+  value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set_allocated:gen.ReadResponseFields.value)
+}
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 

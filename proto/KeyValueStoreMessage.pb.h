@@ -824,10 +824,25 @@ class ReadResponseFields : public ::google::protobuf::Message /* @@protoc_insert
 
   // accessors -------------------------------------------------------
 
+  // string value = 1;
+  void clear_value();
+  static const int kValueFieldNumber = 1;
+  const ::std::string& value() const;
+  void set_value(const ::std::string& value);
+  #if LANG_CXX11
+  void set_value(::std::string&& value);
+  #endif
+  void set_value(const char* value);
+  void set_value(const char* value, size_t size);
+  ::std::string* mutable_value();
+  ::std::string* release_value();
+  void set_allocated_value(::std::string* value);
+
   // @@protoc_insertion_point(class_scope:gen.ReadResponseFields)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr value_;
   mutable int _cached_size_;
   friend struct protobuf_KeyValueStoreMessage_2eproto::TableStruct;
 };
@@ -1623,6 +1638,59 @@ inline RequestMessage::CustomFieldsCase RequestMessage::customFields_case() cons
 // -------------------------------------------------------------------
 
 // ReadResponseFields
+
+// string value = 1;
+inline void ReadResponseFields::clear_value() {
+  value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ReadResponseFields::value() const {
+  // @@protoc_insertion_point(field_get:gen.ReadResponseFields.value)
+  return value_.GetNoArena();
+}
+inline void ReadResponseFields::set_value(const ::std::string& value) {
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.ReadResponseFields.value)
+}
+#if LANG_CXX11
+inline void ReadResponseFields::set_value(::std::string&& value) {
+  
+  value_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.ReadResponseFields.value)
+}
+#endif
+inline void ReadResponseFields::set_value(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.ReadResponseFields.value)
+}
+inline void ReadResponseFields::set_value(const char* value, size_t size) {
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.ReadResponseFields.value)
+}
+inline ::std::string* ReadResponseFields::mutable_value() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.ReadResponseFields.value)
+  return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ReadResponseFields::release_value() {
+  // @@protoc_insertion_point(field_release:gen.ReadResponseFields.value)
+  
+  return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ReadResponseFields::set_allocated_value(::std::string* value) {
+  if (value != NULL) {
+    
+  } else {
+    
+  }
+  value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set_allocated:gen.ReadResponseFields.value)
+}
 
 // -------------------------------------------------------------------
 

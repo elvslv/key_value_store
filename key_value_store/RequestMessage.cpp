@@ -11,14 +11,16 @@
 namespace key_value_store
 {
 RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
-    : Message(sourceAddress, destinationAddress, key, id)
+    : Message(sourceAddress, destinationAddress, id)
     , messageType(messageType)
+    , key(key)
 {
 }
 
 RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
-    : Message(sourceAddress, destinationAddress, key)
+    : Message(sourceAddress, destinationAddress)
     , messageType(messageType)
+    , key(key)
 {
 }
 

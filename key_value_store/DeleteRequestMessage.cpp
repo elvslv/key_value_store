@@ -19,5 +19,7 @@ gen::Message DeleteRequestMessage::serializeToProtobuf() const
     auto requestMessage = getRequestMessage(message);
     auto deleteRequestFields = std::make_unique<gen::DeleteRequestFields>();
     requestMessage.set_allocated_deletefields(deleteRequestFields.release());
+
+    return message;
 }
 }

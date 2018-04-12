@@ -24,5 +24,7 @@ gen::Message UpdateRequestMessage::serializeToProtobuf() const
 
     auto requestMessage = getRequestMessage(message);
     requestMessage.set_allocated_updatefields(updateRequestFields.release());
+
+    return message;
 }
 }
