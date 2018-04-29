@@ -14,6 +14,11 @@ ReadResponseMessage::ReadResponseMessage(const network::Address& sourceAddress, 
 {
 }
 
+std::string ReadResponseMessage::getValue() const
+{
+    return value;
+}
+
 gen::Message ReadResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();

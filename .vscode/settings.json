@@ -70,6 +70,7 @@
         "condition_variable": "cpp",
         "future": "cpp",
         "string_view": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "__string": "cpp"
     }
 }

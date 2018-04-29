@@ -4,6 +4,7 @@
 #include "IPartitioner.h"
 #include "IStorage.h"
 #include "RequestMessage.h"
+#include "ResponseMessage.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "network/Address.h"
 #include "utils/Exceptions.h"
@@ -35,6 +36,18 @@ public:
     virtual void remove(const std::string& key) = 0;
 
 private:
+    struct MessageState
+    {
+        MessageState()
+            : conditionVariable()
+            , responseMessage()
+        {
+        }
+
+        std::condition_variable conditionVariable;
+        std::unique_ptr<ResponseMessage> responseMessage;
+    };
+
     void run();
 
     bool createLocally(const std::string& key, const std::string& value);
@@ -42,6 +55,12 @@ private:
 
     Record readLocally(const std::string& key);
     Record sendReadMessage(const network::Address& target, const std::string& key);
+
+    bool updateLocally(const std::string& key, const std::string& value);
+    bool sendUpdateMessage(const network::Address& target, const std::string& key, const std::string& value);
+
+    bool removeLocally(const std::string& key);
+    bool sendRemoveMessage(const network::Address& target, const std::string& key);
 
     std::vector<network::Address> getTargetNodes(const std::string& key);
 
@@ -132,12 +151,32 @@ private:
         return result;
     }
 
+    template <class Rep, class Period>
+    std::unique_ptr<ResponseMessage> sendMessageAndWait(std::unique_ptr<RequestMessage> message, const std::chrono::duration<Rep, Period>& timeout)
+    {
+        auto messageId = message->getId();
+        std::unique_lock<std::mutex> lock(mutex);
+        assert(sentMessages.find(messageId) == sentMessages.end());
+
+        MessageState messageState;
+        sentMessages[messageId] = &messageState;
+        messageDispatcher->sendMessage(message, message->getDestinationAddress());
+        messageState.conditionVariable.wait_for(lock, timeout, [&messageState] {
+            return (bool)messageState.responseMessage;
+        });
+
+        sentMessages.erase(messageId);
+        return std::move(messageState.responseMessage);
+    }
+
     network::Address address;
     std::shared_ptr<utils::Log> logger;
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
     std::unique_ptr<IStorage> storage;
     std::unique_ptr<IPartitioner> partitioner;
     std::shared_ptr<utils::MessageDispatcher<RequestMessage>> messageDispatcher;
+    std::map<std::string, MessageState*> sentMessages;
+    std::mutex mutex;
 
     utils::RunnableCallback runnable;
 };
