@@ -15,6 +15,18 @@
 
 namespace key_value_store
 {
+Message::Message(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& id)
+    : utils::Message(sourceAddress, destinationAddress, id)
+    , messageType(messageType)
+{
+}
+
+Message::Message(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress)
+    : utils::Message(sourceAddress, destinationAddress)
+    , messageType(messageType)
+{
+}
+
 std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMessage)
 {
     gen::Message message;
@@ -128,5 +140,10 @@ std::string Message::toString() const
     std::stringstream ss;
     ss << getMsgTypeStr() << " request from " << sourceAddress.toString() << " to " << destinationAddress.toString() << "id " << id << std::endl;
     return ss.str();
+}
+
+Message::MsgTypes Message::getMessageType() const
+{
+    return messageType;
 }
 }

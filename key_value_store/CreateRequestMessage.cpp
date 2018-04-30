@@ -3,15 +3,20 @@
 namespace key_value_store
 {
 CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value, const std::string& id)
-    : RequestMessage(CREATE, sourceAddress, destinationAddress, key, id)
+    : RequestMessage(CREATE_REQUEST, sourceAddress, destinationAddress, key, id)
     , value(value)
 {
 }
 
 CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value)
-    : RequestMessage(CREATE, sourceAddress, destinationAddress, key)
+    : RequestMessage(CREATE_REQUEST, sourceAddress, destinationAddress, key)
     , value(value)
 {
+}
+
+std::string CreateRequestMessage::getValue() const
+{
+    return value;
 }
 
 gen::Message CreateRequestMessage::serializeToProtobuf() const

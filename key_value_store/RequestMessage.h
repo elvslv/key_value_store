@@ -13,18 +13,11 @@ namespace key_value_store
 class RequestMessage : public Message
 {
 public:
-    enum MsgTypes
-    {
-        CREATE,
-        UPDATE,
-        READ,
-        DELETE,
-    };
-
     virtual ~RequestMessage(){};
 
-    MsgTypes getMessageType() const;
     std::string getKey() const;
+
+    virtual bool isRequest() const { return true; }
 
 protected:
     RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id);
@@ -37,7 +30,6 @@ protected:
     static gen::RequestMessage getRequestMessage(const gen::Message& message);
 
 private:
-    MsgTypes messageType;
     std::string key;
 };
 }

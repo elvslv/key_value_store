@@ -3,12 +3,12 @@
 namespace key_value_store
 {
 DeleteResponseMessage::DeleteResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id)
-    : ResponseMessage(ResponseMessage::DELETE, sourceAddress, destinationAddress, originalMessageId, responseCode, id)
+    : ResponseMessage(DELETE_RESPONSE, sourceAddress, destinationAddress, originalMessageId, responseCode, id)
 {
 }
 
 DeleteResponseMessage::DeleteResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode)
-    : ResponseMessage(ResponseMessage::DELETE, sourceAddress, destinationAddress, originalMessageId, responseCode)
+    : ResponseMessage(DELETE_RESPONSE, sourceAddress, destinationAddress, originalMessageId, responseCode)
 {
 }
 

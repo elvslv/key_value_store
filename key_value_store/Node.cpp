@@ -8,6 +8,7 @@
 #include "UpdateRequestMessage.h"
 #include "UpdateResponseMessage.h"
 #include "utils/Exceptions.h"
+#include "utils/Utils.h"
 #include <array>
 #include <exception>
 #include <functional>
@@ -24,13 +25,15 @@ Node::Node(const network::Address& address,
         membershipProtocol,
     std::unique_ptr<IStorage> storage,
     std::unique_ptr<IPartitioner> partitioner,
-    const std::shared_ptr<utils::MessageDispatcher<RequestMessage>>& messageDispatcher)
+    const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher)
     : address(address)
     , logger(logger)
     , membershipProtocol(std::move(membershipProtocol))
     , storage(std::move(storage))
     , partitioner(std::move(partitioner))
     , messageDispatcher(messageDispatcher)
+    , asyncQueue(std::bind(&Node::processMessage, this, std::placeholders::_1))
+    , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })
     , sentMessages()
     , runnable([this]() { run(); })
 {
@@ -172,4 +175,126 @@ std::vector<network::Address> Node::getTargetNodes(const std::string& key)
 
     return partitioner->getTargetNodes(key, nodes);
 }
+
+void Node::onCreateRequest(CreateRequestMessage* message)
+{
+    auto key = message->getKey();
+
+    // TODO: make sure it belongs to this node
+    storage->insert(message->getKey(), Record(message->getValue()));
+    // TODO: handle exceptions
+
+    messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
+}
+
+void Node::onUpdateRequest(UpdateRequestMessage* message)
+{
+    auto key = message->getKey();
+
+    // TODO: make sure it belongs to this node
+    storage->update(message->getKey(), Record(message->getValue()));
+    // TODO: handle exceptions
+
+    messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
+}
+
+void Node::onReadRequest(ReadRequestMessage* message)
+{
+    auto key = message->getKey();
+
+    // TODO: make sure it belongs to this node
+    auto record = storage->get(message->getKey());
+    // TODO: handle exceptions
+
+    messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), 200, record.value), message->getSourceAddress());
+}
+
+void Node::onDeleteRequest(DeleteRequestMessage* message)
+{
+    auto key = message->getKey();
+
+    // TODO: make sure it belongs to this node
+    storage->remove(message->getKey());
+    // TODO: handle exceptions
+
+    messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
+}
+
+void Node::onCreateResponse(CreateResponseMessage* message)
+{
+    throw utils::NotImplementedException();
+}
+
+void Node::onUpdateResponse(UpdateResponseMessage* message)
+{
+    throw utils::NotImplementedException();
+}
+
+void Node::onReadResponse(ReadResponseMessage* message)
+{
+    throw utils::NotImplementedException();
+}
+
+void Node::onDeleteResponse(DeleteResponseMessage* message)
+{
+    throw utils::NotImplementedException();
+}
+
+void Node::processMessage(const std::unique_ptr<Message>& message)
+{
+    switch (message->getMessageType())
+    {
+    case Message::CREATE_REQUEST:
+    {
+        auto createRequestMessage = dynamic_cast<CreateRequestMessage*>(message.get());
+        onCreateRequest(createRequestMessage);
+        break;
+    }
+    case Message::UPDATE_REQUEST:
+    {
+        auto updateRequestMessage = dynamic_cast<UpdateRequestMessage*>(message.get());
+        onUpdateRequest(updateRequestMessage);
+        break;
+    }
+    case Message::READ_REQUEST:
+    {
+        auto readRequestMessage = dynamic_cast<ReadRequestMessage*>(message.get());
+        onReadRequest(readRequestMessage);
+        break;
+    }
+    case Message::DELETE_REQUEST:
+    {
+        auto deleteRequestMessage = dynamic_cast<DeleteRequestMessage*>(message.get());
+        onDeleteRequest(deleteRequestMessage);
+        break;
+    }
+    case Message::CREATE_RESPONSE:
+    {
+        auto createResponseMessage = dynamic_cast<CreateResponseMessage*>(message.get());
+        onCreateResponse(createResponseMessage);
+        break;
+    }
+    case Message::UPDATE_RESPONSE:
+    {
+        auto updateResponseMessage = dynamic_cast<UpdateResponseMessage*>(message.get());
+        onUpdateResponse(updateResponseMessage);
+        break;
+    }
+    case Message::READ_RESPONSE:
+    {
+        auto readResponseMessage = dynamic_cast<ReadResponseMessage*>(message.get());
+        onReadResponse(readResponseMessage);
+        break;
+    }
+    case Message::DELETE_RESPONSE:
+    {
+        auto deleteResponseMessage = dynamic_cast<DeleteResponseMessage*>(message.get());
+        onDeleteResponse(deleteResponseMessage);
+        break;
+    }
+    }
+
+    throw utils::NotImplementedException();
+}
+
 } // namespace key_value_store

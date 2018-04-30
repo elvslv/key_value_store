@@ -1,12 +1,21 @@
 #pragma once
 
+#include "CreateRequestMessage.h"
+#include "CreateResponseMessage.h"
+#include "DeleteRequestMessage.h"
+#include "DeleteResponseMessage.h"
 #include "INode.h"
 #include "IPartitioner.h"
 #include "IStorage.h"
+#include "ReadRequestMessage.h"
+#include "ReadResponseMessage.h"
 #include "RequestMessage.h"
 #include "ResponseMessage.h"
+#include "UpdateRequestMessage.h"
+#include "UpdateResponseMessage.h"
 #include "membership_protocol/IMembershipProtocol.h"
 #include "network/Address.h"
+#include "utils/AsyncQueue.h"
 #include "utils/Exceptions.h"
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
@@ -23,7 +32,7 @@ namespace key_value_store
 class Node : INode
 {
 public:
-    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher<RequestMessage>>& messageDispatcher);
+    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher);
 
     virtual ~Node() {}
 
@@ -160,7 +169,7 @@ private:
 
         MessageState messageState;
         sentMessages[messageId] = &messageState;
-        messageDispatcher->sendMessage(message, message->getDestinationAddress());
+        messageDispatcher->sendMessage(std::move(message), message->getDestinationAddress());
         messageState.conditionVariable.wait_for(lock, timeout, [&messageState] {
             return (bool)messageState.responseMessage;
         });
@@ -169,12 +178,24 @@ private:
         return std::move(messageState.responseMessage);
     }
 
+    void processMessage(const std::unique_ptr<Message>& message);
+    void onCreateRequest(CreateRequestMessage* message);
+    void onUpdateRequest(UpdateRequestMessage* message);
+    void onReadRequest(ReadRequestMessage* message);
+    void onDeleteRequest(DeleteRequestMessage* message);
+    void onCreateResponse(CreateResponseMessage* message);
+    void onUpdateResponse(UpdateResponseMessage* message);
+    void onReadResponse(ReadResponseMessage* message);
+    void onDeleteResponse(DeleteResponseMessage* message);
+
     network::Address address;
     std::shared_ptr<utils::Log> logger;
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
     std::unique_ptr<IStorage> storage;
     std::unique_ptr<IPartitioner> partitioner;
-    std::shared_ptr<utils::MessageDispatcher<RequestMessage>> messageDispatcher;
+    std::shared_ptr<utils::MessageDispatcher<Message>> messageDispatcher;
+    utils::AsyncQueue<Message> asyncQueue;
+    utils::AsyncQueue<Message>::Callback asyncQueueCallback;
     std::map<std::string, MessageState*> sentMessages;
     std::mutex mutex;
 

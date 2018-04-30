@@ -3,12 +3,12 @@
 namespace key_value_store
 {
 ReadRequestMessage::ReadRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
-    : RequestMessage(READ, sourceAddress, destinationAddress, key, id)
+    : RequestMessage(READ_REQUEST, sourceAddress, destinationAddress, key, id)
 {
 }
 
 ReadRequestMessage::ReadRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
-    : RequestMessage(READ, sourceAddress, destinationAddress, key)
+    : RequestMessage(READ_REQUEST, sourceAddress, destinationAddress, key)
 {
 }
 

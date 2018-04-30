@@ -7,24 +7,17 @@
 namespace key_value_store
 {
 ResponseMessage::ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id)
-    : Message(sourceAddress, destinationAddress, id)
-    , messageType(messageType)
+    : Message(messageType, sourceAddress, destinationAddress, id)
     , originalMessageId(originalMessageId)
     , responseCode(responseCode)
 {
 }
 
 ResponseMessage::ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode)
-    : Message(sourceAddress, destinationAddress)
-    , messageType(messageType)
+    : Message(messageType, sourceAddress, destinationAddress)
     , originalMessageId(originalMessageId)
     , responseCode(responseCode)
 {
-}
-
-ResponseMessage::MsgTypes ResponseMessage::getMessageType() const
-{
-    return messageType;
 }
 
 std::string ResponseMessage::getOriginalMessageId() const
@@ -41,16 +34,16 @@ gen::ResponseMessageType ResponseMessage::getProtobufMessageType() const
 {
     switch (messageType)
     {
-    case CREATE:
+    case CREATE_RESPONSE:
         return gen::CREATE_RESPONSE;
 
-    case UPDATE:
+    case UPDATE_RESPONSE:
         return gen::UPDATE_RESPONSE;
 
-    case READ:
+    case READ_RESPONSE:
         return gen::READ_RESPONSE;
 
-    case DELETE:
+    case DELETE_RESPONSE:
         return gen::DELETE_RESPONSE;
     }
 
@@ -61,17 +54,17 @@ std::string ResponseMessage::getMsgTypeStr() const
 {
     switch (messageType)
     {
-    case CREATE:
-        return "CREATE";
+    case CREATE_RESPONSE:
+        return "CREATE_RESPONSE";
 
-    case UPDATE:
-        return "UPDATE";
+    case UPDATE_RESPONSE:
+        return "UPDATE_RESPONSE";
 
-    case READ:
-        return "READ";
+    case READ_RESPONSE:
+        return "READ_RESPONSE";
 
-    case DELETE:
-        return "DELETE";
+    case DELETE_RESPONSE:
+        return "DELETE_RESPONSE";
     }
 
     throw utils::NotImplementedException();

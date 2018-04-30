@@ -13,19 +13,13 @@ namespace key_value_store
 class ResponseMessage : public Message
 {
 public:
-    enum MsgTypes
-    {
-        CREATE,
-        UPDATE,
-        READ,
-        DELETE,
-    };
-
     virtual ~ResponseMessage(){};
 
     MsgTypes getMessageType() const;
     std::string getOriginalMessageId() const;
     unsigned int getResponseCode() const;
+
+    virtual bool isRequest() const { return false; }
 
 protected:
     ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id);

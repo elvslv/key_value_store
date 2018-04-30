@@ -11,22 +11,15 @@
 namespace key_value_store
 {
 RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
-    : Message(sourceAddress, destinationAddress, id)
-    , messageType(messageType)
+    : Message(messageType, sourceAddress, destinationAddress, id)
     , key(key)
 {
 }
 
 RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
-    : Message(sourceAddress, destinationAddress)
-    , messageType(messageType)
+    : Message(messageType, sourceAddress, destinationAddress)
     , key(key)
 {
-}
-
-RequestMessage::MsgTypes RequestMessage::getMessageType() const
-{
-    return messageType;
 }
 
 std::string RequestMessage::getKey() const
@@ -47,18 +40,18 @@ gen::Message RequestMessage::serializeToProtobuf() const
 
 gen::RequestMessageType RequestMessage::getProtobufMessageType() const
 {
-    switch (messageType)
+    switch (getMessageType())
     {
-    case CREATE:
+    case CREATE_REQUEST:
         return gen::CREATE_REQUEST;
 
-    case UPDATE:
+    case UPDATE_REQUEST:
         return gen::UPDATE_REQUEST;
 
-    case READ:
+    case READ_REQUEST:
         return gen::READ_REQUEST;
 
-    case DELETE:
+    case DELETE_REQUEST:
         return gen::DELETE_REQUEST;
     }
 
@@ -67,19 +60,19 @@ gen::RequestMessageType RequestMessage::getProtobufMessageType() const
 
 std::string RequestMessage::getMsgTypeStr() const
 {
-    switch (messageType)
+    switch (getMessageType())
     {
-    case CREATE:
-        return "CREATE";
+    case CREATE_REQUEST:
+        return "CREATE_REQUEST";
 
-    case UPDATE:
-        return "UPDATE";
+    case UPDATE_REQUEST:
+        return "UPDATE_REQUEST";
 
-    case READ:
-        return "READ";
+    case READ_REQUEST:
+        return "READ_REQUEST";
 
-    case DELETE:
-        return "DELETE";
+    case DELETE_REQUEST:
+        return "DELETE_REQUEST";
     }
 
     throw utils::NotImplementedException();

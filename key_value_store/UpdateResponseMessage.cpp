@@ -3,12 +3,12 @@
 namespace key_value_store
 {
 UpdateResponseMessage::UpdateResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id)
-    : ResponseMessage(ResponseMessage::UPDATE, sourceAddress, destinationAddress, originalMessageId, responseCode, id)
+    : ResponseMessage(UPDATE_RESPONSE, sourceAddress, destinationAddress, originalMessageId, responseCode, id)
 {
 }
 
 UpdateResponseMessage::UpdateResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode)
-    : ResponseMessage(ResponseMessage::UPDATE, sourceAddress, destinationAddress, originalMessageId, responseCode)
+    : ResponseMessage(UPDATE_RESPONSE, sourceAddress, destinationAddress, originalMessageId, responseCode)
 {
 }
 

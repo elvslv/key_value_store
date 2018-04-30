@@ -3,13 +3,13 @@
 namespace key_value_store
 {
 ReadResponseMessage::ReadResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& value, const std::string& id)
-    : ResponseMessage(ResponseMessage::READ, sourceAddress, destinationAddress, originalMessageId, responseCode, id)
+    : ResponseMessage(READ_RESPONSE, sourceAddress, destinationAddress, originalMessageId, responseCode, id)
     , value(value)
 {
 }
 
 ReadResponseMessage::ReadResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& value)
-    : ResponseMessage(ResponseMessage::READ, sourceAddress, destinationAddress, originalMessageId, responseCode)
+    : ResponseMessage(READ_RESPONSE, sourceAddress, destinationAddress, originalMessageId, responseCode)
     , value(value)
 {
 }
