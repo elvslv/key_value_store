@@ -176,7 +176,7 @@ std::vector<network::Address> Node::getTargetNodes(const std::string& key)
     return partitioner->getTargetNodes(key, nodes);
 }
 
-void Node::onCreateRequest(CreateRequestMessage* message)
+void Node::onCreateRequest(std::unique_ptr<CreateRequestMessage> message)
 {
     auto key = message->getKey();
 
@@ -187,7 +187,7 @@ void Node::onCreateRequest(CreateRequestMessage* message)
     messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
 }
 
-void Node::onUpdateRequest(UpdateRequestMessage* message)
+void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
 {
     auto key = message->getKey();
 
@@ -198,7 +198,7 @@ void Node::onUpdateRequest(UpdateRequestMessage* message)
     messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
 }
 
-void Node::onReadRequest(ReadRequestMessage* message)
+void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
 {
     auto key = message->getKey();
 
@@ -209,7 +209,7 @@ void Node::onReadRequest(ReadRequestMessage* message)
     messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), 200, record.value), message->getSourceAddress());
 }
 
-void Node::onDeleteRequest(DeleteRequestMessage* message)
+void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
 {
     auto key = message->getKey();
 
@@ -220,76 +220,51 @@ void Node::onDeleteRequest(DeleteRequestMessage* message)
     messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
 }
 
-void Node::onCreateResponse(CreateResponseMessage* message)
+void Node::onResponse(std::unique_ptr<ResponseMessage> message)
 {
-    throw utils::NotImplementedException();
+    auto messageId = message->getId();
+    std::unique_lock<std::mutex> lock(mutex);
+    assert(sentMessages.find(messageId) != sentMessages.end());
+
+    sentMessages[messageId]->responseMessage.reset(message.release());
 }
 
-void Node::onUpdateResponse(UpdateResponseMessage* message)
-{
-    throw utils::NotImplementedException();
-}
-
-void Node::onReadResponse(ReadResponseMessage* message)
-{
-    throw utils::NotImplementedException();
-}
-
-void Node::onDeleteResponse(DeleteResponseMessage* message)
-{
-    throw utils::NotImplementedException();
-}
-
-void Node::processMessage(const std::unique_ptr<Message>& message)
+void Node::processMessage(std::unique_ptr<Message> message)
 {
     switch (message->getMessageType())
     {
     case Message::CREATE_REQUEST:
     {
-        auto createRequestMessage = dynamic_cast<CreateRequestMessage*>(message.get());
-        onCreateRequest(createRequestMessage);
+        std::unique_ptr<CreateRequestMessage> createRequestMessage(dynamic_cast<CreateRequestMessage*>(message.release()));
+        onCreateRequest(std::move(createRequestMessage));
         break;
     }
     case Message::UPDATE_REQUEST:
     {
-        auto updateRequestMessage = dynamic_cast<UpdateRequestMessage*>(message.get());
-        onUpdateRequest(updateRequestMessage);
+        std::unique_ptr<UpdateRequestMessage> updateRequestMessage(dynamic_cast<UpdateRequestMessage*>(message.release()));
+        onUpdateRequest(std::move(updateRequestMessage));
         break;
     }
     case Message::READ_REQUEST:
     {
-        auto readRequestMessage = dynamic_cast<ReadRequestMessage*>(message.get());
-        onReadRequest(readRequestMessage);
+        std::unique_ptr<ReadRequestMessage> readRequestMessage(dynamic_cast<ReadRequestMessage*>(message.release()));
+        onReadRequest(std::move(readRequestMessage));
         break;
     }
     case Message::DELETE_REQUEST:
     {
-        auto deleteRequestMessage = dynamic_cast<DeleteRequestMessage*>(message.get());
-        onDeleteRequest(deleteRequestMessage);
+        std::unique_ptr<DeleteRequestMessage> deleteRequestMessage(dynamic_cast<DeleteRequestMessage*>(message.release()));
+        onDeleteRequest(std::move(deleteRequestMessage));
         break;
     }
+
     case Message::CREATE_RESPONSE:
-    {
-        auto createResponseMessage = dynamic_cast<CreateResponseMessage*>(message.get());
-        onCreateResponse(createResponseMessage);
-        break;
-    }
     case Message::UPDATE_RESPONSE:
-    {
-        auto updateResponseMessage = dynamic_cast<UpdateResponseMessage*>(message.get());
-        onUpdateResponse(updateResponseMessage);
-        break;
-    }
     case Message::READ_RESPONSE:
-    {
-        auto readResponseMessage = dynamic_cast<ReadResponseMessage*>(message.get());
-        onReadResponse(readResponseMessage);
-        break;
-    }
     case Message::DELETE_RESPONSE:
     {
-        auto deleteResponseMessage = dynamic_cast<DeleteResponseMessage*>(message.get());
-        onDeleteResponse(deleteResponseMessage);
+        std::unique_ptr<ResponseMessage> responseMessage(dynamic_cast<ResponseMessage*>(message.release()));
+        onResponse(std::move(responseMessage));
         break;
     }
     }

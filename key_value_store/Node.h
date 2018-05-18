@@ -178,15 +178,12 @@ private:
         return std::move(messageState.responseMessage);
     }
 
-    void processMessage(const std::unique_ptr<Message>& message);
-    void onCreateRequest(CreateRequestMessage* message);
-    void onUpdateRequest(UpdateRequestMessage* message);
-    void onReadRequest(ReadRequestMessage* message);
-    void onDeleteRequest(DeleteRequestMessage* message);
-    void onCreateResponse(CreateResponseMessage* message);
-    void onUpdateResponse(UpdateResponseMessage* message);
-    void onReadResponse(ReadResponseMessage* message);
-    void onDeleteResponse(DeleteResponseMessage* message);
+    void processMessage(std::unique_ptr<Message> message);
+    void onCreateRequest(std::unique_ptr<CreateRequestMessage> message);
+    void onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message);
+    void onReadRequest(std::unique_ptr<ReadRequestMessage> message);
+    void onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message);
+    void onResponse(std::unique_ptr<ResponseMessage> message);
 
     network::Address address;
     std::shared_ptr<utils::Log> logger;
