@@ -17,22 +17,22 @@
 #include "network/Address.h"
 #include "utils/AsyncQueue.h"
 #include "utils/Exceptions.h"
+#include "utils/IThreadPolicy.h"
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
 #include <array>
 #include <exception>
 #include <functional>
 #include <future>
-#include <thread>
-
 #include <list>
+#include <thread>
 
 namespace key_value_store
 {
 class Node : INode
 {
 public:
-    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher);
+    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher, std::unique_ptr<utils::IThreadPolicy>& threadPolicy);
 
     virtual ~Node() {}
 
@@ -185,6 +185,9 @@ private:
     void onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message);
     void onResponse(std::unique_ptr<ResponseMessage> message);
 
+    void runStabilizationProtocol();
+    bool isNodeAlive(const network::Address& addr);
+
     network::Address address;
     std::shared_ptr<utils::Log> logger;
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
@@ -197,5 +200,6 @@ private:
     std::mutex mutex;
 
     utils::RunnableCallback runnable;
+    std::unique_ptr<utils::IThreadPolicy> threadPolicy;
 };
 }

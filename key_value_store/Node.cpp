@@ -25,7 +25,8 @@ Node::Node(const network::Address& address,
         membershipProtocol,
     std::unique_ptr<IStorage> storage,
     std::unique_ptr<IPartitioner> partitioner,
-    const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher)
+    const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher,
+    std::unique_ptr<utils::IThreadPolicy>& threadPolicy)
     : address(address)
     , logger(logger)
     , membershipProtocol(std::move(membershipProtocol))
@@ -36,6 +37,7 @@ Node::Node(const network::Address& address,
     , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })
     , sentMessages()
     , runnable([this]() { run(); })
+    , threadPolicy(std::move(threadPolicy))
 {
 }
 
@@ -163,6 +165,8 @@ void Node::run()
 
     while (runnable.isRunning)
     {
+        runStabilizationProtocol();
+        threadPolicy->sleepMilliseconds(1000);
     }
 
     logger->log(address, "[Node::run] -- end");
@@ -270,6 +274,46 @@ void Node::processMessage(std::unique_ptr<Message> message)
     }
 
     throw utils::NotImplementedException();
+}
+
+void Node::runStabilizationProtocol()
+{
+    auto records = storage->getRecords();
+    for (auto it = records.begin(); it != records.end(); ++it)
+    {
+        auto nodes = getTargetNodes(it->first);
+        auto curNodeIt = std::find_if(nodes.begin(), nodes.end(), [this](const network::Address& addr) -> bool { return addr == address; });
+        if (curNodeIt == nodes.end())
+        {
+            for (auto nodeIt = nodes.begin(); nodeIt != nodes.end(); ++nodeIt)
+            {
+                sendCreateMessage(*nodeIt, it->first, it->second.value);
+            }
+
+            continue;
+        }
+
+        int index = curNodeIt - nodes.begin();
+        for (int i = 0; i < 3; ++i)
+        {
+            if (i == index)
+            {
+                continue;
+            }
+
+            if (nodes.size() > i && !isNodeAlive(nodes[i]))
+            {
+                sendCreateMessage(nodes[i], it->first, it->second.value);
+            }
+        }
+    }
+}
+
+bool Node::isNodeAlive(const network::Address& addr)
+{
+    auto nodes = membershipProtocol->getMembers();
+    auto it = std::find_if(nodes.begin(), nodes.end(), [addr](const membership_protocol::Member& member) -> bool { return member.address == addr; });
+    return it != nodes.end();
 }
 
 } // namespace key_value_store
