@@ -13,7 +13,7 @@ public:
     std::string getValue() const;
 
 protected:
-    virtual gen::Message serializeToProtobuf() const;
+    virtual gen::key_value_store::Message serializeToProtobuf() const;
 
 private:
     std::string value;

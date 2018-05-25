@@ -1,5 +1,5 @@
 syntax = "proto3";
-package gen;
+package gen.key_value_store;
 
 import "Address.proto";
 

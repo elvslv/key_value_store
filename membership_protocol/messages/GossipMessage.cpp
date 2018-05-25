@@ -14,11 +14,11 @@
     {
     }
 
-    gen::Message GossipMessage::serializeToProtobuf() const
+    gen::membership_protocol::Message GossipMessage::serializeToProtobuf() const
     {
         auto message = Message::serializeToProtobuf();
 
-        auto gossipFields = std::make_unique<gen::GossipFields>();
+        auto gossipFields = std::make_unique<gen::membership_protocol::GossipFields>();
         for (auto it = gossips.begin(); it != gossips.end(); ++it)
         {
             auto gossip = gossipFields->add_gossips();
@@ -30,9 +30,9 @@
         return message;
     }
 
-    gen::MessageType GossipMessage::getProtobufMessageType() const
+    gen::membership_protocol::MessageType GossipMessage::getProtobufMessageType() const
     {
-        return gen::GOSSIP;
+        return gen::membership_protocol::GOSSIP;
     }
 
     const std::vector<Gossip>& GossipMessage::getGossips() const

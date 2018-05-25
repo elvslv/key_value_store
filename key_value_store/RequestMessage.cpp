@@ -27,10 +27,10 @@ std::string RequestMessage::getKey() const
     return key;
 }
 
-gen::Message RequestMessage::serializeToProtobuf() const
+gen::key_value_store::Message RequestMessage::serializeToProtobuf() const
 {
     auto message = Message::serializeToProtobuf();
-    auto requestMessage = std::make_unique<gen::RequestMessage>();
+    auto requestMessage = std::make_unique<gen::key_value_store::RequestMessage>();
     requestMessage->set_messagetype(getProtobufMessageType());
     requestMessage->set_key(key);
 
@@ -38,21 +38,21 @@ gen::Message RequestMessage::serializeToProtobuf() const
     return message;
 }
 
-gen::RequestMessageType RequestMessage::getProtobufMessageType() const
+gen::key_value_store::RequestMessageType RequestMessage::getProtobufMessageType() const
 {
     switch (getMessageType())
     {
     case CREATE_REQUEST:
-        return gen::CREATE_REQUEST;
+        return gen::key_value_store::CREATE_REQUEST;
 
     case UPDATE_REQUEST:
-        return gen::UPDATE_REQUEST;
+        return gen::key_value_store::UPDATE_REQUEST;
 
     case READ_REQUEST:
-        return gen::READ_REQUEST;
+        return gen::key_value_store::READ_REQUEST;
 
     case DELETE_REQUEST:
-        return gen::DELETE_REQUEST;
+        return gen::key_value_store::DELETE_REQUEST;
     }
 
     throw utils::NotImplementedException();
@@ -78,11 +78,11 @@ std::string RequestMessage::getMsgTypeStr() const
     throw utils::NotImplementedException();
 }
 
-gen::RequestMessage RequestMessage::getRequestMessage(const gen::Message& message)
+gen::key_value_store::RequestMessage* RequestMessage::getRequestMessage(gen::key_value_store::Message& message)
 {
     if (message.has_requestmessage())
     {
-        return message.requestmessage();
+        return message.mutable_requestmessage();
     }
 
     throw std::logic_error("Request message is not set");

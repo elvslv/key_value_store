@@ -12,13 +12,13 @@ CreateResponseMessage::CreateResponseMessage(const network::Address& sourceAddre
 {
 }
 
-gen::Message CreateResponseMessage::serializeToProtobuf() const
+gen::key_value_store::Message CreateResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();
 
-    auto createResponseFields = std::make_unique<gen::CreateResponseFields>();
+    auto createResponseFields = std::make_unique<gen::key_value_store::CreateResponseFields>();
     auto responseMessage = getResponseMessage(message);
-    responseMessage.set_allocated_createfields(createResponseFields.release());
+    responseMessage->set_allocated_createfields(createResponseFields.release());
 
     return message;
 }

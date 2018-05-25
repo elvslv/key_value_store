@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Message.h"
 #include "Gossip.h"
+#include "Message.h"
 
 /*namespace membership_protocol
 {
@@ -13,8 +13,8 @@
 
         const std::vector<Gossip>& getGossips() const;
     protected:
-        virtual gen::MessageType getProtobufMessageType() const;
-        virtual gen::Message serializeToProtobuf() const;
+        virtual gen::membership_protocol::MessageType getProtobufMessageType() const;
+        virtual gen::membership_protocol::Message serializeToProtobuf() const;
         
     private:
         std::vector<Gossip> gossips;

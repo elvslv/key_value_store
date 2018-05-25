@@ -14,8 +14,8 @@ JoinRepMessage::JoinRepMessage(const network::Address& from, const network::Addr
 {
 }
 
-gen::MessageType JoinRepMessage::getProtobufMessageType() const
+gen::membership_protocol::MessageType JoinRepMessage::getProtobufMessageType() const
 {
-    return gen::JOINREP;
+    return gen::membership_protocol::JOINREP;
 }
 }

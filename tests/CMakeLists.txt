@@ -23,3 +23,4 @@ target_link_libraries(key_value_store_tests key_value_store_lib gtest_main gmock
 add_subdirectory(utils)
 add_subdirectory(network)
 add_subdirectory(membership_protocol)
+add_subdirectory(key_value_store)

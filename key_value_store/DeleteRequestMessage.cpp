@@ -12,13 +12,13 @@ DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress
 {
 }
 
-gen::Message DeleteRequestMessage::serializeToProtobuf() const
+gen::key_value_store::Message DeleteRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 
     auto requestMessage = getRequestMessage(message);
-    auto deleteRequestFields = std::make_unique<gen::DeleteRequestFields>();
-    requestMessage.set_allocated_deletefields(deleteRequestFields.release());
+    auto deleteRequestFields = std::make_unique<gen::key_value_store::DeleteRequestFields>();
+    requestMessage->set_allocated_deletefields(deleteRequestFields.release());
 
     return message;
 }

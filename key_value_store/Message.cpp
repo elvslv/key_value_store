@@ -29,7 +29,7 @@ Message::Message(MsgTypes messageType, const network::Address& sourceAddress, co
 
 std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMessage)
 {
-    gen::Message message;
+    gen::key_value_store::Message message;
     message.ParseFromArray(networkMessage.content.get(), networkMessage.size);
 
     auto srcAddress = network::Address(message.sourceaddress());
@@ -43,7 +43,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
 
         switch (requestMessage.messagetype())
         {
-        case gen::CREATE_REQUEST:
+        case gen::key_value_store::CREATE_REQUEST:
         {
             if (!requestMessage.has_createfields())
             {
@@ -54,7 +54,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
             return std::make_unique<CreateRequestMessage>(srcAddress, destAddress, key, createFields.value(), id);
         }
 
-        case gen::UPDATE_REQUEST:
+        case gen::key_value_store::UPDATE_REQUEST:
         {
             if (!requestMessage.has_updatefields())
             {
@@ -65,12 +65,12 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
             return std::make_unique<UpdateRequestMessage>(srcAddress, destAddress, key, updateFields.value(), id);
         }
 
-        case gen::READ_REQUEST:
+        case gen::key_value_store::READ_REQUEST:
         {
             return std::make_unique<ReadRequestMessage>(srcAddress, destAddress, key, id);
         }
 
-        case gen::DELETE_REQUEST:
+        case gen::key_value_store::DELETE_REQUEST:
         {
             return std::make_unique<DeleteRequestMessage>(srcAddress, destAddress, key, id);
         }
@@ -82,16 +82,16 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
         auto responseMessage = message.responsemessage();
         switch (responseMessage.messagetype())
         {
-        case gen::CREATE_RESPONSE:
+        case gen::key_value_store::CREATE_RESPONSE:
         {
             return std::make_unique<CreateResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), id);
         }
 
-        case gen::UPDATE_RESPONSE:
+        case gen::key_value_store::UPDATE_RESPONSE:
         {
             return std::make_unique<UpdateResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), id);
         }
-        case gen::READ_RESPONSE:
+        case gen::key_value_store::READ_RESPONSE:
         {
             if (!responseMessage.has_readfields())
             {
@@ -101,7 +101,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
             auto readFields = responseMessage.readfields();
             return std::make_unique<ReadResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), readFields.value(), id);
         }
-        case gen::DELETE_RESPONSE:
+        case gen::key_value_store::DELETE_RESPONSE:
         {
             return std::make_unique<DeleteResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), id);
         }
@@ -111,12 +111,12 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
     throw utils::NotImplementedException();
 }
 
-gen::Message Message::serializeToProtobuf() const
+gen::key_value_store::Message Message::serializeToProtobuf() const
 {
     auto srcAddress = sourceAddress.serialize();
     auto destAddress = destinationAddress.serialize();
 
-    gen::Message message;
+    gen::key_value_store::Message message;
     message.set_allocated_sourceaddress(srcAddress.release());
     message.set_allocated_destinationaddress(destAddress.release());
     message.set_id(id);
@@ -126,7 +126,7 @@ gen::Message Message::serializeToProtobuf() const
 
 network::Message Message::serialize() const
 {
-    gen::Message message = serializeToProtobuf();
+    gen::key_value_store::Message message = serializeToProtobuf();
 
     unsigned int size = message.ByteSize();
     char* data = new char[size];

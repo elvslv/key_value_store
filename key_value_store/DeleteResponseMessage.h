@@ -11,6 +11,6 @@ public:
     DeleteResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode);
 
 protected:
-    virtual gen::Message serializeToProtobuf() const;
+    virtual gen::key_value_store::Message serializeToProtobuf() const;
 };
 }

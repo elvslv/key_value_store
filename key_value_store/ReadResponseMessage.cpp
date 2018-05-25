@@ -19,14 +19,14 @@ std::string ReadResponseMessage::getValue() const
     return value;
 }
 
-gen::Message ReadResponseMessage::serializeToProtobuf() const
+gen::key_value_store::Message ReadResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();
 
-    auto readResponseFields = std::make_unique<gen::ReadResponseFields>();
+    auto readResponseFields = std::make_unique<gen::key_value_store::ReadResponseFields>();
     auto responseMessage = getResponseMessage(message);
     readResponseFields->set_value(value);
-    responseMessage.set_allocated_readfields(readResponseFields.release());
+    responseMessage->set_allocated_readfields(readResponseFields.release());
 
     return message;
 }

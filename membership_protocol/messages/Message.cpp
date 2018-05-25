@@ -57,7 +57,7 @@ std::string Message::getMessageTypeDescription() const
 
 std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMessage)
 {
-    gen::Message message;
+    gen::membership_protocol::Message message;
     message.ParseFromArray(networkMessage.content.get(), networkMessage.size);
 
     auto srcAddress = network::Address(message.sourceaddress());
@@ -65,24 +65,24 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
 
     switch (message.messagetype())
     {
-    case gen::JOINREQ:
+    case gen::membership_protocol::JOINREQ:
     {
         return std::make_unique<JoinReqMessage>(srcAddress, destAddress, message.id());
     }
 
-    case gen::JOINREP:
+    case gen::membership_protocol::JOINREP:
     {
         auto gossips = MessageWithGossipsBase::parseGossips(message);
         return std::make_unique<JoinRepMessage>(srcAddress, destAddress, gossips, message.id());
     }
 
-    case gen::PING:
+    case gen::membership_protocol::PING:
     {
         auto gossips = MessageWithGossipsBase::parseGossips(message);
         return std::make_unique<PingMessage>(srcAddress, destAddress, gossips, message.id());
     }
 
-    case gen::ACK:
+    case gen::membership_protocol::ACK:
     {
         if (!message.has_ackfields())
         {
@@ -94,7 +94,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
         return std::make_unique<AckMessage>(srcAddress, destAddress, gossips, message.id(), ackFields.originalid());
     }
 
-    case gen::PING_REQ:
+    case gen::membership_protocol::PING_REQ:
     {
         if (!message.has_pingreqfields())
         {
@@ -112,7 +112,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
 
 network::Message Message::serialize() const
 {
-    gen::Message message = serializeToProtobuf();
+    gen::membership_protocol::Message message = serializeToProtobuf();
 
     unsigned int size = message.ByteSize();
     char* data = new char[size];
@@ -121,12 +121,12 @@ network::Message Message::serialize() const
     return network::Message(data, size);
 }
 
-gen::Message Message::serializeToProtobuf() const
+gen::membership_protocol::Message Message::serializeToProtobuf() const
 {
     auto srcAddress = sourceAddress.serialize();
     auto destAddress = destinationAddress.serialize();
 
-    gen::Message message;
+    gen::membership_protocol::Message message;
     message.set_messagetype(getProtobufMessageType());
     message.set_allocated_sourceaddress(srcAddress.release());
     message.set_allocated_destinationaddress(destAddress.release());

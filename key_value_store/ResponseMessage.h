@@ -25,10 +25,9 @@ protected:
     ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode, const std::string& id);
     ResponseMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode);
 
-    virtual gen::Message serializeToProtobuf() const = 0;
-    gen::ResponseMessageType getProtobufMessageType() const;
+    gen::key_value_store::ResponseMessageType getProtobufMessageType() const;
     virtual std::string getMsgTypeStr() const;
-    static gen::ResponseMessage getResponseMessage(const gen::Message& message);
+    static gen::key_value_store::ResponseMessage* getResponseMessage(gen::key_value_store::Message& message);
 
 private:
     MsgTypes messageType;

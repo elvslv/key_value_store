@@ -12,13 +12,13 @@ DeleteResponseMessage::DeleteResponseMessage(const network::Address& sourceAddre
 {
 }
 
-gen::Message DeleteResponseMessage::serializeToProtobuf() const
+gen::key_value_store::Message DeleteResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();
 
-    auto deleteResponseFields = std::make_unique<gen::DeleteResponseFields>();
+    auto deleteResponseFields = std::make_unique<gen::key_value_store::DeleteResponseFields>();
     auto responseMessage = getResponseMessage(message);
-    responseMessage.set_allocated_deletefields(deleteResponseFields.release());
+    responseMessage->set_allocated_deletefields(deleteResponseFields.release());
 
     return message;
 }

@@ -23,11 +23,11 @@ protected:
     RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id);
     RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key);
 
-    virtual gen::Message serializeToProtobuf() const = 0;
-    gen::RequestMessageType getProtobufMessageType() const;
+    virtual gen::key_value_store::Message serializeToProtobuf() const = 0;
+    gen::key_value_store::RequestMessageType getProtobufMessageType() const;
     virtual std::string getMsgTypeStr() const;
 
-    static gen::RequestMessage getRequestMessage(const gen::Message& message);
+    static gen::key_value_store::RequestMessage* getRequestMessage(gen::key_value_store::Message& message);
 
 private:
     std::string key;

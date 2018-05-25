@@ -10,6 +10,6 @@ class IPartitioner
 {
 public:
     virtual ~IPartitioner() {}
-    virtual std::vector<network::Address> getTargetNodes(const std::string& key, const std::vector<membership_protocol::Member>& members) = 0;
+    virtual std::vector<network::Address> getTargetNodes(const std::string& key, std::vector<membership_protocol::Member> members) = 0;
 };
 }

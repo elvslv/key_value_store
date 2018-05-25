@@ -30,21 +30,21 @@ unsigned int ResponseMessage::getResponseCode() const
     return responseCode;
 }
 
-gen::ResponseMessageType ResponseMessage::getProtobufMessageType() const
+gen::key_value_store::ResponseMessageType ResponseMessage::getProtobufMessageType() const
 {
     switch (messageType)
     {
     case CREATE_RESPONSE:
-        return gen::CREATE_RESPONSE;
+        return gen::key_value_store::CREATE_RESPONSE;
 
     case UPDATE_RESPONSE:
-        return gen::UPDATE_RESPONSE;
+        return gen::key_value_store::UPDATE_RESPONSE;
 
     case READ_RESPONSE:
-        return gen::READ_RESPONSE;
+        return gen::key_value_store::READ_RESPONSE;
 
     case DELETE_RESPONSE:
-        return gen::DELETE_RESPONSE;
+        return gen::key_value_store::DELETE_RESPONSE;
     }
 
     throw utils::NotImplementedException();
@@ -70,11 +70,11 @@ std::string ResponseMessage::getMsgTypeStr() const
     throw utils::NotImplementedException();
 }
 
-gen::ResponseMessage ResponseMessage::getResponseMessage(const gen::Message& message)
+gen::key_value_store::ResponseMessage* ResponseMessage::getResponseMessage(gen::key_value_store::Message& message)
 {
     if (message.has_responsemessage())
     {
-        return message.responsemessage();
+        return message.mutable_responsemessage();
     }
 
     throw std::logic_error("Request message is not set");

@@ -12,13 +12,13 @@ UpdateResponseMessage::UpdateResponseMessage(const network::Address& sourceAddre
 {
 }
 
-gen::Message UpdateResponseMessage::serializeToProtobuf() const
+gen::key_value_store::Message UpdateResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();
 
-    auto updateResponseFields = std::make_unique<gen::UpdateResponseFields>();
+    auto updateResponseFields = std::make_unique<gen::key_value_store::UpdateResponseFields>();
     auto responseMessage = getResponseMessage(message);
-    responseMessage.set_allocated_updatefields(updateResponseFields.release());
+    responseMessage->set_allocated_updatefields(updateResponseFields.release());
 
     return message;
 }

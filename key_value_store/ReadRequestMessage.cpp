@@ -12,13 +12,13 @@ ReadRequestMessage::ReadRequestMessage(const network::Address& sourceAddress, co
 {
 }
 
-gen::Message ReadRequestMessage::serializeToProtobuf() const
+gen::key_value_store::Message ReadRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 
     auto requestMessage = getRequestMessage(message);
-    auto readRequestFields = std::make_unique<gen::ReadRequestFields>();
-    requestMessage.set_allocated_readfields(readRequestFields.release());
+    auto readRequestFields = std::make_unique<gen::key_value_store::ReadRequestFields>();
+    requestMessage->set_allocated_readfields(readRequestFields.release());
 
     return message;
 }

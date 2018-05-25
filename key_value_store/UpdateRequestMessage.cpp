@@ -19,16 +19,16 @@ std::string UpdateRequestMessage::getValue() const
     return value;
 }
 
-gen::Message UpdateRequestMessage::serializeToProtobuf() const
+gen::key_value_store::Message UpdateRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 
-    auto updateRequestFields = std::make_unique<gen::UpdateRequestFields>();
+    auto updateRequestFields = std::make_unique<gen::key_value_store::UpdateRequestFields>();
     auto val = std::make_unique<std::string>(value);
     updateRequestFields->set_allocated_value(val.release());
 
     auto requestMessage = getRequestMessage(message);
-    requestMessage.set_allocated_updatefields(updateRequestFields.release());
+    requestMessage->set_allocated_updatefields(updateRequestFields.release());
 
     return message;
 }

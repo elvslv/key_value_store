@@ -10,8 +10,8 @@ struct Gossip
 {
     Gossip(const network::Address& address, MembershipUpdateType membershipUpdateType, const std::string& id);
 
-    gen::GossipEventTypes getProtobufEventsType() const;
-    void serializeTo(gen::Gossip* gossip) const;
+    gen::membership_protocol::GossipEventTypes getProtobufEventsType() const;
+    void serializeTo(gen::membership_protocol::Gossip* gossip) const;
 
     network::Address address;
     MembershipUpdateType membershipUpdateType;

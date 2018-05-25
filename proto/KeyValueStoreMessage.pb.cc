@@ -18,6 +18,7 @@
 // @@protoc_insertion_point(includes)
 
 namespace gen {
+namespace key_value_store {
 class CreateRequestFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<CreateRequestFields> {
 } _CreateRequestFields_default_instance_;
 class UpdateRequestFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<UpdateRequestFields> {
@@ -28,10 +29,10 @@ class DeleteRequestFieldsDefaultTypeInternal : public ::google::protobuf::intern
 } _DeleteRequestFields_default_instance_;
 class RequestMessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RequestMessage> {
   public:
-  const ::gen::CreateRequestFields* createfields_;
-  const ::gen::UpdateRequestFields* updatefields_;
-  const ::gen::ReadRequestFields* readfields_;
-  const ::gen::DeleteRequestFields* deletefields_;
+  const ::gen::key_value_store::CreateRequestFields* createfields_;
+  const ::gen::key_value_store::UpdateRequestFields* updatefields_;
+  const ::gen::key_value_store::ReadRequestFields* readfields_;
+  const ::gen::key_value_store::DeleteRequestFields* deletefields_;
 } _RequestMessage_default_instance_;
 class CreateResponseFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<CreateResponseFields> {
 } _CreateResponseFields_default_instance_;
@@ -43,15 +44,15 @@ class DeleteResponseFieldsDefaultTypeInternal : public ::google::protobuf::inter
 } _DeleteResponseFields_default_instance_;
 class ResponseMessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ResponseMessage> {
   public:
-  const ::gen::CreateResponseFields* createfields_;
-  const ::gen::UpdateResponseFields* updatefields_;
-  const ::gen::ReadResponseFields* readfields_;
-  const ::gen::DeleteResponseFields* deletefields_;
+  const ::gen::key_value_store::CreateResponseFields* createfields_;
+  const ::gen::key_value_store::UpdateResponseFields* updatefields_;
+  const ::gen::key_value_store::ReadResponseFields* readfields_;
+  const ::gen::key_value_store::DeleteResponseFields* deletefields_;
 } _ResponseMessage_default_instance_;
 class MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Message> {
   public:
-  const ::gen::RequestMessage* requestmessage_;
-  const ::gen::ResponseMessage* responsemessage_;
+  const ::gen::key_value_store::RequestMessage* requestmessage_;
+  const ::gen::key_value_store::ResponseMessage* responsemessage_;
 } _Message_default_instance_;
 
 namespace protobuf_KeyValueStoreMessage_2eproto {
@@ -262,30 +263,30 @@ void TableStruct::InitDefaultsImpl() {
   _DeleteResponseFields_default_instance_.DefaultConstruct();
   _ResponseMessage_default_instance_.DefaultConstruct();
   _Message_default_instance_.DefaultConstruct();
-  _RequestMessage_default_instance_.createfields_ = const_cast< ::gen::CreateRequestFields*>(
-      ::gen::CreateRequestFields::internal_default_instance());
-  _RequestMessage_default_instance_.updatefields_ = const_cast< ::gen::UpdateRequestFields*>(
-      ::gen::UpdateRequestFields::internal_default_instance());
-  _RequestMessage_default_instance_.readfields_ = const_cast< ::gen::ReadRequestFields*>(
-      ::gen::ReadRequestFields::internal_default_instance());
-  _RequestMessage_default_instance_.deletefields_ = const_cast< ::gen::DeleteRequestFields*>(
-      ::gen::DeleteRequestFields::internal_default_instance());
-  _ResponseMessage_default_instance_.createfields_ = const_cast< ::gen::CreateResponseFields*>(
-      ::gen::CreateResponseFields::internal_default_instance());
-  _ResponseMessage_default_instance_.updatefields_ = const_cast< ::gen::UpdateResponseFields*>(
-      ::gen::UpdateResponseFields::internal_default_instance());
-  _ResponseMessage_default_instance_.readfields_ = const_cast< ::gen::ReadResponseFields*>(
-      ::gen::ReadResponseFields::internal_default_instance());
-  _ResponseMessage_default_instance_.deletefields_ = const_cast< ::gen::DeleteResponseFields*>(
-      ::gen::DeleteResponseFields::internal_default_instance());
+  _RequestMessage_default_instance_.createfields_ = const_cast< ::gen::key_value_store::CreateRequestFields*>(
+      ::gen::key_value_store::CreateRequestFields::internal_default_instance());
+  _RequestMessage_default_instance_.updatefields_ = const_cast< ::gen::key_value_store::UpdateRequestFields*>(
+      ::gen::key_value_store::UpdateRequestFields::internal_default_instance());
+  _RequestMessage_default_instance_.readfields_ = const_cast< ::gen::key_value_store::ReadRequestFields*>(
+      ::gen::key_value_store::ReadRequestFields::internal_default_instance());
+  _RequestMessage_default_instance_.deletefields_ = const_cast< ::gen::key_value_store::DeleteRequestFields*>(
+      ::gen::key_value_store::DeleteRequestFields::internal_default_instance());
+  _ResponseMessage_default_instance_.createfields_ = const_cast< ::gen::key_value_store::CreateResponseFields*>(
+      ::gen::key_value_store::CreateResponseFields::internal_default_instance());
+  _ResponseMessage_default_instance_.updatefields_ = const_cast< ::gen::key_value_store::UpdateResponseFields*>(
+      ::gen::key_value_store::UpdateResponseFields::internal_default_instance());
+  _ResponseMessage_default_instance_.readfields_ = const_cast< ::gen::key_value_store::ReadResponseFields*>(
+      ::gen::key_value_store::ReadResponseFields::internal_default_instance());
+  _ResponseMessage_default_instance_.deletefields_ = const_cast< ::gen::key_value_store::DeleteResponseFields*>(
+      ::gen::key_value_store::DeleteResponseFields::internal_default_instance());
   _Message_default_instance_.get_mutable()->sourceaddress_ = const_cast< ::gen::Address*>(
       ::gen::Address::internal_default_instance());
   _Message_default_instance_.get_mutable()->destinationaddress_ = const_cast< ::gen::Address*>(
       ::gen::Address::internal_default_instance());
-  _Message_default_instance_.requestmessage_ = const_cast< ::gen::RequestMessage*>(
-      ::gen::RequestMessage::internal_default_instance());
-  _Message_default_instance_.responsemessage_ = const_cast< ::gen::ResponseMessage*>(
-      ::gen::ResponseMessage::internal_default_instance());
+  _Message_default_instance_.requestmessage_ = const_cast< ::gen::key_value_store::RequestMessage*>(
+      ::gen::key_value_store::RequestMessage::internal_default_instance());
+  _Message_default_instance_.responsemessage_ = const_cast< ::gen::key_value_store::ResponseMessage*>(
+      ::gen::key_value_store::ResponseMessage::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -295,43 +296,48 @@ void InitDefaults() {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
-      "\n\032KeyValueStoreMessage.proto\022\003gen\032\rAddre"
-      "ss.proto\"$\n\023CreateRequestFields\022\r\n\005value"
-      "\030\001 \001(\t\"$\n\023UpdateRequestFields\022\r\n\005value\030\001"
-      " \001(\t\"\023\n\021ReadRequestFields\"\025\n\023DeleteReque"
-      "stFields\"\237\002\n\016RequestMessage\022,\n\013messageTy"
-      "pe\030\001 \001(\0162\027.gen.RequestMessageType\022\013\n\003key"
-      "\030\002 \001(\t\0220\n\014createFields\030\003 \001(\0132\030.gen.Creat"
-      "eRequestFieldsH\000\0220\n\014updateFields\030\004 \001(\0132\030"
-      ".gen.UpdateRequestFieldsH\000\022,\n\nreadFields"
-      "\030\005 \001(\0132\026.gen.ReadRequestFieldsH\000\0220\n\014dele"
-      "teFields\030\006 \001(\0132\030.gen.DeleteRequestFields"
-      "H\000B\016\n\014customFields\"\026\n\024CreateResponseFiel"
-      "ds\"\026\n\024UpdateResponseFields\"#\n\022ReadRespon"
-      "seFields\022\r\n\005value\030\001 \001(\t\"\026\n\024DeleteRespons"
-      "eFields\"\311\002\n\017ResponseMessage\022-\n\013messageTy"
-      "pe\030\001 \001(\0162\030.gen.ResponseMessageType\022\031\n\021or"
-      "iginalMessageId\030\002 \001(\t\022\024\n\014responseCode\030\003 "
-      "\001(\005\0221\n\014createFields\030\004 \001(\0132\031.gen.CreateRe"
-      "sponseFieldsH\000\0221\n\014updateFields\030\005 \001(\0132\031.g"
-      "en.UpdateResponseFieldsH\000\022-\n\nreadFields\030"
-      "\006 \001(\0132\027.gen.ReadResponseFieldsH\000\0221\n\014dele"
-      "teFields\030\007 \001(\0132\031.gen.DeleteResponseField"
-      "sH\000B\016\n\014customFields\"\327\001\n\007Message\022#\n\rsourc"
-      "eAddress\030\001 \001(\0132\014.gen.Address\022(\n\022destinat"
-      "ionAddress\030\002 \001(\0132\014.gen.Address\022\n\n\002id\030\003 \001"
-      "(\t\022-\n\016requestMessage\030\004 \001(\0132\023.gen.Request"
-      "MessageH\000\022/\n\017responseMessage\030\005 \001(\0132\024.gen"
-      ".ResponseMessageH\000B\021\n\017messageInternal*b\n"
-      "\022RequestMessageType\022\022\n\016CREATE_REQUEST\020\000\022"
-      "\022\n\016UPDATE_REQUEST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n"
-      "\016DELETE_REQUEST\020\003*g\n\023ResponseMessageType"
-      "\022\023\n\017CREATE_RESPONSE\020\000\022\023\n\017UPDATE_RESPONSE"
-      "\020\001\022\021\n\rREAD_RESPONSE\020\002\022\023\n\017DELETE_RESPONSE"
-      "\020\003b\006proto3"
+      "\n\032KeyValueStoreMessage.proto\022\023gen.key_va"
+      "lue_store\032\rAddress.proto\"$\n\023CreateReques"
+      "tFields\022\r\n\005value\030\001 \001(\t\"$\n\023UpdateRequestF"
+      "ields\022\r\n\005value\030\001 \001(\t\"\023\n\021ReadRequestField"
+      "s\"\025\n\023DeleteRequestFields\"\357\002\n\016RequestMess"
+      "age\022<\n\013messageType\030\001 \001(\0162\'.gen.key_value"
+      "_store.RequestMessageType\022\013\n\003key\030\002 \001(\t\022@"
+      "\n\014createFields\030\003 \001(\0132(.gen.key_value_sto"
+      "re.CreateRequestFieldsH\000\022@\n\014updateFields"
+      "\030\004 \001(\0132(.gen.key_value_store.UpdateReque"
+      "stFieldsH\000\022<\n\nreadFields\030\005 \001(\0132&.gen.key"
+      "_value_store.ReadRequestFieldsH\000\022@\n\014dele"
+      "teFields\030\006 \001(\0132(.gen.key_value_store.Del"
+      "eteRequestFieldsH\000B\016\n\014customFields\"\026\n\024Cr"
+      "eateResponseFields\"\026\n\024UpdateResponseFiel"
+      "ds\"#\n\022ReadResponseFields\022\r\n\005value\030\001 \001(\t\""
+      "\026\n\024DeleteResponseFields\"\231\003\n\017ResponseMess"
+      "age\022=\n\013messageType\030\001 \001(\0162(.gen.key_value"
+      "_store.ResponseMessageType\022\031\n\021originalMe"
+      "ssageId\030\002 \001(\t\022\024\n\014responseCode\030\003 \001(\005\022A\n\014c"
+      "reateFields\030\004 \001(\0132).gen.key_value_store."
+      "CreateResponseFieldsH\000\022A\n\014updateFields\030\005"
+      " \001(\0132).gen.key_value_store.UpdateRespons"
+      "eFieldsH\000\022=\n\nreadFields\030\006 \001(\0132\'.gen.key_"
+      "value_store.ReadResponseFieldsH\000\022A\n\014dele"
+      "teFields\030\007 \001(\0132).gen.key_value_store.Del"
+      "eteResponseFieldsH\000B\016\n\014customFields\"\367\001\n\007"
+      "Message\022#\n\rsourceAddress\030\001 \001(\0132\014.gen.Add"
+      "ress\022(\n\022destinationAddress\030\002 \001(\0132\014.gen.A"
+      "ddress\022\n\n\002id\030\003 \001(\t\022=\n\016requestMessage\030\004 \001"
+      "(\0132#.gen.key_value_store.RequestMessageH"
+      "\000\022\?\n\017responseMessage\030\005 \001(\0132$.gen.key_val"
+      "ue_store.ResponseMessageH\000B\021\n\017messageInt"
+      "ernal*b\n\022RequestMessageType\022\022\n\016CREATE_RE"
+      "QUEST\020\000\022\022\n\016UPDATE_REQUEST\020\001\022\020\n\014READ_REQU"
+      "EST\020\002\022\022\n\016DELETE_REQUEST\020\003*g\n\023ResponseMes"
+      "sageType\022\023\n\017CREATE_RESPONSE\020\000\022\023\n\017UPDATE_"
+      "RESPONSE\020\001\022\021\n\rREAD_RESPONSE\020\002\022\023\n\017DELETE_"
+      "RESPONSE\020\003b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1330);
+      descriptor, 1538);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KeyValueStoreMessage.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -396,7 +402,7 @@ CreateRequestFields::CreateRequestFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.CreateRequestFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.CreateRequestFields)
 }
 CreateRequestFields::CreateRequestFields(const CreateRequestFields& from)
   : ::google::protobuf::Message(),
@@ -407,7 +413,7 @@ CreateRequestFields::CreateRequestFields(const CreateRequestFields& from)
   if (from.value().size() > 0) {
     value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
-  // @@protoc_insertion_point(copy_constructor:gen.CreateRequestFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.CreateRequestFields)
 }
 
 void CreateRequestFields::SharedCtor() {
@@ -416,7 +422,7 @@ void CreateRequestFields::SharedCtor() {
 }
 
 CreateRequestFields::~CreateRequestFields() {
-  // @@protoc_insertion_point(destructor:gen.CreateRequestFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.CreateRequestFields)
   SharedDtor();
 }
 
@@ -448,7 +454,7 @@ CreateRequestFields* CreateRequestFields::New(::google::protobuf::Arena* arena) 
 }
 
 void CreateRequestFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.CreateRequestFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.CreateRequestFields)
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -456,7 +462,7 @@ bool CreateRequestFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.CreateRequestFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.CreateRequestFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -471,7 +477,7 @@ bool CreateRequestFields::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->value().data(), this->value().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.CreateRequestFields.value"));
+            "gen.key_value_store.CreateRequestFields.value"));
         } else {
           goto handle_unusual;
         }
@@ -491,17 +497,17 @@ bool CreateRequestFields::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.CreateRequestFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.CreateRequestFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.CreateRequestFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.CreateRequestFields)
   return false;
 #undef DO_
 }
 
 void CreateRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.CreateRequestFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.CreateRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -510,17 +516,17 @@ void CreateRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.CreateRequestFields.value");
+      "gen.key_value_store.CreateRequestFields.value");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->value(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:gen.CreateRequestFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.CreateRequestFields)
 }
 
 ::google::protobuf::uint8* CreateRequestFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.CreateRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.CreateRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -529,18 +535,18 @@ void CreateRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.CreateRequestFields.value");
+      "gen.key_value_store.CreateRequestFields.value");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->value(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.CreateRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.CreateRequestFields)
   return target;
 }
 
 size_t CreateRequestFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.CreateRequestFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.CreateRequestFields)
   size_t total_size = 0;
 
   // string value = 1;
@@ -558,22 +564,22 @@ size_t CreateRequestFields::ByteSizeLong() const {
 }
 
 void CreateRequestFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.CreateRequestFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.CreateRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   const CreateRequestFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const CreateRequestFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.CreateRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.CreateRequestFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.CreateRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.CreateRequestFields)
     MergeFrom(*source);
   }
 }
 
 void CreateRequestFields::MergeFrom(const CreateRequestFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.CreateRequestFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.CreateRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -586,14 +592,14 @@ void CreateRequestFields::MergeFrom(const CreateRequestFields& from) {
 }
 
 void CreateRequestFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.CreateRequestFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.CreateRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void CreateRequestFields::CopyFrom(const CreateRequestFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.CreateRequestFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.CreateRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -625,41 +631,41 @@ void CreateRequestFields::clear_value() {
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& CreateRequestFields::value() const {
-  // @@protoc_insertion_point(field_get:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.CreateRequestFields.value)
   return value_.GetNoArena();
 }
 void CreateRequestFields::set_value(const ::std::string& value) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.CreateRequestFields.value)
 }
 #if LANG_CXX11
 void CreateRequestFields::set_value(::std::string&& value) {
   
   value_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.CreateRequestFields.value)
 }
 #endif
 void CreateRequestFields::set_value(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.CreateRequestFields.value)
 }
 void CreateRequestFields::set_value(const char* value, size_t size) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.CreateRequestFields.value)
 }
 ::std::string* CreateRequestFields::mutable_value() {
   
-  // @@protoc_insertion_point(field_mutable:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.CreateRequestFields.value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* CreateRequestFields::release_value() {
-  // @@protoc_insertion_point(field_release:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.CreateRequestFields.value)
   
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -670,7 +676,7 @@ void CreateRequestFields::set_allocated_value(::std::string* value) {
     
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set_allocated:gen.CreateRequestFields.value)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.CreateRequestFields.value)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -687,7 +693,7 @@ UpdateRequestFields::UpdateRequestFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.UpdateRequestFields)
 }
 UpdateRequestFields::UpdateRequestFields(const UpdateRequestFields& from)
   : ::google::protobuf::Message(),
@@ -698,7 +704,7 @@ UpdateRequestFields::UpdateRequestFields(const UpdateRequestFields& from)
   if (from.value().size() > 0) {
     value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
-  // @@protoc_insertion_point(copy_constructor:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.UpdateRequestFields)
 }
 
 void UpdateRequestFields::SharedCtor() {
@@ -707,7 +713,7 @@ void UpdateRequestFields::SharedCtor() {
 }
 
 UpdateRequestFields::~UpdateRequestFields() {
-  // @@protoc_insertion_point(destructor:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.UpdateRequestFields)
   SharedDtor();
 }
 
@@ -739,7 +745,7 @@ UpdateRequestFields* UpdateRequestFields::New(::google::protobuf::Arena* arena) 
 }
 
 void UpdateRequestFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.UpdateRequestFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.UpdateRequestFields)
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -747,7 +753,7 @@ bool UpdateRequestFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.UpdateRequestFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -762,7 +768,7 @@ bool UpdateRequestFields::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->value().data(), this->value().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.UpdateRequestFields.value"));
+            "gen.key_value_store.UpdateRequestFields.value"));
         } else {
           goto handle_unusual;
         }
@@ -782,17 +788,17 @@ bool UpdateRequestFields::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.UpdateRequestFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.UpdateRequestFields)
   return false;
 #undef DO_
 }
 
 void UpdateRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.UpdateRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -801,17 +807,17 @@ void UpdateRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.UpdateRequestFields.value");
+      "gen.key_value_store.UpdateRequestFields.value");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->value(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.UpdateRequestFields)
 }
 
 ::google::protobuf::uint8* UpdateRequestFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.UpdateRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -820,18 +826,18 @@ void UpdateRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.UpdateRequestFields.value");
+      "gen.key_value_store.UpdateRequestFields.value");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->value(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.UpdateRequestFields)
   return target;
 }
 
 size_t UpdateRequestFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.UpdateRequestFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.UpdateRequestFields)
   size_t total_size = 0;
 
   // string value = 1;
@@ -849,22 +855,22 @@ size_t UpdateRequestFields::ByteSizeLong() const {
 }
 
 void UpdateRequestFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.UpdateRequestFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.UpdateRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   const UpdateRequestFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const UpdateRequestFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.UpdateRequestFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.UpdateRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.UpdateRequestFields)
     MergeFrom(*source);
   }
 }
 
 void UpdateRequestFields::MergeFrom(const UpdateRequestFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.UpdateRequestFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.UpdateRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -877,14 +883,14 @@ void UpdateRequestFields::MergeFrom(const UpdateRequestFields& from) {
 }
 
 void UpdateRequestFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.UpdateRequestFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.UpdateRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void UpdateRequestFields::CopyFrom(const UpdateRequestFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.UpdateRequestFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.UpdateRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -916,41 +922,41 @@ void UpdateRequestFields::clear_value() {
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& UpdateRequestFields::value() const {
-  // @@protoc_insertion_point(field_get:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.UpdateRequestFields.value)
   return value_.GetNoArena();
 }
 void UpdateRequestFields::set_value(const ::std::string& value) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.UpdateRequestFields.value)
 }
 #if LANG_CXX11
 void UpdateRequestFields::set_value(::std::string&& value) {
   
   value_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.UpdateRequestFields.value)
 }
 #endif
 void UpdateRequestFields::set_value(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.UpdateRequestFields.value)
 }
 void UpdateRequestFields::set_value(const char* value, size_t size) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.UpdateRequestFields.value)
 }
 ::std::string* UpdateRequestFields::mutable_value() {
   
-  // @@protoc_insertion_point(field_mutable:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.UpdateRequestFields.value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* UpdateRequestFields::release_value() {
-  // @@protoc_insertion_point(field_release:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.UpdateRequestFields.value)
   
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -961,7 +967,7 @@ void UpdateRequestFields::set_allocated_value(::std::string* value) {
     
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set_allocated:gen.UpdateRequestFields.value)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.UpdateRequestFields.value)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -977,14 +983,14 @@ ReadRequestFields::ReadRequestFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.ReadRequestFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.ReadRequestFields)
 }
 ReadRequestFields::ReadRequestFields(const ReadRequestFields& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:gen.ReadRequestFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.ReadRequestFields)
 }
 
 void ReadRequestFields::SharedCtor() {
@@ -992,7 +998,7 @@ void ReadRequestFields::SharedCtor() {
 }
 
 ReadRequestFields::~ReadRequestFields() {
-  // @@protoc_insertion_point(destructor:gen.ReadRequestFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.ReadRequestFields)
   SharedDtor();
 }
 
@@ -1023,14 +1029,14 @@ ReadRequestFields* ReadRequestFields::New(::google::protobuf::Arena* arena) cons
 }
 
 void ReadRequestFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.ReadRequestFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.ReadRequestFields)
 }
 
 bool ReadRequestFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.ReadRequestFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.ReadRequestFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1044,35 +1050,35 @@ bool ReadRequestFields::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.ReadRequestFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.ReadRequestFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.ReadRequestFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.ReadRequestFields)
   return false;
 #undef DO_
 }
 
 void ReadRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.ReadRequestFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.ReadRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_end:gen.ReadRequestFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.ReadRequestFields)
 }
 
 ::google::protobuf::uint8* ReadRequestFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.ReadRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.ReadRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.ReadRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.ReadRequestFields)
   return target;
 }
 
 size_t ReadRequestFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.ReadRequestFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.ReadRequestFields)
   size_t total_size = 0;
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1083,22 +1089,22 @@ size_t ReadRequestFields::ByteSizeLong() const {
 }
 
 void ReadRequestFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.ReadRequestFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.ReadRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   const ReadRequestFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const ReadRequestFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.ReadRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.ReadRequestFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.ReadRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.ReadRequestFields)
     MergeFrom(*source);
   }
 }
 
 void ReadRequestFields::MergeFrom(const ReadRequestFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.ReadRequestFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.ReadRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1107,14 +1113,14 @@ void ReadRequestFields::MergeFrom(const ReadRequestFields& from) {
 }
 
 void ReadRequestFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.ReadRequestFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.ReadRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void ReadRequestFields::CopyFrom(const ReadRequestFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.ReadRequestFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.ReadRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1153,14 +1159,14 @@ DeleteRequestFields::DeleteRequestFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.DeleteRequestFields)
 }
 DeleteRequestFields::DeleteRequestFields(const DeleteRequestFields& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.DeleteRequestFields)
 }
 
 void DeleteRequestFields::SharedCtor() {
@@ -1168,7 +1174,7 @@ void DeleteRequestFields::SharedCtor() {
 }
 
 DeleteRequestFields::~DeleteRequestFields() {
-  // @@protoc_insertion_point(destructor:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.DeleteRequestFields)
   SharedDtor();
 }
 
@@ -1199,14 +1205,14 @@ DeleteRequestFields* DeleteRequestFields::New(::google::protobuf::Arena* arena) 
 }
 
 void DeleteRequestFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.DeleteRequestFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.DeleteRequestFields)
 }
 
 bool DeleteRequestFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.DeleteRequestFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1220,35 +1226,35 @@ bool DeleteRequestFields::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.DeleteRequestFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.DeleteRequestFields)
   return false;
 #undef DO_
 }
 
 void DeleteRequestFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.DeleteRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_end:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.DeleteRequestFields)
 }
 
 ::google::protobuf::uint8* DeleteRequestFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.DeleteRequestFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.DeleteRequestFields)
   return target;
 }
 
 size_t DeleteRequestFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.DeleteRequestFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.DeleteRequestFields)
   size_t total_size = 0;
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1259,22 +1265,22 @@ size_t DeleteRequestFields::ByteSizeLong() const {
 }
 
 void DeleteRequestFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.DeleteRequestFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.DeleteRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   const DeleteRequestFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const DeleteRequestFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.DeleteRequestFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.DeleteRequestFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.DeleteRequestFields)
     MergeFrom(*source);
   }
 }
 
 void DeleteRequestFields::MergeFrom(const DeleteRequestFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.DeleteRequestFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.DeleteRequestFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1283,14 +1289,14 @@ void DeleteRequestFields::MergeFrom(const DeleteRequestFields& from) {
 }
 
 void DeleteRequestFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.DeleteRequestFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.DeleteRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void DeleteRequestFields::CopyFrom(const DeleteRequestFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.DeleteRequestFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.DeleteRequestFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1335,7 +1341,7 @@ RequestMessage::RequestMessage()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.RequestMessage)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.RequestMessage)
 }
 RequestMessage::RequestMessage(const RequestMessage& from)
   : ::google::protobuf::Message(),
@@ -1350,26 +1356,26 @@ RequestMessage::RequestMessage(const RequestMessage& from)
   clear_has_customFields();
   switch (from.customFields_case()) {
     case kCreateFields: {
-      mutable_createfields()->::gen::CreateRequestFields::MergeFrom(from.createfields());
+      mutable_createfields()->::gen::key_value_store::CreateRequestFields::MergeFrom(from.createfields());
       break;
     }
     case kUpdateFields: {
-      mutable_updatefields()->::gen::UpdateRequestFields::MergeFrom(from.updatefields());
+      mutable_updatefields()->::gen::key_value_store::UpdateRequestFields::MergeFrom(from.updatefields());
       break;
     }
     case kReadFields: {
-      mutable_readfields()->::gen::ReadRequestFields::MergeFrom(from.readfields());
+      mutable_readfields()->::gen::key_value_store::ReadRequestFields::MergeFrom(from.readfields());
       break;
     }
     case kDeleteFields: {
-      mutable_deletefields()->::gen::DeleteRequestFields::MergeFrom(from.deletefields());
+      mutable_deletefields()->::gen::key_value_store::DeleteRequestFields::MergeFrom(from.deletefields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:gen.RequestMessage)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.RequestMessage)
 }
 
 void RequestMessage::SharedCtor() {
@@ -1380,7 +1386,7 @@ void RequestMessage::SharedCtor() {
 }
 
 RequestMessage::~RequestMessage() {
-  // @@protoc_insertion_point(destructor:gen.RequestMessage)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.RequestMessage)
   SharedDtor();
 }
 
@@ -1415,7 +1421,7 @@ RequestMessage* RequestMessage::New(::google::protobuf::Arena* arena) const {
 }
 
 void RequestMessage::clear_customFields() {
-// @@protoc_insertion_point(one_of_clear_start:gen.RequestMessage)
+// @@protoc_insertion_point(one_of_clear_start:gen.key_value_store.RequestMessage)
   switch (customFields_case()) {
     case kCreateFields: {
       delete customFields_.createfields_;
@@ -1442,7 +1448,7 @@ void RequestMessage::clear_customFields() {
 
 
 void RequestMessage::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.RequestMessage)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.RequestMessage)
   key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   messagetype_ = 0;
   clear_customFields();
@@ -1452,13 +1458,13 @@ bool RequestMessage::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.RequestMessage)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.RequestMessage)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .gen.RequestMessageType messageType = 1;
+      // .gen.key_value_store.RequestMessageType messageType = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u)) {
@@ -1466,7 +1472,7 @@ bool RequestMessage::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          set_messagetype(static_cast< ::gen::RequestMessageType >(value));
+          set_messagetype(static_cast< ::gen::key_value_store::RequestMessageType >(value));
         } else {
           goto handle_unusual;
         }
@@ -1482,14 +1488,14 @@ bool RequestMessage::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->key().data(), this->key().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.RequestMessage.key"));
+            "gen.key_value_store.RequestMessage.key"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // .gen.CreateRequestFields createFields = 3;
+      // .gen.key_value_store.CreateRequestFields createFields = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u)) {
@@ -1501,7 +1507,7 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.UpdateRequestFields updateFields = 4;
+      // .gen.key_value_store.UpdateRequestFields updateFields = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u)) {
@@ -1513,7 +1519,7 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.ReadRequestFields readFields = 5;
+      // .gen.key_value_store.ReadRequestFields readFields = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u)) {
@@ -1525,7 +1531,7 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.DeleteRequestFields deleteFields = 6;
+      // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(50u)) {
@@ -1550,21 +1556,21 @@ bool RequestMessage::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.RequestMessage)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.RequestMessage)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.RequestMessage)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.RequestMessage)
   return false;
 #undef DO_
 }
 
 void RequestMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.RequestMessage)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.RequestMessage)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .gen.RequestMessageType messageType = 1;
+  // .gen.key_value_store.RequestMessageType messageType = 1;
   if (this->messagetype() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->messagetype(), output);
@@ -1575,45 +1581,45 @@ void RequestMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->key().data(), this->key().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.RequestMessage.key");
+      "gen.key_value_store.RequestMessage.key");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       2, this->key(), output);
   }
 
-  // .gen.CreateRequestFields createFields = 3;
+  // .gen.key_value_store.CreateRequestFields createFields = 3;
   if (has_createfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, *customFields_.createfields_, output);
   }
 
-  // .gen.UpdateRequestFields updateFields = 4;
+  // .gen.key_value_store.UpdateRequestFields updateFields = 4;
   if (has_updatefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, *customFields_.updatefields_, output);
   }
 
-  // .gen.ReadRequestFields readFields = 5;
+  // .gen.key_value_store.ReadRequestFields readFields = 5;
   if (has_readfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       5, *customFields_.readfields_, output);
   }
 
-  // .gen.DeleteRequestFields deleteFields = 6;
+  // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
   if (has_deletefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       6, *customFields_.deletefields_, output);
   }
 
-  // @@protoc_insertion_point(serialize_end:gen.RequestMessage)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.RequestMessage)
 }
 
 ::google::protobuf::uint8* RequestMessage::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.RequestMessage)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.RequestMessage)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .gen.RequestMessageType messageType = 1;
+  // .gen.key_value_store.RequestMessageType messageType = 1;
   if (this->messagetype() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->messagetype(), target);
@@ -1624,46 +1630,46 @@ void RequestMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->key().data(), this->key().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.RequestMessage.key");
+      "gen.key_value_store.RequestMessage.key");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         2, this->key(), target);
   }
 
-  // .gen.CreateRequestFields createFields = 3;
+  // .gen.key_value_store.CreateRequestFields createFields = 3;
   if (has_createfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         3, *customFields_.createfields_, deterministic, target);
   }
 
-  // .gen.UpdateRequestFields updateFields = 4;
+  // .gen.key_value_store.UpdateRequestFields updateFields = 4;
   if (has_updatefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         4, *customFields_.updatefields_, deterministic, target);
   }
 
-  // .gen.ReadRequestFields readFields = 5;
+  // .gen.key_value_store.ReadRequestFields readFields = 5;
   if (has_readfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         5, *customFields_.readfields_, deterministic, target);
   }
 
-  // .gen.DeleteRequestFields deleteFields = 6;
+  // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
   if (has_deletefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         6, *customFields_.deletefields_, deterministic, target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.RequestMessage)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.RequestMessage)
   return target;
 }
 
 size_t RequestMessage::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.RequestMessage)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.RequestMessage)
   size_t total_size = 0;
 
   // string key = 2;
@@ -1673,35 +1679,35 @@ size_t RequestMessage::ByteSizeLong() const {
         this->key());
   }
 
-  // .gen.RequestMessageType messageType = 1;
+  // .gen.key_value_store.RequestMessageType messageType = 1;
   if (this->messagetype() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->messagetype());
   }
 
   switch (customFields_case()) {
-    // .gen.CreateRequestFields createFields = 3;
+    // .gen.key_value_store.CreateRequestFields createFields = 3;
     case kCreateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.createfields_);
       break;
     }
-    // .gen.UpdateRequestFields updateFields = 4;
+    // .gen.key_value_store.UpdateRequestFields updateFields = 4;
     case kUpdateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.updatefields_);
       break;
     }
-    // .gen.ReadRequestFields readFields = 5;
+    // .gen.key_value_store.ReadRequestFields readFields = 5;
     case kReadFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.readfields_);
       break;
     }
-    // .gen.DeleteRequestFields deleteFields = 6;
+    // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
     case kDeleteFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1720,22 +1726,22 @@ size_t RequestMessage::ByteSizeLong() const {
 }
 
 void RequestMessage::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.RequestMessage)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.RequestMessage)
   GOOGLE_DCHECK_NE(&from, this);
   const RequestMessage* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const RequestMessage>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.RequestMessage)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.RequestMessage)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.RequestMessage)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.RequestMessage)
     MergeFrom(*source);
   }
 }
 
 void RequestMessage::MergeFrom(const RequestMessage& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.RequestMessage)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.RequestMessage)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1750,19 +1756,19 @@ void RequestMessage::MergeFrom(const RequestMessage& from) {
   }
   switch (from.customFields_case()) {
     case kCreateFields: {
-      mutable_createfields()->::gen::CreateRequestFields::MergeFrom(from.createfields());
+      mutable_createfields()->::gen::key_value_store::CreateRequestFields::MergeFrom(from.createfields());
       break;
     }
     case kUpdateFields: {
-      mutable_updatefields()->::gen::UpdateRequestFields::MergeFrom(from.updatefields());
+      mutable_updatefields()->::gen::key_value_store::UpdateRequestFields::MergeFrom(from.updatefields());
       break;
     }
     case kReadFields: {
-      mutable_readfields()->::gen::ReadRequestFields::MergeFrom(from.readfields());
+      mutable_readfields()->::gen::key_value_store::ReadRequestFields::MergeFrom(from.readfields());
       break;
     }
     case kDeleteFields: {
-      mutable_deletefields()->::gen::DeleteRequestFields::MergeFrom(from.deletefields());
+      mutable_deletefields()->::gen::key_value_store::DeleteRequestFields::MergeFrom(from.deletefields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -1772,14 +1778,14 @@ void RequestMessage::MergeFrom(const RequestMessage& from) {
 }
 
 void RequestMessage::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.RequestMessage)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.RequestMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void RequestMessage::CopyFrom(const RequestMessage& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.RequestMessage)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.RequestMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1809,18 +1815,18 @@ void RequestMessage::InternalSwap(RequestMessage* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // RequestMessage
 
-// .gen.RequestMessageType messageType = 1;
+// .gen.key_value_store.RequestMessageType messageType = 1;
 void RequestMessage::clear_messagetype() {
   messagetype_ = 0;
 }
-::gen::RequestMessageType RequestMessage::messagetype() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.messageType)
-  return static_cast< ::gen::RequestMessageType >(messagetype_);
+::gen::key_value_store::RequestMessageType RequestMessage::messagetype() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.messageType)
+  return static_cast< ::gen::key_value_store::RequestMessageType >(messagetype_);
 }
-void RequestMessage::set_messagetype(::gen::RequestMessageType value) {
+void RequestMessage::set_messagetype(::gen::key_value_store::RequestMessageType value) {
   
   messagetype_ = value;
-  // @@protoc_insertion_point(field_set:gen.RequestMessage.messageType)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.RequestMessage.messageType)
 }
 
 // string key = 2;
@@ -1828,41 +1834,41 @@ void RequestMessage::clear_key() {
   key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& RequestMessage::key() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.key)
   return key_.GetNoArena();
 }
 void RequestMessage::set_key(const ::std::string& value) {
   
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.RequestMessage.key)
 }
 #if LANG_CXX11
 void RequestMessage::set_key(::std::string&& value) {
   
   key_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.RequestMessage.key)
 }
 #endif
 void RequestMessage::set_key(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.RequestMessage.key)
 }
 void RequestMessage::set_key(const char* value, size_t size) {
   
   key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.RequestMessage.key)
 }
 ::std::string* RequestMessage::mutable_key() {
   
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RequestMessage.key)
   return key_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* RequestMessage::release_key() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RequestMessage.key)
   
   return key_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1873,10 +1879,10 @@ void RequestMessage::set_allocated_key(::std::string* key) {
     
   }
   key_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), key);
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.key)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.key)
 }
 
-// .gen.CreateRequestFields createFields = 3;
+// .gen.key_value_store.CreateRequestFields createFields = 3;
 bool RequestMessage::has_createfields() const {
   return customFields_case() == kCreateFields;
 }
@@ -1889,42 +1895,42 @@ void RequestMessage::clear_createfields() {
     clear_has_customFields();
   }
 }
- const ::gen::CreateRequestFields& RequestMessage::createfields() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.createFields)
+ const ::gen::key_value_store::CreateRequestFields& RequestMessage::createfields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.createFields)
   return has_createfields()
       ? *customFields_.createfields_
-      : ::gen::CreateRequestFields::default_instance();
+      : ::gen::key_value_store::CreateRequestFields::default_instance();
 }
-::gen::CreateRequestFields* RequestMessage::mutable_createfields() {
+::gen::key_value_store::CreateRequestFields* RequestMessage::mutable_createfields() {
   if (!has_createfields()) {
     clear_customFields();
     set_has_createfields();
-    customFields_.createfields_ = new ::gen::CreateRequestFields;
+    customFields_.createfields_ = new ::gen::key_value_store::CreateRequestFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.createFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RequestMessage.createFields)
   return customFields_.createfields_;
 }
-::gen::CreateRequestFields* RequestMessage::release_createfields() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.createFields)
+::gen::key_value_store::CreateRequestFields* RequestMessage::release_createfields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RequestMessage.createFields)
   if (has_createfields()) {
     clear_has_customFields();
-    ::gen::CreateRequestFields* temp = customFields_.createfields_;
+    ::gen::key_value_store::CreateRequestFields* temp = customFields_.createfields_;
     customFields_.createfields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void RequestMessage::set_allocated_createfields(::gen::CreateRequestFields* createfields) {
+void RequestMessage::set_allocated_createfields(::gen::key_value_store::CreateRequestFields* createfields) {
   clear_customFields();
   if (createfields) {
     set_has_createfields();
     customFields_.createfields_ = createfields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.createFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.createFields)
 }
 
-// .gen.UpdateRequestFields updateFields = 4;
+// .gen.key_value_store.UpdateRequestFields updateFields = 4;
 bool RequestMessage::has_updatefields() const {
   return customFields_case() == kUpdateFields;
 }
@@ -1937,42 +1943,42 @@ void RequestMessage::clear_updatefields() {
     clear_has_customFields();
   }
 }
- const ::gen::UpdateRequestFields& RequestMessage::updatefields() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.updateFields)
+ const ::gen::key_value_store::UpdateRequestFields& RequestMessage::updatefields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.updateFields)
   return has_updatefields()
       ? *customFields_.updatefields_
-      : ::gen::UpdateRequestFields::default_instance();
+      : ::gen::key_value_store::UpdateRequestFields::default_instance();
 }
-::gen::UpdateRequestFields* RequestMessage::mutable_updatefields() {
+::gen::key_value_store::UpdateRequestFields* RequestMessage::mutable_updatefields() {
   if (!has_updatefields()) {
     clear_customFields();
     set_has_updatefields();
-    customFields_.updatefields_ = new ::gen::UpdateRequestFields;
+    customFields_.updatefields_ = new ::gen::key_value_store::UpdateRequestFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.updateFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RequestMessage.updateFields)
   return customFields_.updatefields_;
 }
-::gen::UpdateRequestFields* RequestMessage::release_updatefields() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.updateFields)
+::gen::key_value_store::UpdateRequestFields* RequestMessage::release_updatefields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RequestMessage.updateFields)
   if (has_updatefields()) {
     clear_has_customFields();
-    ::gen::UpdateRequestFields* temp = customFields_.updatefields_;
+    ::gen::key_value_store::UpdateRequestFields* temp = customFields_.updatefields_;
     customFields_.updatefields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void RequestMessage::set_allocated_updatefields(::gen::UpdateRequestFields* updatefields) {
+void RequestMessage::set_allocated_updatefields(::gen::key_value_store::UpdateRequestFields* updatefields) {
   clear_customFields();
   if (updatefields) {
     set_has_updatefields();
     customFields_.updatefields_ = updatefields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.updateFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.updateFields)
 }
 
-// .gen.ReadRequestFields readFields = 5;
+// .gen.key_value_store.ReadRequestFields readFields = 5;
 bool RequestMessage::has_readfields() const {
   return customFields_case() == kReadFields;
 }
@@ -1985,42 +1991,42 @@ void RequestMessage::clear_readfields() {
     clear_has_customFields();
   }
 }
- const ::gen::ReadRequestFields& RequestMessage::readfields() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.readFields)
+ const ::gen::key_value_store::ReadRequestFields& RequestMessage::readfields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.readFields)
   return has_readfields()
       ? *customFields_.readfields_
-      : ::gen::ReadRequestFields::default_instance();
+      : ::gen::key_value_store::ReadRequestFields::default_instance();
 }
-::gen::ReadRequestFields* RequestMessage::mutable_readfields() {
+::gen::key_value_store::ReadRequestFields* RequestMessage::mutable_readfields() {
   if (!has_readfields()) {
     clear_customFields();
     set_has_readfields();
-    customFields_.readfields_ = new ::gen::ReadRequestFields;
+    customFields_.readfields_ = new ::gen::key_value_store::ReadRequestFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.readFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RequestMessage.readFields)
   return customFields_.readfields_;
 }
-::gen::ReadRequestFields* RequestMessage::release_readfields() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.readFields)
+::gen::key_value_store::ReadRequestFields* RequestMessage::release_readfields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RequestMessage.readFields)
   if (has_readfields()) {
     clear_has_customFields();
-    ::gen::ReadRequestFields* temp = customFields_.readfields_;
+    ::gen::key_value_store::ReadRequestFields* temp = customFields_.readfields_;
     customFields_.readfields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void RequestMessage::set_allocated_readfields(::gen::ReadRequestFields* readfields) {
+void RequestMessage::set_allocated_readfields(::gen::key_value_store::ReadRequestFields* readfields) {
   clear_customFields();
   if (readfields) {
     set_has_readfields();
     customFields_.readfields_ = readfields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.readFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.readFields)
 }
 
-// .gen.DeleteRequestFields deleteFields = 6;
+// .gen.key_value_store.DeleteRequestFields deleteFields = 6;
 bool RequestMessage::has_deletefields() const {
   return customFields_case() == kDeleteFields;
 }
@@ -2033,39 +2039,39 @@ void RequestMessage::clear_deletefields() {
     clear_has_customFields();
   }
 }
- const ::gen::DeleteRequestFields& RequestMessage::deletefields() const {
-  // @@protoc_insertion_point(field_get:gen.RequestMessage.deleteFields)
+ const ::gen::key_value_store::DeleteRequestFields& RequestMessage::deletefields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.deleteFields)
   return has_deletefields()
       ? *customFields_.deletefields_
-      : ::gen::DeleteRequestFields::default_instance();
+      : ::gen::key_value_store::DeleteRequestFields::default_instance();
 }
-::gen::DeleteRequestFields* RequestMessage::mutable_deletefields() {
+::gen::key_value_store::DeleteRequestFields* RequestMessage::mutable_deletefields() {
   if (!has_deletefields()) {
     clear_customFields();
     set_has_deletefields();
-    customFields_.deletefields_ = new ::gen::DeleteRequestFields;
+    customFields_.deletefields_ = new ::gen::key_value_store::DeleteRequestFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.RequestMessage.deleteFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RequestMessage.deleteFields)
   return customFields_.deletefields_;
 }
-::gen::DeleteRequestFields* RequestMessage::release_deletefields() {
-  // @@protoc_insertion_point(field_release:gen.RequestMessage.deleteFields)
+::gen::key_value_store::DeleteRequestFields* RequestMessage::release_deletefields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RequestMessage.deleteFields)
   if (has_deletefields()) {
     clear_has_customFields();
-    ::gen::DeleteRequestFields* temp = customFields_.deletefields_;
+    ::gen::key_value_store::DeleteRequestFields* temp = customFields_.deletefields_;
     customFields_.deletefields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void RequestMessage::set_allocated_deletefields(::gen::DeleteRequestFields* deletefields) {
+void RequestMessage::set_allocated_deletefields(::gen::key_value_store::DeleteRequestFields* deletefields) {
   clear_customFields();
   if (deletefields) {
     set_has_deletefields();
     customFields_.deletefields_ = deletefields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.RequestMessage.deleteFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.deleteFields)
 }
 
 bool RequestMessage::has_customFields() const {
@@ -2090,14 +2096,14 @@ CreateResponseFields::CreateResponseFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.CreateResponseFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.CreateResponseFields)
 }
 CreateResponseFields::CreateResponseFields(const CreateResponseFields& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:gen.CreateResponseFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.CreateResponseFields)
 }
 
 void CreateResponseFields::SharedCtor() {
@@ -2105,7 +2111,7 @@ void CreateResponseFields::SharedCtor() {
 }
 
 CreateResponseFields::~CreateResponseFields() {
-  // @@protoc_insertion_point(destructor:gen.CreateResponseFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.CreateResponseFields)
   SharedDtor();
 }
 
@@ -2136,14 +2142,14 @@ CreateResponseFields* CreateResponseFields::New(::google::protobuf::Arena* arena
 }
 
 void CreateResponseFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.CreateResponseFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.CreateResponseFields)
 }
 
 bool CreateResponseFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.CreateResponseFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.CreateResponseFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -2157,35 +2163,35 @@ bool CreateResponseFields::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.CreateResponseFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.CreateResponseFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.CreateResponseFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.CreateResponseFields)
   return false;
 #undef DO_
 }
 
 void CreateResponseFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.CreateResponseFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.CreateResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_end:gen.CreateResponseFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.CreateResponseFields)
 }
 
 ::google::protobuf::uint8* CreateResponseFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.CreateResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.CreateResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.CreateResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.CreateResponseFields)
   return target;
 }
 
 size_t CreateResponseFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.CreateResponseFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.CreateResponseFields)
   size_t total_size = 0;
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2196,22 +2202,22 @@ size_t CreateResponseFields::ByteSizeLong() const {
 }
 
 void CreateResponseFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.CreateResponseFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.CreateResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   const CreateResponseFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const CreateResponseFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.CreateResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.CreateResponseFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.CreateResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.CreateResponseFields)
     MergeFrom(*source);
   }
 }
 
 void CreateResponseFields::MergeFrom(const CreateResponseFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.CreateResponseFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.CreateResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -2220,14 +2226,14 @@ void CreateResponseFields::MergeFrom(const CreateResponseFields& from) {
 }
 
 void CreateResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.CreateResponseFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.CreateResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void CreateResponseFields::CopyFrom(const CreateResponseFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.CreateResponseFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.CreateResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -2266,14 +2272,14 @@ UpdateResponseFields::UpdateResponseFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.UpdateResponseFields)
 }
 UpdateResponseFields::UpdateResponseFields(const UpdateResponseFields& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.UpdateResponseFields)
 }
 
 void UpdateResponseFields::SharedCtor() {
@@ -2281,7 +2287,7 @@ void UpdateResponseFields::SharedCtor() {
 }
 
 UpdateResponseFields::~UpdateResponseFields() {
-  // @@protoc_insertion_point(destructor:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.UpdateResponseFields)
   SharedDtor();
 }
 
@@ -2312,14 +2318,14 @@ UpdateResponseFields* UpdateResponseFields::New(::google::protobuf::Arena* arena
 }
 
 void UpdateResponseFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.UpdateResponseFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.UpdateResponseFields)
 }
 
 bool UpdateResponseFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.UpdateResponseFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -2333,35 +2339,35 @@ bool UpdateResponseFields::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.UpdateResponseFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.UpdateResponseFields)
   return false;
 #undef DO_
 }
 
 void UpdateResponseFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.UpdateResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_end:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.UpdateResponseFields)
 }
 
 ::google::protobuf::uint8* UpdateResponseFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.UpdateResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.UpdateResponseFields)
   return target;
 }
 
 size_t UpdateResponseFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.UpdateResponseFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.UpdateResponseFields)
   size_t total_size = 0;
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2372,22 +2378,22 @@ size_t UpdateResponseFields::ByteSizeLong() const {
 }
 
 void UpdateResponseFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.UpdateResponseFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.UpdateResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   const UpdateResponseFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const UpdateResponseFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.UpdateResponseFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.UpdateResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.UpdateResponseFields)
     MergeFrom(*source);
   }
 }
 
 void UpdateResponseFields::MergeFrom(const UpdateResponseFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.UpdateResponseFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.UpdateResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -2396,14 +2402,14 @@ void UpdateResponseFields::MergeFrom(const UpdateResponseFields& from) {
 }
 
 void UpdateResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.UpdateResponseFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.UpdateResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void UpdateResponseFields::CopyFrom(const UpdateResponseFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.UpdateResponseFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.UpdateResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -2443,7 +2449,7 @@ ReadResponseFields::ReadResponseFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.ReadResponseFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.ReadResponseFields)
 }
 ReadResponseFields::ReadResponseFields(const ReadResponseFields& from)
   : ::google::protobuf::Message(),
@@ -2454,7 +2460,7 @@ ReadResponseFields::ReadResponseFields(const ReadResponseFields& from)
   if (from.value().size() > 0) {
     value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
-  // @@protoc_insertion_point(copy_constructor:gen.ReadResponseFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.ReadResponseFields)
 }
 
 void ReadResponseFields::SharedCtor() {
@@ -2463,7 +2469,7 @@ void ReadResponseFields::SharedCtor() {
 }
 
 ReadResponseFields::~ReadResponseFields() {
-  // @@protoc_insertion_point(destructor:gen.ReadResponseFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.ReadResponseFields)
   SharedDtor();
 }
 
@@ -2495,7 +2501,7 @@ ReadResponseFields* ReadResponseFields::New(::google::protobuf::Arena* arena) co
 }
 
 void ReadResponseFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.ReadResponseFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.ReadResponseFields)
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -2503,7 +2509,7 @@ bool ReadResponseFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.ReadResponseFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.ReadResponseFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -2518,7 +2524,7 @@ bool ReadResponseFields::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->value().data(), this->value().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.ReadResponseFields.value"));
+            "gen.key_value_store.ReadResponseFields.value"));
         } else {
           goto handle_unusual;
         }
@@ -2538,17 +2544,17 @@ bool ReadResponseFields::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.ReadResponseFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.ReadResponseFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.ReadResponseFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.ReadResponseFields)
   return false;
 #undef DO_
 }
 
 void ReadResponseFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.ReadResponseFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.ReadResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2557,17 +2563,17 @@ void ReadResponseFields::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.ReadResponseFields.value");
+      "gen.key_value_store.ReadResponseFields.value");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->value(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:gen.ReadResponseFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.ReadResponseFields)
 }
 
 ::google::protobuf::uint8* ReadResponseFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.ReadResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.ReadResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2576,18 +2582,18 @@ void ReadResponseFields::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->value().data(), this->value().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.ReadResponseFields.value");
+      "gen.key_value_store.ReadResponseFields.value");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->value(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.ReadResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.ReadResponseFields)
   return target;
 }
 
 size_t ReadResponseFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.ReadResponseFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.ReadResponseFields)
   size_t total_size = 0;
 
   // string value = 1;
@@ -2605,22 +2611,22 @@ size_t ReadResponseFields::ByteSizeLong() const {
 }
 
 void ReadResponseFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.ReadResponseFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.ReadResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   const ReadResponseFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const ReadResponseFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.ReadResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.ReadResponseFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.ReadResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.ReadResponseFields)
     MergeFrom(*source);
   }
 }
 
 void ReadResponseFields::MergeFrom(const ReadResponseFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.ReadResponseFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.ReadResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -2633,14 +2639,14 @@ void ReadResponseFields::MergeFrom(const ReadResponseFields& from) {
 }
 
 void ReadResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.ReadResponseFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.ReadResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void ReadResponseFields::CopyFrom(const ReadResponseFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.ReadResponseFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.ReadResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -2672,41 +2678,41 @@ void ReadResponseFields::clear_value() {
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& ReadResponseFields::value() const {
-  // @@protoc_insertion_point(field_get:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ReadResponseFields.value)
   return value_.GetNoArena();
 }
 void ReadResponseFields::set_value(const ::std::string& value) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.ReadResponseFields.value)
 }
 #if LANG_CXX11
 void ReadResponseFields::set_value(::std::string&& value) {
   
   value_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.ReadResponseFields.value)
 }
 #endif
 void ReadResponseFields::set_value(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.ReadResponseFields.value)
 }
 void ReadResponseFields::set_value(const char* value, size_t size) {
   
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.ReadResponseFields.value)
 }
 ::std::string* ReadResponseFields::mutable_value() {
   
-  // @@protoc_insertion_point(field_mutable:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ReadResponseFields.value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* ReadResponseFields::release_value() {
-  // @@protoc_insertion_point(field_release:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ReadResponseFields.value)
   
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -2717,7 +2723,7 @@ void ReadResponseFields::set_allocated_value(::std::string* value) {
     
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set_allocated:gen.ReadResponseFields.value)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ReadResponseFields.value)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2733,14 +2739,14 @@ DeleteResponseFields::DeleteResponseFields()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.DeleteResponseFields)
 }
 DeleteResponseFields::DeleteResponseFields(const DeleteResponseFields& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.DeleteResponseFields)
 }
 
 void DeleteResponseFields::SharedCtor() {
@@ -2748,7 +2754,7 @@ void DeleteResponseFields::SharedCtor() {
 }
 
 DeleteResponseFields::~DeleteResponseFields() {
-  // @@protoc_insertion_point(destructor:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.DeleteResponseFields)
   SharedDtor();
 }
 
@@ -2779,14 +2785,14 @@ DeleteResponseFields* DeleteResponseFields::New(::google::protobuf::Arena* arena
 }
 
 void DeleteResponseFields::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.DeleteResponseFields)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.DeleteResponseFields)
 }
 
 bool DeleteResponseFields::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.DeleteResponseFields)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -2800,35 +2806,35 @@ bool DeleteResponseFields::MergePartialFromCodedStream(
     DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.DeleteResponseFields)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.DeleteResponseFields)
   return false;
 #undef DO_
 }
 
 void DeleteResponseFields::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.DeleteResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_end:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.DeleteResponseFields)
 }
 
 ::google::protobuf::uint8* DeleteResponseFields::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.DeleteResponseFields)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.DeleteResponseFields)
   return target;
 }
 
 size_t DeleteResponseFields::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.DeleteResponseFields)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.DeleteResponseFields)
   size_t total_size = 0;
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2839,22 +2845,22 @@ size_t DeleteResponseFields::ByteSizeLong() const {
 }
 
 void DeleteResponseFields::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.DeleteResponseFields)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.DeleteResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   const DeleteResponseFields* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const DeleteResponseFields>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.DeleteResponseFields)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.DeleteResponseFields)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.DeleteResponseFields)
     MergeFrom(*source);
   }
 }
 
 void DeleteResponseFields::MergeFrom(const DeleteResponseFields& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.DeleteResponseFields)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.DeleteResponseFields)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -2863,14 +2869,14 @@ void DeleteResponseFields::MergeFrom(const DeleteResponseFields& from) {
 }
 
 void DeleteResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.DeleteResponseFields)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.DeleteResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void DeleteResponseFields::CopyFrom(const DeleteResponseFields& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.DeleteResponseFields)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.DeleteResponseFields)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -2916,7 +2922,7 @@ ResponseMessage::ResponseMessage()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.ResponseMessage)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.ResponseMessage)
 }
 ResponseMessage::ResponseMessage(const ResponseMessage& from)
   : ::google::protobuf::Message(),
@@ -2933,26 +2939,26 @@ ResponseMessage::ResponseMessage(const ResponseMessage& from)
   clear_has_customFields();
   switch (from.customFields_case()) {
     case kCreateFields: {
-      mutable_createfields()->::gen::CreateResponseFields::MergeFrom(from.createfields());
+      mutable_createfields()->::gen::key_value_store::CreateResponseFields::MergeFrom(from.createfields());
       break;
     }
     case kUpdateFields: {
-      mutable_updatefields()->::gen::UpdateResponseFields::MergeFrom(from.updatefields());
+      mutable_updatefields()->::gen::key_value_store::UpdateResponseFields::MergeFrom(from.updatefields());
       break;
     }
     case kReadFields: {
-      mutable_readfields()->::gen::ReadResponseFields::MergeFrom(from.readfields());
+      mutable_readfields()->::gen::key_value_store::ReadResponseFields::MergeFrom(from.readfields());
       break;
     }
     case kDeleteFields: {
-      mutable_deletefields()->::gen::DeleteResponseFields::MergeFrom(from.deletefields());
+      mutable_deletefields()->::gen::key_value_store::DeleteResponseFields::MergeFrom(from.deletefields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:gen.ResponseMessage)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.ResponseMessage)
 }
 
 void ResponseMessage::SharedCtor() {
@@ -2964,7 +2970,7 @@ void ResponseMessage::SharedCtor() {
 }
 
 ResponseMessage::~ResponseMessage() {
-  // @@protoc_insertion_point(destructor:gen.ResponseMessage)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.ResponseMessage)
   SharedDtor();
 }
 
@@ -2999,7 +3005,7 @@ ResponseMessage* ResponseMessage::New(::google::protobuf::Arena* arena) const {
 }
 
 void ResponseMessage::clear_customFields() {
-// @@protoc_insertion_point(one_of_clear_start:gen.ResponseMessage)
+// @@protoc_insertion_point(one_of_clear_start:gen.key_value_store.ResponseMessage)
   switch (customFields_case()) {
     case kCreateFields: {
       delete customFields_.createfields_;
@@ -3026,7 +3032,7 @@ void ResponseMessage::clear_customFields() {
 
 
 void ResponseMessage::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.ResponseMessage)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.ResponseMessage)
   originalmessageid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&messagetype_, 0, reinterpret_cast<char*>(&responsecode_) -
     reinterpret_cast<char*>(&messagetype_) + sizeof(responsecode_));
@@ -3037,13 +3043,13 @@ bool ResponseMessage::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.ResponseMessage)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.ResponseMessage)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .gen.ResponseMessageType messageType = 1;
+      // .gen.key_value_store.ResponseMessageType messageType = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u)) {
@@ -3051,7 +3057,7 @@ bool ResponseMessage::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          set_messagetype(static_cast< ::gen::ResponseMessageType >(value));
+          set_messagetype(static_cast< ::gen::key_value_store::ResponseMessageType >(value));
         } else {
           goto handle_unusual;
         }
@@ -3067,7 +3073,7 @@ bool ResponseMessage::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->originalmessageid().data(), this->originalmessageid().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.ResponseMessage.originalMessageId"));
+            "gen.key_value_store.ResponseMessage.originalMessageId"));
         } else {
           goto handle_unusual;
         }
@@ -3088,7 +3094,7 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.CreateResponseFields createFields = 4;
+      // .gen.key_value_store.CreateResponseFields createFields = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u)) {
@@ -3100,7 +3106,7 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.UpdateResponseFields updateFields = 5;
+      // .gen.key_value_store.UpdateResponseFields updateFields = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u)) {
@@ -3112,7 +3118,7 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.ReadResponseFields readFields = 6;
+      // .gen.key_value_store.ReadResponseFields readFields = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(50u)) {
@@ -3124,7 +3130,7 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.DeleteResponseFields deleteFields = 7;
+      // .gen.key_value_store.DeleteResponseFields deleteFields = 7;
       case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(58u)) {
@@ -3149,21 +3155,21 @@ bool ResponseMessage::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.ResponseMessage)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.ResponseMessage)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.ResponseMessage)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.ResponseMessage)
   return false;
 #undef DO_
 }
 
 void ResponseMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.ResponseMessage)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.ResponseMessage)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .gen.ResponseMessageType messageType = 1;
+  // .gen.key_value_store.ResponseMessageType messageType = 1;
   if (this->messagetype() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->messagetype(), output);
@@ -3174,7 +3180,7 @@ void ResponseMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->originalmessageid().data(), this->originalmessageid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.ResponseMessage.originalMessageId");
+      "gen.key_value_store.ResponseMessage.originalMessageId");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       2, this->originalmessageid(), output);
   }
@@ -3184,40 +3190,40 @@ void ResponseMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->responsecode(), output);
   }
 
-  // .gen.CreateResponseFields createFields = 4;
+  // .gen.key_value_store.CreateResponseFields createFields = 4;
   if (has_createfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, *customFields_.createfields_, output);
   }
 
-  // .gen.UpdateResponseFields updateFields = 5;
+  // .gen.key_value_store.UpdateResponseFields updateFields = 5;
   if (has_updatefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       5, *customFields_.updatefields_, output);
   }
 
-  // .gen.ReadResponseFields readFields = 6;
+  // .gen.key_value_store.ReadResponseFields readFields = 6;
   if (has_readfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       6, *customFields_.readfields_, output);
   }
 
-  // .gen.DeleteResponseFields deleteFields = 7;
+  // .gen.key_value_store.DeleteResponseFields deleteFields = 7;
   if (has_deletefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       7, *customFields_.deletefields_, output);
   }
 
-  // @@protoc_insertion_point(serialize_end:gen.ResponseMessage)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.ResponseMessage)
 }
 
 ::google::protobuf::uint8* ResponseMessage::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.ResponseMessage)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.ResponseMessage)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .gen.ResponseMessageType messageType = 1;
+  // .gen.key_value_store.ResponseMessageType messageType = 1;
   if (this->messagetype() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->messagetype(), target);
@@ -3228,7 +3234,7 @@ void ResponseMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->originalmessageid().data(), this->originalmessageid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.ResponseMessage.originalMessageId");
+      "gen.key_value_store.ResponseMessage.originalMessageId");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         2, this->originalmessageid(), target);
@@ -3239,40 +3245,40 @@ void ResponseMessage::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->responsecode(), target);
   }
 
-  // .gen.CreateResponseFields createFields = 4;
+  // .gen.key_value_store.CreateResponseFields createFields = 4;
   if (has_createfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         4, *customFields_.createfields_, deterministic, target);
   }
 
-  // .gen.UpdateResponseFields updateFields = 5;
+  // .gen.key_value_store.UpdateResponseFields updateFields = 5;
   if (has_updatefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         5, *customFields_.updatefields_, deterministic, target);
   }
 
-  // .gen.ReadResponseFields readFields = 6;
+  // .gen.key_value_store.ReadResponseFields readFields = 6;
   if (has_readfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         6, *customFields_.readfields_, deterministic, target);
   }
 
-  // .gen.DeleteResponseFields deleteFields = 7;
+  // .gen.key_value_store.DeleteResponseFields deleteFields = 7;
   if (has_deletefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         7, *customFields_.deletefields_, deterministic, target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.ResponseMessage)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.ResponseMessage)
   return target;
 }
 
 size_t ResponseMessage::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.ResponseMessage)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.ResponseMessage)
   size_t total_size = 0;
 
   // string originalMessageId = 2;
@@ -3282,7 +3288,7 @@ size_t ResponseMessage::ByteSizeLong() const {
         this->originalmessageid());
   }
 
-  // .gen.ResponseMessageType messageType = 1;
+  // .gen.key_value_store.ResponseMessageType messageType = 1;
   if (this->messagetype() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->messagetype());
@@ -3296,28 +3302,28 @@ size_t ResponseMessage::ByteSizeLong() const {
   }
 
   switch (customFields_case()) {
-    // .gen.CreateResponseFields createFields = 4;
+    // .gen.key_value_store.CreateResponseFields createFields = 4;
     case kCreateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.createfields_);
       break;
     }
-    // .gen.UpdateResponseFields updateFields = 5;
+    // .gen.key_value_store.UpdateResponseFields updateFields = 5;
     case kUpdateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.updatefields_);
       break;
     }
-    // .gen.ReadResponseFields readFields = 6;
+    // .gen.key_value_store.ReadResponseFields readFields = 6;
     case kReadFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.readfields_);
       break;
     }
-    // .gen.DeleteResponseFields deleteFields = 7;
+    // .gen.key_value_store.DeleteResponseFields deleteFields = 7;
     case kDeleteFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -3336,22 +3342,22 @@ size_t ResponseMessage::ByteSizeLong() const {
 }
 
 void ResponseMessage::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.ResponseMessage)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.ResponseMessage)
   GOOGLE_DCHECK_NE(&from, this);
   const ResponseMessage* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const ResponseMessage>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.ResponseMessage)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.ResponseMessage)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.ResponseMessage)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.ResponseMessage)
     MergeFrom(*source);
   }
 }
 
 void ResponseMessage::MergeFrom(const ResponseMessage& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.ResponseMessage)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.ResponseMessage)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -3369,19 +3375,19 @@ void ResponseMessage::MergeFrom(const ResponseMessage& from) {
   }
   switch (from.customFields_case()) {
     case kCreateFields: {
-      mutable_createfields()->::gen::CreateResponseFields::MergeFrom(from.createfields());
+      mutable_createfields()->::gen::key_value_store::CreateResponseFields::MergeFrom(from.createfields());
       break;
     }
     case kUpdateFields: {
-      mutable_updatefields()->::gen::UpdateResponseFields::MergeFrom(from.updatefields());
+      mutable_updatefields()->::gen::key_value_store::UpdateResponseFields::MergeFrom(from.updatefields());
       break;
     }
     case kReadFields: {
-      mutable_readfields()->::gen::ReadResponseFields::MergeFrom(from.readfields());
+      mutable_readfields()->::gen::key_value_store::ReadResponseFields::MergeFrom(from.readfields());
       break;
     }
     case kDeleteFields: {
-      mutable_deletefields()->::gen::DeleteResponseFields::MergeFrom(from.deletefields());
+      mutable_deletefields()->::gen::key_value_store::DeleteResponseFields::MergeFrom(from.deletefields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -3391,14 +3397,14 @@ void ResponseMessage::MergeFrom(const ResponseMessage& from) {
 }
 
 void ResponseMessage::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.ResponseMessage)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.ResponseMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void ResponseMessage::CopyFrom(const ResponseMessage& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.ResponseMessage)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.ResponseMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -3429,18 +3435,18 @@ void ResponseMessage::InternalSwap(ResponseMessage* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // ResponseMessage
 
-// .gen.ResponseMessageType messageType = 1;
+// .gen.key_value_store.ResponseMessageType messageType = 1;
 void ResponseMessage::clear_messagetype() {
   messagetype_ = 0;
 }
-::gen::ResponseMessageType ResponseMessage::messagetype() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.messageType)
-  return static_cast< ::gen::ResponseMessageType >(messagetype_);
+::gen::key_value_store::ResponseMessageType ResponseMessage::messagetype() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.messageType)
+  return static_cast< ::gen::key_value_store::ResponseMessageType >(messagetype_);
 }
-void ResponseMessage::set_messagetype(::gen::ResponseMessageType value) {
+void ResponseMessage::set_messagetype(::gen::key_value_store::ResponseMessageType value) {
   
   messagetype_ = value;
-  // @@protoc_insertion_point(field_set:gen.ResponseMessage.messageType)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.ResponseMessage.messageType)
 }
 
 // string originalMessageId = 2;
@@ -3448,41 +3454,41 @@ void ResponseMessage::clear_originalmessageid() {
   originalmessageid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& ResponseMessage::originalmessageid() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.originalMessageId)
   return originalmessageid_.GetNoArena();
 }
 void ResponseMessage::set_originalmessageid(const ::std::string& value) {
   
   originalmessageid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.ResponseMessage.originalMessageId)
 }
 #if LANG_CXX11
 void ResponseMessage::set_originalmessageid(::std::string&& value) {
   
   originalmessageid_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.ResponseMessage.originalMessageId)
 }
 #endif
 void ResponseMessage::set_originalmessageid(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   originalmessageid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.ResponseMessage.originalMessageId)
 }
 void ResponseMessage::set_originalmessageid(const char* value, size_t size) {
   
   originalmessageid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.ResponseMessage.originalMessageId)
 }
 ::std::string* ResponseMessage::mutable_originalmessageid() {
   
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ResponseMessage.originalMessageId)
   return originalmessageid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* ResponseMessage::release_originalmessageid() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ResponseMessage.originalMessageId)
   
   return originalmessageid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -3493,7 +3499,7 @@ void ResponseMessage::set_allocated_originalmessageid(::std::string* originalmes
     
   }
   originalmessageid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), originalmessageid);
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.originalMessageId)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.originalMessageId)
 }
 
 // int32 responseCode = 3;
@@ -3501,16 +3507,16 @@ void ResponseMessage::clear_responsecode() {
   responsecode_ = 0;
 }
 ::google::protobuf::int32 ResponseMessage::responsecode() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.responseCode)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.responseCode)
   return responsecode_;
 }
 void ResponseMessage::set_responsecode(::google::protobuf::int32 value) {
   
   responsecode_ = value;
-  // @@protoc_insertion_point(field_set:gen.ResponseMessage.responseCode)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.ResponseMessage.responseCode)
 }
 
-// .gen.CreateResponseFields createFields = 4;
+// .gen.key_value_store.CreateResponseFields createFields = 4;
 bool ResponseMessage::has_createfields() const {
   return customFields_case() == kCreateFields;
 }
@@ -3523,42 +3529,42 @@ void ResponseMessage::clear_createfields() {
     clear_has_customFields();
   }
 }
- const ::gen::CreateResponseFields& ResponseMessage::createfields() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.createFields)
+ const ::gen::key_value_store::CreateResponseFields& ResponseMessage::createfields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.createFields)
   return has_createfields()
       ? *customFields_.createfields_
-      : ::gen::CreateResponseFields::default_instance();
+      : ::gen::key_value_store::CreateResponseFields::default_instance();
 }
-::gen::CreateResponseFields* ResponseMessage::mutable_createfields() {
+::gen::key_value_store::CreateResponseFields* ResponseMessage::mutable_createfields() {
   if (!has_createfields()) {
     clear_customFields();
     set_has_createfields();
-    customFields_.createfields_ = new ::gen::CreateResponseFields;
+    customFields_.createfields_ = new ::gen::key_value_store::CreateResponseFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.createFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ResponseMessage.createFields)
   return customFields_.createfields_;
 }
-::gen::CreateResponseFields* ResponseMessage::release_createfields() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.createFields)
+::gen::key_value_store::CreateResponseFields* ResponseMessage::release_createfields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ResponseMessage.createFields)
   if (has_createfields()) {
     clear_has_customFields();
-    ::gen::CreateResponseFields* temp = customFields_.createfields_;
+    ::gen::key_value_store::CreateResponseFields* temp = customFields_.createfields_;
     customFields_.createfields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void ResponseMessage::set_allocated_createfields(::gen::CreateResponseFields* createfields) {
+void ResponseMessage::set_allocated_createfields(::gen::key_value_store::CreateResponseFields* createfields) {
   clear_customFields();
   if (createfields) {
     set_has_createfields();
     customFields_.createfields_ = createfields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.createFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.createFields)
 }
 
-// .gen.UpdateResponseFields updateFields = 5;
+// .gen.key_value_store.UpdateResponseFields updateFields = 5;
 bool ResponseMessage::has_updatefields() const {
   return customFields_case() == kUpdateFields;
 }
@@ -3571,42 +3577,42 @@ void ResponseMessage::clear_updatefields() {
     clear_has_customFields();
   }
 }
- const ::gen::UpdateResponseFields& ResponseMessage::updatefields() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.updateFields)
+ const ::gen::key_value_store::UpdateResponseFields& ResponseMessage::updatefields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.updateFields)
   return has_updatefields()
       ? *customFields_.updatefields_
-      : ::gen::UpdateResponseFields::default_instance();
+      : ::gen::key_value_store::UpdateResponseFields::default_instance();
 }
-::gen::UpdateResponseFields* ResponseMessage::mutable_updatefields() {
+::gen::key_value_store::UpdateResponseFields* ResponseMessage::mutable_updatefields() {
   if (!has_updatefields()) {
     clear_customFields();
     set_has_updatefields();
-    customFields_.updatefields_ = new ::gen::UpdateResponseFields;
+    customFields_.updatefields_ = new ::gen::key_value_store::UpdateResponseFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.updateFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ResponseMessage.updateFields)
   return customFields_.updatefields_;
 }
-::gen::UpdateResponseFields* ResponseMessage::release_updatefields() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.updateFields)
+::gen::key_value_store::UpdateResponseFields* ResponseMessage::release_updatefields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ResponseMessage.updateFields)
   if (has_updatefields()) {
     clear_has_customFields();
-    ::gen::UpdateResponseFields* temp = customFields_.updatefields_;
+    ::gen::key_value_store::UpdateResponseFields* temp = customFields_.updatefields_;
     customFields_.updatefields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void ResponseMessage::set_allocated_updatefields(::gen::UpdateResponseFields* updatefields) {
+void ResponseMessage::set_allocated_updatefields(::gen::key_value_store::UpdateResponseFields* updatefields) {
   clear_customFields();
   if (updatefields) {
     set_has_updatefields();
     customFields_.updatefields_ = updatefields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.updateFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.updateFields)
 }
 
-// .gen.ReadResponseFields readFields = 6;
+// .gen.key_value_store.ReadResponseFields readFields = 6;
 bool ResponseMessage::has_readfields() const {
   return customFields_case() == kReadFields;
 }
@@ -3619,42 +3625,42 @@ void ResponseMessage::clear_readfields() {
     clear_has_customFields();
   }
 }
- const ::gen::ReadResponseFields& ResponseMessage::readfields() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.readFields)
+ const ::gen::key_value_store::ReadResponseFields& ResponseMessage::readfields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.readFields)
   return has_readfields()
       ? *customFields_.readfields_
-      : ::gen::ReadResponseFields::default_instance();
+      : ::gen::key_value_store::ReadResponseFields::default_instance();
 }
-::gen::ReadResponseFields* ResponseMessage::mutable_readfields() {
+::gen::key_value_store::ReadResponseFields* ResponseMessage::mutable_readfields() {
   if (!has_readfields()) {
     clear_customFields();
     set_has_readfields();
-    customFields_.readfields_ = new ::gen::ReadResponseFields;
+    customFields_.readfields_ = new ::gen::key_value_store::ReadResponseFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.readFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ResponseMessage.readFields)
   return customFields_.readfields_;
 }
-::gen::ReadResponseFields* ResponseMessage::release_readfields() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.readFields)
+::gen::key_value_store::ReadResponseFields* ResponseMessage::release_readfields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ResponseMessage.readFields)
   if (has_readfields()) {
     clear_has_customFields();
-    ::gen::ReadResponseFields* temp = customFields_.readfields_;
+    ::gen::key_value_store::ReadResponseFields* temp = customFields_.readfields_;
     customFields_.readfields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void ResponseMessage::set_allocated_readfields(::gen::ReadResponseFields* readfields) {
+void ResponseMessage::set_allocated_readfields(::gen::key_value_store::ReadResponseFields* readfields) {
   clear_customFields();
   if (readfields) {
     set_has_readfields();
     customFields_.readfields_ = readfields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.readFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.readFields)
 }
 
-// .gen.DeleteResponseFields deleteFields = 7;
+// .gen.key_value_store.DeleteResponseFields deleteFields = 7;
 bool ResponseMessage::has_deletefields() const {
   return customFields_case() == kDeleteFields;
 }
@@ -3667,39 +3673,39 @@ void ResponseMessage::clear_deletefields() {
     clear_has_customFields();
   }
 }
- const ::gen::DeleteResponseFields& ResponseMessage::deletefields() const {
-  // @@protoc_insertion_point(field_get:gen.ResponseMessage.deleteFields)
+ const ::gen::key_value_store::DeleteResponseFields& ResponseMessage::deletefields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.deleteFields)
   return has_deletefields()
       ? *customFields_.deletefields_
-      : ::gen::DeleteResponseFields::default_instance();
+      : ::gen::key_value_store::DeleteResponseFields::default_instance();
 }
-::gen::DeleteResponseFields* ResponseMessage::mutable_deletefields() {
+::gen::key_value_store::DeleteResponseFields* ResponseMessage::mutable_deletefields() {
   if (!has_deletefields()) {
     clear_customFields();
     set_has_deletefields();
-    customFields_.deletefields_ = new ::gen::DeleteResponseFields;
+    customFields_.deletefields_ = new ::gen::key_value_store::DeleteResponseFields;
   }
-  // @@protoc_insertion_point(field_mutable:gen.ResponseMessage.deleteFields)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ResponseMessage.deleteFields)
   return customFields_.deletefields_;
 }
-::gen::DeleteResponseFields* ResponseMessage::release_deletefields() {
-  // @@protoc_insertion_point(field_release:gen.ResponseMessage.deleteFields)
+::gen::key_value_store::DeleteResponseFields* ResponseMessage::release_deletefields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ResponseMessage.deleteFields)
   if (has_deletefields()) {
     clear_has_customFields();
-    ::gen::DeleteResponseFields* temp = customFields_.deletefields_;
+    ::gen::key_value_store::DeleteResponseFields* temp = customFields_.deletefields_;
     customFields_.deletefields_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void ResponseMessage::set_allocated_deletefields(::gen::DeleteResponseFields* deletefields) {
+void ResponseMessage::set_allocated_deletefields(::gen::key_value_store::DeleteResponseFields* deletefields) {
   clear_customFields();
   if (deletefields) {
     set_has_deletefields();
     customFields_.deletefields_ = deletefields;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.ResponseMessage.deleteFields)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.deleteFields)
 }
 
 bool ResponseMessage::has_customFields() const {
@@ -3729,7 +3735,7 @@ Message::Message()
     protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:gen.Message)
+  // @@protoc_insertion_point(constructor:gen.key_value_store.Message)
 }
 Message::Message(const Message& from)
   : ::google::protobuf::Message(),
@@ -3753,18 +3759,18 @@ Message::Message(const Message& from)
   clear_has_messageInternal();
   switch (from.messageInternal_case()) {
     case kRequestMessage: {
-      mutable_requestmessage()->::gen::RequestMessage::MergeFrom(from.requestmessage());
+      mutable_requestmessage()->::gen::key_value_store::RequestMessage::MergeFrom(from.requestmessage());
       break;
     }
     case kResponseMessage: {
-      mutable_responsemessage()->::gen::ResponseMessage::MergeFrom(from.responsemessage());
+      mutable_responsemessage()->::gen::key_value_store::ResponseMessage::MergeFrom(from.responsemessage());
       break;
     }
     case MESSAGEINTERNAL_NOT_SET: {
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:gen.Message)
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.Message)
 }
 
 void Message::SharedCtor() {
@@ -3776,7 +3782,7 @@ void Message::SharedCtor() {
 }
 
 Message::~Message() {
-  // @@protoc_insertion_point(destructor:gen.Message)
+  // @@protoc_insertion_point(destructor:gen.key_value_store.Message)
   SharedDtor();
 }
 
@@ -3817,7 +3823,7 @@ Message* Message::New(::google::protobuf::Arena* arena) const {
 }
 
 void Message::clear_messageInternal() {
-// @@protoc_insertion_point(one_of_clear_start:gen.Message)
+// @@protoc_insertion_point(one_of_clear_start:gen.key_value_store.Message)
   switch (messageInternal_case()) {
     case kRequestMessage: {
       delete messageInternal_.requestmessage_;
@@ -3836,7 +3842,7 @@ void Message::clear_messageInternal() {
 
 
 void Message::Clear() {
-// @@protoc_insertion_point(message_clear_start:gen.Message)
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.Message)
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) {
     delete sourceaddress_;
@@ -3853,7 +3859,7 @@ bool Message::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:gen.Message)
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.Message)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -3892,14 +3898,14 @@ bool Message::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->id().data(), this->id().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "gen.Message.id"));
+            "gen.key_value_store.Message.id"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // .gen.RequestMessage requestMessage = 4;
+      // .gen.key_value_store.RequestMessage requestMessage = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u)) {
@@ -3911,7 +3917,7 @@ bool Message::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.ResponseMessage responseMessage = 5;
+      // .gen.key_value_store.ResponseMessage responseMessage = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u)) {
@@ -3936,17 +3942,17 @@ bool Message::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:gen.Message)
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.Message)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:gen.Message)
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.Message)
   return false;
 #undef DO_
 }
 
 void Message::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:gen.Message)
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.Message)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3967,29 +3973,29 @@ void Message::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->id().data(), this->id().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.Message.id");
+      "gen.key_value_store.Message.id");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       3, this->id(), output);
   }
 
-  // .gen.RequestMessage requestMessage = 4;
+  // .gen.key_value_store.RequestMessage requestMessage = 4;
   if (has_requestmessage()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, *messageInternal_.requestmessage_, output);
   }
 
-  // .gen.ResponseMessage responseMessage = 5;
+  // .gen.key_value_store.ResponseMessage responseMessage = 5;
   if (has_responsemessage()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       5, *messageInternal_.responsemessage_, output);
   }
 
-  // @@protoc_insertion_point(serialize_end:gen.Message)
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.Message)
 }
 
 ::google::protobuf::uint8* Message::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:gen.Message)
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.Message)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -4012,32 +4018,32 @@ void Message::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->id().data(), this->id().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "gen.Message.id");
+      "gen.key_value_store.Message.id");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         3, this->id(), target);
   }
 
-  // .gen.RequestMessage requestMessage = 4;
+  // .gen.key_value_store.RequestMessage requestMessage = 4;
   if (has_requestmessage()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         4, *messageInternal_.requestmessage_, deterministic, target);
   }
 
-  // .gen.ResponseMessage responseMessage = 5;
+  // .gen.key_value_store.ResponseMessage responseMessage = 5;
   if (has_responsemessage()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         5, *messageInternal_.responsemessage_, deterministic, target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:gen.Message)
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.Message)
   return target;
 }
 
 size_t Message::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:gen.Message)
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.Message)
   size_t total_size = 0;
 
   // string id = 3;
@@ -4062,14 +4068,14 @@ size_t Message::ByteSizeLong() const {
   }
 
   switch (messageInternal_case()) {
-    // .gen.RequestMessage requestMessage = 4;
+    // .gen.key_value_store.RequestMessage requestMessage = 4;
     case kRequestMessage: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *messageInternal_.requestmessage_);
       break;
     }
-    // .gen.ResponseMessage responseMessage = 5;
+    // .gen.key_value_store.ResponseMessage responseMessage = 5;
     case kResponseMessage: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -4088,22 +4094,22 @@ size_t Message::ByteSizeLong() const {
 }
 
 void Message::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:gen.Message)
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.Message)
   GOOGLE_DCHECK_NE(&from, this);
   const Message* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const Message>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.Message)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.Message)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.Message)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.Message)
     MergeFrom(*source);
   }
 }
 
 void Message::MergeFrom(const Message& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:gen.Message)
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.Message)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -4121,11 +4127,11 @@ void Message::MergeFrom(const Message& from) {
   }
   switch (from.messageInternal_case()) {
     case kRequestMessage: {
-      mutable_requestmessage()->::gen::RequestMessage::MergeFrom(from.requestmessage());
+      mutable_requestmessage()->::gen::key_value_store::RequestMessage::MergeFrom(from.requestmessage());
       break;
     }
     case kResponseMessage: {
-      mutable_responsemessage()->::gen::ResponseMessage::MergeFrom(from.responsemessage());
+      mutable_responsemessage()->::gen::key_value_store::ResponseMessage::MergeFrom(from.responsemessage());
       break;
     }
     case MESSAGEINTERNAL_NOT_SET: {
@@ -4135,14 +4141,14 @@ void Message::MergeFrom(const Message& from) {
 }
 
 void Message::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:gen.Message)
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void Message::CopyFrom(const Message& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:gen.Message)
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -4182,7 +4188,7 @@ void Message::clear_sourceaddress() {
   sourceaddress_ = NULL;
 }
 const ::gen::Address& Message::sourceaddress() const {
-  // @@protoc_insertion_point(field_get:gen.Message.sourceAddress)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.sourceAddress)
   return sourceaddress_ != NULL ? *sourceaddress_
                          : *::gen::Address::internal_default_instance();
 }
@@ -4191,11 +4197,11 @@ const ::gen::Address& Message::sourceaddress() const {
   if (sourceaddress_ == NULL) {
     sourceaddress_ = new ::gen::Address;
   }
-  // @@protoc_insertion_point(field_mutable:gen.Message.sourceAddress)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.sourceAddress)
   return sourceaddress_;
 }
 ::gen::Address* Message::release_sourceaddress() {
-  // @@protoc_insertion_point(field_release:gen.Message.sourceAddress)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.sourceAddress)
   
   ::gen::Address* temp = sourceaddress_;
   sourceaddress_ = NULL;
@@ -4209,7 +4215,7 @@ void Message::set_allocated_sourceaddress(::gen::Address* sourceaddress) {
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.Message.sourceAddress)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.sourceAddress)
 }
 
 // .gen.Address destinationAddress = 2;
@@ -4221,7 +4227,7 @@ void Message::clear_destinationaddress() {
   destinationaddress_ = NULL;
 }
 const ::gen::Address& Message::destinationaddress() const {
-  // @@protoc_insertion_point(field_get:gen.Message.destinationAddress)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.destinationAddress)
   return destinationaddress_ != NULL ? *destinationaddress_
                          : *::gen::Address::internal_default_instance();
 }
@@ -4230,11 +4236,11 @@ const ::gen::Address& Message::destinationaddress() const {
   if (destinationaddress_ == NULL) {
     destinationaddress_ = new ::gen::Address;
   }
-  // @@protoc_insertion_point(field_mutable:gen.Message.destinationAddress)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.destinationAddress)
   return destinationaddress_;
 }
 ::gen::Address* Message::release_destinationaddress() {
-  // @@protoc_insertion_point(field_release:gen.Message.destinationAddress)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.destinationAddress)
   
   ::gen::Address* temp = destinationaddress_;
   destinationaddress_ = NULL;
@@ -4248,7 +4254,7 @@ void Message::set_allocated_destinationaddress(::gen::Address* destinationaddres
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.Message.destinationAddress)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.destinationAddress)
 }
 
 // string id = 3;
@@ -4256,41 +4262,41 @@ void Message::clear_id() {
   id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& Message::id() const {
-  // @@protoc_insertion_point(field_get:gen.Message.id)
+  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.id)
   return id_.GetNoArena();
 }
 void Message::set_id(const ::std::string& value) {
   
   id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.Message.id)
+  // @@protoc_insertion_point(field_set:gen.key_value_store.Message.id)
 }
 #if LANG_CXX11
 void Message::set_id(::std::string&& value) {
   
   id_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.Message.id)
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.Message.id)
 }
 #endif
 void Message::set_id(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.Message.id)
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.Message.id)
 }
 void Message::set_id(const char* value, size_t size) {
   
   id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.Message.id)
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.Message.id)
 }
 ::std::string* Message::mutable_id() {
   
-  // @@protoc_insertion_point(field_mutable:gen.Message.id)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.id)
   return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* Message::release_id() {
-  // @@protoc_insertion_point(field_release:gen.Message.id)
+  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.id)
   
   return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -4301,10 +4307,10 @@ void Message::set_allocated_id(::std::string* id) {
     
   }
   id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
-  // @@protoc_insertion_point(field_set_allocated:gen.Message.id)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.id)
 }
 
-// .gen.RequestMessage requestMessage = 4;
+// .gen.key_value_store.RequestMessage requestMessage = 4;
 bool Message::has_requestmessage() const {
   return messageInternal_case() == kRequestMessage;
 }
@@ -4317,42 +4323,42 @@ void Message::clear_requestmessage() {
     clear_has_messageInternal();
   }
 }
- const ::gen::RequestMessage& Message::requestmessage() const {
-  // @@protoc_insertion_point(field_get:gen.Message.requestMessage)
+ const ::gen::key_value_store::RequestMessage& Message::requestmessage() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.requestMessage)
   return has_requestmessage()
       ? *messageInternal_.requestmessage_
-      : ::gen::RequestMessage::default_instance();
+      : ::gen::key_value_store::RequestMessage::default_instance();
 }
-::gen::RequestMessage* Message::mutable_requestmessage() {
+::gen::key_value_store::RequestMessage* Message::mutable_requestmessage() {
   if (!has_requestmessage()) {
     clear_messageInternal();
     set_has_requestmessage();
-    messageInternal_.requestmessage_ = new ::gen::RequestMessage;
+    messageInternal_.requestmessage_ = new ::gen::key_value_store::RequestMessage;
   }
-  // @@protoc_insertion_point(field_mutable:gen.Message.requestMessage)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.requestMessage)
   return messageInternal_.requestmessage_;
 }
-::gen::RequestMessage* Message::release_requestmessage() {
-  // @@protoc_insertion_point(field_release:gen.Message.requestMessage)
+::gen::key_value_store::RequestMessage* Message::release_requestmessage() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.requestMessage)
   if (has_requestmessage()) {
     clear_has_messageInternal();
-    ::gen::RequestMessage* temp = messageInternal_.requestmessage_;
+    ::gen::key_value_store::RequestMessage* temp = messageInternal_.requestmessage_;
     messageInternal_.requestmessage_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void Message::set_allocated_requestmessage(::gen::RequestMessage* requestmessage) {
+void Message::set_allocated_requestmessage(::gen::key_value_store::RequestMessage* requestmessage) {
   clear_messageInternal();
   if (requestmessage) {
     set_has_requestmessage();
     messageInternal_.requestmessage_ = requestmessage;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.Message.requestMessage)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.requestMessage)
 }
 
-// .gen.ResponseMessage responseMessage = 5;
+// .gen.key_value_store.ResponseMessage responseMessage = 5;
 bool Message::has_responsemessage() const {
   return messageInternal_case() == kResponseMessage;
 }
@@ -4365,39 +4371,39 @@ void Message::clear_responsemessage() {
     clear_has_messageInternal();
   }
 }
- const ::gen::ResponseMessage& Message::responsemessage() const {
-  // @@protoc_insertion_point(field_get:gen.Message.responseMessage)
+ const ::gen::key_value_store::ResponseMessage& Message::responsemessage() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.responseMessage)
   return has_responsemessage()
       ? *messageInternal_.responsemessage_
-      : ::gen::ResponseMessage::default_instance();
+      : ::gen::key_value_store::ResponseMessage::default_instance();
 }
-::gen::ResponseMessage* Message::mutable_responsemessage() {
+::gen::key_value_store::ResponseMessage* Message::mutable_responsemessage() {
   if (!has_responsemessage()) {
     clear_messageInternal();
     set_has_responsemessage();
-    messageInternal_.responsemessage_ = new ::gen::ResponseMessage;
+    messageInternal_.responsemessage_ = new ::gen::key_value_store::ResponseMessage;
   }
-  // @@protoc_insertion_point(field_mutable:gen.Message.responseMessage)
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.responseMessage)
   return messageInternal_.responsemessage_;
 }
-::gen::ResponseMessage* Message::release_responsemessage() {
-  // @@protoc_insertion_point(field_release:gen.Message.responseMessage)
+::gen::key_value_store::ResponseMessage* Message::release_responsemessage() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.responseMessage)
   if (has_responsemessage()) {
     clear_has_messageInternal();
-    ::gen::ResponseMessage* temp = messageInternal_.responsemessage_;
+    ::gen::key_value_store::ResponseMessage* temp = messageInternal_.responsemessage_;
     messageInternal_.responsemessage_ = NULL;
     return temp;
   } else {
     return NULL;
   }
 }
-void Message::set_allocated_responsemessage(::gen::ResponseMessage* responsemessage) {
+void Message::set_allocated_responsemessage(::gen::key_value_store::ResponseMessage* responsemessage) {
   clear_messageInternal();
   if (responsemessage) {
     set_has_responsemessage();
     messageInternal_.responsemessage_ = responsemessage;
   }
-  // @@protoc_insertion_point(field_set_allocated:gen.Message.responseMessage)
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.responseMessage)
 }
 
 bool Message::has_messageInternal() const {
@@ -4413,6 +4419,7 @@ Message::MessageInternalCase Message::messageInternal_case() const {
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace key_value_store
 }  // namespace gen
 
 // @@protoc_insertion_point(global_scope)
