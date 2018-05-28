@@ -108,6 +108,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
         }
     }
 
+    std::cout << __FILE__ << " " << __LINE__ << std::endl;
     throw utils::NotImplementedException();
 }
 

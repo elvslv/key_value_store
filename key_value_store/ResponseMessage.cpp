@@ -32,7 +32,7 @@ unsigned int ResponseMessage::getResponseCode() const
 
 gen::key_value_store::ResponseMessageType ResponseMessage::getProtobufMessageType() const
 {
-    switch (messageType)
+    switch (getMessageType())
     {
     case CREATE_RESPONSE:
         return gen::key_value_store::CREATE_RESPONSE;
@@ -52,7 +52,7 @@ gen::key_value_store::ResponseMessageType ResponseMessage::getProtobufMessageTyp
 
 std::string ResponseMessage::getMsgTypeStr() const
 {
-    switch (messageType)
+    switch (getMessageType())
     {
     case CREATE_RESPONSE:
         return "CREATE_RESPONSE";
@@ -77,6 +77,18 @@ gen::key_value_store::ResponseMessage* ResponseMessage::getResponseMessage(gen::
         return message.mutable_responsemessage();
     }
 
-    throw std::logic_error("Request message is not set");
+    throw std::logic_error("Response message is not set");
+}
+
+gen::key_value_store::Message ResponseMessage::serializeToProtobuf() const
+{
+    auto message = Message::serializeToProtobuf();
+    auto responseMessage = std::make_unique<gen::key_value_store::ResponseMessage>();
+    responseMessage->set_messagetype(getProtobufMessageType());
+    responseMessage->set_originalmessageid(originalMessageId);
+    responseMessage->set_responsecode(responseCode);
+
+    message.set_allocated_responsemessage(responseMessage.release());
+    return message;
 }
 }
