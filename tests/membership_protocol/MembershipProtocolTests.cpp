@@ -14,7 +14,7 @@ using namespace std::chrono_literals;
 
 class FakeFailureDetectorFactory : public failure_detector::IFailureDetectorFactory
 {
-    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol)
+    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     {
         return std::make_unique<testing::NiceMock<mock::MockIFailureDetector>>();
     }
@@ -22,7 +22,7 @@ class FakeFailureDetectorFactory : public failure_detector::IFailureDetectorFact
 
 class FakeGossipProtocolFactory : public gossip_protocol::IGossipProtocolFactory
 {
-    virtual std::unique_ptr<gossip_protocol::IGossipProtocol> createGossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol)
+    virtual std::unique_ptr<gossip_protocol::IGossipProtocol> createGossipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger, membership_protocol::IMembershipProtocol* membershipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     {
         return std::make_unique<testing::NiceMock<mock::MockIGossipProtocol>>();
     }
@@ -30,18 +30,16 @@ class FakeGossipProtocolFactory : public gossip_protocol::IGossipProtocolFactory
 
 class FailureDetectorFactory : public failure_detector::IFailureDetectorFactory
 {
-    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol)
+    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     {
-        std::unique_ptr<utils::IThreadPolicy> threadPolicy = std::make_unique<utils::ThreadPolicy>();
         return std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol, gossipProtocol, threadPolicy);
     }
 };
 
 class GossipProtocolFactory : public gossip_protocol::IGossipProtocolFactory
 {
-    virtual std::unique_ptr<gossip_protocol::IGossipProtocol> createGossipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, membership_protocol::IMembershipProtocol* membershipProtocol)
+    virtual std::unique_ptr<gossip_protocol::IGossipProtocol> createGossipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger, membership_protocol::IMembershipProtocol* membershipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     {
-        std::unique_ptr<utils::IThreadPolicy> threadPolicy = std::make_unique<utils::ThreadPolicy>();
         return std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, membershipProtocol, threadPolicy);
     }
 };
@@ -49,7 +47,7 @@ class GossipProtocolFactory : public gossip_protocol::IGossipProtocolFactory
 class FakeMessageDispatcher : public utils::MessageDispatcher<membership_protocol::Message>
 {
 public:
-    FakeMessageDispatcher(const network::Address& address, const std::shared_ptr<utils::Log>& logger)
+    FakeMessageDispatcher(const network::Address& address, std::shared_ptr<utils::Log> logger)
         : utils::MessageDispatcher<membership_protocol::Message>(address, logger)
     {
     }
@@ -78,7 +76,7 @@ public:
 class BrokenLinkMessageDispatcher : public utils::MessageDispatcher<membership_protocol::Message>
 {
 public:
-    BrokenLinkMessageDispatcher(const network::Address& address, const network::Address& otherAddress, const std::shared_ptr<utils::Log>& logger)
+    BrokenLinkMessageDispatcher(const network::Address& address, const network::Address& otherAddress, std::shared_ptr<utils::Log> logger)
         : utils::MessageDispatcher<membership_protocol::Message>(address, logger)
         , otherAddress(otherAddress)
     {
@@ -105,12 +103,13 @@ void test_n_nodes(unsigned char n, const std::chrono::duration<Rep, Period>& tim
     std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
     std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
 
+    auto threadPolicy = std::make_shared<utils::ThreadPolicy>();
     std::vector<std::unique_ptr<membership_protocol::MembershipProtocol>> membershipProtocols;
     for (unsigned char i = 0; i < n; ++i)
     {
         network::Address addr(std::array<unsigned char, 4>{ { static_cast<unsigned char>(i + 1), 0, 0, 0 } }, (i + 1) * 100);
         std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
-        membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+        membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory, threadPolicy));
     }
 
     for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
@@ -145,7 +144,9 @@ TEST(MembershipProtocolTests, Consructor)
     std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
     std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
 
-    membership_protocol::MembershipProtocol membershipProtocol(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory);
+    auto threadPolicy = std::make_shared<utils::ThreadPolicy>();
+
+    membership_protocol::MembershipProtocol membershipProtocol(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory, threadPolicy);
     membershipProtocol.start();
     auto members = membershipProtocol.getMembers();
     ASSERT_TRUE(members.empty());
@@ -170,6 +171,7 @@ void test_n_nodes_one_failed(int n, const std::chrono::duration<Rep, Period>& ti
     std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
     std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
 
+    auto threadPolicy = std::make_shared<utils::ThreadPolicy>();
     std::vector<std::unique_ptr<membership_protocol::MembershipProtocol>> membershipProtocols;
     for (unsigned char i = 0; i < n; ++i)
     {
@@ -183,7 +185,7 @@ void test_n_nodes_one_failed(int n, const std::chrono::duration<Rep, Period>& ti
         {
             messageDispatcher = std::make_shared<FakeMessageDispatcher>(addr, logger);
         }
-        membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+        membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory, threadPolicy));
     }
 
     for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)
@@ -236,6 +238,7 @@ void test_broken_link(int n, const std::chrono::duration<Rep, Period>& timeout)
     std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
     std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
 
+    auto threadPolicy = std::make_shared<utils::ThreadPolicy>();
     std::vector<std::unique_ptr<membership_protocol::MembershipProtocol>> membershipProtocols;
     for (unsigned char i = 0; i < n; ++i)
     {
@@ -250,7 +253,7 @@ void test_broken_link(int n, const std::chrono::duration<Rep, Period>& timeout)
             network::Address otherAddress(std::array<unsigned char, 4>{ { static_cast<unsigned char>(i), 0, 0, 0 } }, (i)*100);
             messageDispatcher = std::make_shared<BrokenLinkMessageDispatcher>(addr, otherAddress, logger);
         }
-        membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory));
+        membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory, threadPolicy));
     }
 
     for (auto it = membershipProtocols.begin(); it != membershipProtocols.end(); ++it)

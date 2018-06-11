@@ -32,6 +32,7 @@ public:
     network::Message serialize() const;
     virtual std::string toString() const;
     MsgTypes getMessageType() const;
+    virtual std::string getMessageTypeDescription() const;
 
     virtual bool isRequest() const = 0;
 

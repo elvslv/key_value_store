@@ -5,7 +5,7 @@
 
 namespace key_value_store
 {
-class Partitioner : IPartitioner
+class Partitioner : public IPartitioner
 {
 public:
     Partitioner(size_t ringSize);

@@ -19,7 +19,7 @@ namespace membership_protocol
 class MembershipProtocol : public IMembershipProtocol, failure_detector::IFailureDetector::IObserver, gossip_protocol::IGossipProtocol::IObserver
 {
 public:
-    MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const Config& config, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory);
+    MembershipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger, const Config& config, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory, std::shared_ptr<utils::IThreadPolicy> threadPolicy);
     virtual ~MembershipProtocol();
 
     virtual void start();

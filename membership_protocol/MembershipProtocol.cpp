@@ -10,7 +10,7 @@
 
 namespace membership_protocol
 {
-MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const Config& config, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory)
+MembershipProtocol::MembershipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger, const Config& config, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     : node(addr)
     , config(config)
     , messageDispatcher(messageDispatcher)
@@ -18,8 +18,8 @@ MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::
     , logger(logger)
     , asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1))
     , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })
-    , gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, this))
-    , failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this, gossipProtocol.get()))
+    , gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, this, threadPolicy))
+    , failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this, gossipProtocol.get(), threadPolicy))
     , observers()
     , membersMutex()
     , members()

@@ -28,6 +28,8 @@ public:
     virtual std::string toString() const = 0;
     virtual network::Message serialize() const = 0;
 
+    virtual std::string getMessageTypeDescription() const = 0;
+
 protected:
     network::Address sourceAddress;
     network::Address destinationAddress;

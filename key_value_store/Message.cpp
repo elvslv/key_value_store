@@ -147,4 +147,36 @@ Message::MsgTypes Message::getMessageType() const
 {
     return messageType;
 }
+
+std::string Message::getMessageTypeDescription() const
+{
+    switch (messageType)
+    {
+    case CREATE_REQUEST:
+        return "CREATE_REQUEST";
+
+    case UPDATE_REQUEST:
+        return "UPDATE_REQUEST";
+
+    case READ_REQUEST:
+        return "READ_REQUEST";
+
+    case DELETE_REQUEST:
+        return "DELETE_REQUEST";
+
+    case CREATE_RESPONSE:
+        return "CREATE_RESPONSE";
+
+    case UPDATE_RESPONSE:
+        return "UPDATE_RESPONSE";
+
+    case READ_RESPONSE:
+        return "READ_RESPONSE";
+
+    case DELETE_RESPONSE:
+        return "DELETE_RESPONSE";
+    }
+
+    throw utils::NotImplementedException();
+}
 }

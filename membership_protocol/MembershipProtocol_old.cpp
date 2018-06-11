@@ -6,7 +6,7 @@
 
 namespace membership_protocol
 {
-    MembershipProtocol::MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger): 
+    MembershipProtocol::MembershipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger): 
         node(addr),
         network(addr),
         logger(logger),

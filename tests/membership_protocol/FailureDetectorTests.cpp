@@ -23,7 +23,7 @@ public:
 
     mock::MockIMembershipProtocol membershipProtocol;
     mock::MockIGossipProtocol gossipProtocol;
-    std::unique_ptr<utils::IThreadPolicy> threadPolicy;
+    std::shared_ptr<utils::IThreadPolicy> threadPolicy;
     std::unique_ptr<failure_detector::FailureDetector> failureDectector;
     std::vector<network::Address> failedNodes;
     std::unordered_set<network::Address> aliveNodes;

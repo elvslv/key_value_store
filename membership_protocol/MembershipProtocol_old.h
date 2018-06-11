@@ -19,7 +19,7 @@ namespace membership_protocol
     class MembershipProtocol: public IMembershipProtocol
     {
     public:
-        MembershipProtocol(const network::Address& addr, const std::shared_ptr<utils::Log>& logger);
+        MembershipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger);
         virtual void start();
         virtual void stop();
         virtual std::vector<Member> getMembers();

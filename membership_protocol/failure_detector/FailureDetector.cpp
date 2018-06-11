@@ -13,14 +13,14 @@ public:
     StopRequestedException() {}
 };
 
-FailureDetector::FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy)
+FailureDetector::FailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     : address(addr)
     , logger(logger)
     , messageDispatcher(messageDispatcher)
     , tokens()
     , membershipProtocol(membershipProtocol)
     , gossipProtocol(gossipProtocol)
-    , threadPolicy(std::move(threadPolicy))
+    , threadPolicy(threadPolicy)
     , observers()
     , asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1))
     , asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message) { asyncQueue.push(std::move(message)); })

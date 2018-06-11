@@ -26,7 +26,7 @@ public:
     virtual ~Message(){};
 
     MsgTypes getMessageType() const;
-    std::string getMessageTypeDescription() const;
+    virtual std::string getMessageTypeDescription() const;
 
     static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage);
     virtual std::string toString() const;

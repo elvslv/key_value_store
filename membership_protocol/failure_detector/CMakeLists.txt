@@ -1,4 +1,4 @@
-set(membership_protocol_failure_detector_src_files FailureDetector)
+set(membership_protocol_failure_detector_src_files FailureDetector FailureDetectorFactory)
 foreach(membership_protocol_failure_detector_src_file ${membership_protocol_failure_detector_src_files})
   target_sources(key_value_store_lib PRIVATE "membership_protocol/failure_detector/${membership_protocol_failure_detector_src_file}.cpp")
 endforeach(membership_protocol_failure_detector_src_file)

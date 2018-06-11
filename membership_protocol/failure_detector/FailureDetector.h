@@ -18,7 +18,7 @@ namespace failure_detector
 class FailureDetector : public IFailureDetector, public membership_protocol::IMembershipProtocol::IObserver
 {
 public:
-    FailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::unique_ptr<utils::IThreadPolicy>& threadPolicy);
+    FailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy);
     virtual ~FailureDetector();
 
     virtual void start();
@@ -35,7 +35,7 @@ private:
     std::unordered_map<membership_protocol::Message::MsgTypes, std::string> tokens;
     membership_protocol::IMembershipProtocol* membershipProtocol;
     gossip_protocol::IGossipProtocol* gossipProtocol;
-    std::unique_ptr<utils::IThreadPolicy> threadPolicy;
+    std::shared_ptr<utils::IThreadPolicy> threadPolicy;
     std::vector<IFailureDetector::IObserver*> observers;
     utils::AsyncQueue<membership_protocol::Message> asyncQueue;
     utils::AsyncQueue<membership_protocol::Message>::Callback asyncQueueCallback;

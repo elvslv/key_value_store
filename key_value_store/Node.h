@@ -32,17 +32,17 @@ namespace key_value_store
 class Node : INode
 {
 public:
-    Node(const network::Address& address, const std::shared_ptr<utils::Log>& logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher, std::unique_ptr<utils::IThreadPolicy>& threadPolicy);
+    Node(const network::Address& address, std::shared_ptr<utils::Log> logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, const std::unique_ptr<IPartitioner>& partitioner, const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher, std::shared_ptr<utils::IThreadPolicy> threadPolicy);
 
     virtual ~Node() {}
 
     virtual void start();
     virtual void stop();
 
-    virtual void create(const std::string& key, const std::string& value) = 0;
-    virtual std::string read(const std::string& key) = 0;
-    virtual void update(const std::string& key, const std::string& value) = 0;
-    virtual void remove(const std::string& key) = 0;
+    virtual void create(const std::string& key, const std::string& value);
+    virtual std::string read(const std::string& key);
+    virtual void update(const std::string& key, const std::string& value);
+    virtual void remove(const std::string& key);
 
 private:
     struct MessageState
@@ -192,7 +192,7 @@ private:
     std::shared_ptr<utils::Log> logger;
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
     std::unique_ptr<IStorage> storage;
-    std::unique_ptr<IPartitioner> partitioner;
+    const std::unique_ptr<IPartitioner>& partitioner;
     std::shared_ptr<utils::MessageDispatcher<Message>> messageDispatcher;
     utils::AsyncQueue<Message> asyncQueue;
     utils::AsyncQueue<Message>::Callback asyncQueueCallback;
@@ -200,6 +200,6 @@ private:
     std::mutex mutex;
 
     utils::RunnableCallback runnable;
-    std::unique_ptr<utils::IThreadPolicy> threadPolicy;
+    std::shared_ptr<utils::IThreadPolicy> threadPolicy;
 };
 }

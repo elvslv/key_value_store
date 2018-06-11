@@ -13,7 +13,7 @@ class GossipProtocolTests : public testing::Test, public gossip_protocol::IGossi
 {
 public:
     mock::MockIMembershipProtocol membershipProtocol;
-    std::unique_ptr<utils::IThreadPolicy> threadPolicy;
+    std::shared_ptr<utils::IThreadPolicy> threadPolicy;
     std::unique_ptr<gossip_protocol::GossipProtocol> gossipProtocol;
     std::vector<network::Address> failedNodes;
     std::vector<network::Address> aliveNodes;

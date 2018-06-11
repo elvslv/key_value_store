@@ -20,18 +20,17 @@ namespace key_value_store
 using namespace std::chrono_literals;
 
 Node::Node(const network::Address& address,
-    const std::shared_ptr<utils::Log>& logger,
-    std::unique_ptr<membership_protocol::IMembershipProtocol>
-        membershipProtocol,
+    std::shared_ptr<utils::Log> logger,
+    std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol,
     std::unique_ptr<IStorage> storage,
-    std::unique_ptr<IPartitioner> partitioner,
+    const std::unique_ptr<IPartitioner>& partitioner,
     const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher,
-    std::unique_ptr<utils::IThreadPolicy>& threadPolicy)
+    std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     : address(address)
     , logger(logger)
     , membershipProtocol(std::move(membershipProtocol))
     , storage(std::move(storage))
-    , partitioner(std::move(partitioner))
+    , partitioner(partitioner)
     , messageDispatcher(messageDispatcher)
     , asyncQueue(std::bind(&Node::processMessage, this, std::placeholders::_1))
     , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })

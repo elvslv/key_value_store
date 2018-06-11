@@ -5,6 +5,7 @@
 #include "membership_protocol/gossip_protocol/IGossipProtocol.h"
 #include "membership_protocol/messages/Message.h"
 #include "network/Network.h"
+#include "utils/IThreadPolicy.h"
 #include "utils/Log.h"
 #include "utils/MessageDispatcher.h"
 
@@ -14,6 +15,6 @@ class IFailureDetectorFactory
 {
 public:
     virtual ~IFailureDetectorFactory(){};
-    virtual std::unique_ptr<IFailureDetector> createFailureDetector(const network::Address& addr, const std::shared_ptr<utils::Log>& logger, const std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>>& messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol) = 0;
+    virtual std::unique_ptr<IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy) = 0;
 };
 }
