@@ -18,6 +18,12 @@
 
 namespace key_value_store
 {
+enum ResponseCode
+{
+    OK = 200,
+    NOT_FOUND = 404,
+};
+
 using namespace std::chrono_literals;
 
 Node::Node(const network::Address& address,
@@ -96,7 +102,7 @@ bool Node::sendCreateMessage(const network::Address& target, const std::string& 
     }
 
     auto createResponse = static_cast<CreateResponseMessage*>(response.get());
-    return createResponse->getResponseCode() == 200;
+    return createResponse->getResponseCode() == OK;
 }
 
 std::string Node::read(const std::string& key)
@@ -121,7 +127,7 @@ Record Node::sendReadMessage(const network::Address& target, const std::string& 
     }
 
     auto readResponse = static_cast<ReadResponseMessage*>(response.get());
-    if (response->getResponseCode() != 200)
+    if (response->getResponseCode() != OK)
     {
         throw std::logic_error("TBD");
     }
@@ -150,7 +156,7 @@ bool Node::sendUpdateMessage(const network::Address& target, const std::string& 
     }
 
     auto updateResponse = static_cast<UpdateResponseMessage*>(response.get());
-    return updateResponse->getResponseCode() == 200;
+    return updateResponse->getResponseCode() == OK;
 }
 
 void Node::remove(const std::string& key)
@@ -174,7 +180,7 @@ bool Node::sendRemoveMessage(const network::Address& target, const std::string& 
     }
 
     auto deleteResponse = static_cast<DeleteResponseMessage*>(response.get());
-    return deleteResponse->getResponseCode() == 200;
+    return deleteResponse->getResponseCode() == OK;
 }
 
 void Node::run()
@@ -206,7 +212,7 @@ void Node::onCreateRequest(std::unique_ptr<CreateRequestMessage> message)
     storage->insert(message->getKey(), Record(message->getValue()));
     // TODO: handle exceptions
 
-    messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
+    messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
 }
 
 void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
@@ -217,7 +223,7 @@ void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
     storage->update(message->getKey(), Record(message->getValue()));
     // TODO: handle exceptions
 
-    messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
+    messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
 }
 
 void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
@@ -232,11 +238,11 @@ void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
     }
     catch (key_value_store::NotFoundException)
     {
-        messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), 404, ""), message->getSourceAddress());
+        messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND, ""), message->getSourceAddress());
         return;
     }
 
-    messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), 200, record.value), message->getSourceAddress());
+    messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), OK, record.value), message->getSourceAddress());
 }
 
 void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
@@ -247,7 +253,7 @@ void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
     storage->remove(message->getKey());
     // TODO: handle exceptions
 
-    messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), 200), message->getSourceAddress());
+    messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
 }
 
 void Node::onResponse(std::unique_ptr<ResponseMessage> message)

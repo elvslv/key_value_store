@@ -44,7 +44,7 @@ TEST(NodeTests, Constructor)
     auto node = createNode(1, logger);
 }
 
-TEST(NodeTests, OneNode)
+TEST(NodeTests, ReadNotExists)
 {
     auto logger = std::make_shared<utils::Log>();
 
@@ -67,6 +67,36 @@ TEST(NodeTests, OneNode)
     {
         std::cout << ex.what() << std::endl;
     }
+    for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
+    {
+        (*it)->stop();
+    }
+}
+
+TEST(NodeTests, ReadExists)
+{
+    auto logger = std::make_shared<utils::Log>();
+
+    std::vector<std::unique_ptr<key_value_store::Node>> nodes;
+    for (int i = 1; i <= 3; ++i)
+    {
+        auto node = createNode(i, logger);
+        node->start();
+        nodes.push_back(std::move(node));
+    }
+
+    std::this_thread::sleep_for(5s);
+
+    std::string key = "key";
+    std::string val = "value";
+    nodes[1]->create(key, val);
+
+    auto v = nodes[1]->read(key);
+    ASSERT_EQ(v, val);
+
+    v = nodes[0]->read(key);
+    ASSERT_EQ(v, val);
+
     for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
     {
         (*it)->stop();
