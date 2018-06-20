@@ -58,15 +58,18 @@ TEST(NodeTests, ReadNotExists)
 
     std::this_thread::sleep_for(5s);
 
-    std::exception_ptr eptr;
+    bool exceptionCaught = false;
     try
     {
         auto val = nodes[0]->read("key");
     }
     catch (const utils::ComplexException& ex)
     {
-        std::cout << ex.what() << std::endl;
+        exceptionCaught = true;
     }
+
+    ASSERT_TRUE(exceptionCaught);
+
     for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
     {
         (*it)->stop();
@@ -96,6 +99,79 @@ TEST(NodeTests, ReadExists)
 
     v = nodes[0]->read(key);
     ASSERT_EQ(v, val);
+
+    for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
+    {
+        (*it)->stop();
+    }
+}
+
+TEST(NodeTests, Update)
+{
+    auto logger = std::make_shared<utils::Log>();
+
+    std::vector<std::unique_ptr<key_value_store::Node>> nodes;
+    for (int i = 1; i <= 3; ++i)
+    {
+        auto node = createNode(i, logger);
+        node->start();
+        nodes.push_back(std::move(node));
+    }
+
+    std::this_thread::sleep_for(5s);
+
+    std::string key = "key";
+    std::string val = "value";
+    nodes[1]->create(key, val);
+
+    auto v = nodes[1]->read(key);
+    ASSERT_EQ(v, val);
+
+    val = "value1";
+    nodes[2]->update(key, val);
+    v = nodes[0]->read(key);
+    ASSERT_EQ(v, val);
+
+    for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
+    {
+        (*it)->stop();
+    }
+}
+
+TEST(NodeTests, Remove)
+{
+    auto logger = std::make_shared<utils::Log>();
+
+    std::vector<std::unique_ptr<key_value_store::Node>> nodes;
+    for (int i = 1; i <= 3; ++i)
+    {
+        auto node = createNode(i, logger);
+        node->start();
+        nodes.push_back(std::move(node));
+    }
+
+    std::this_thread::sleep_for(5s);
+
+    std::string key = "key";
+    std::string val = "value";
+    nodes[1]->create(key, val);
+
+    auto v = nodes[1]->read(key);
+    ASSERT_EQ(v, val);
+
+    nodes[2]->remove(key);
+
+    bool exceptionCaught = false;
+    try
+    {
+        nodes[0]->read(key);
+    }
+    catch (const utils::ComplexException& ex)
+    {
+        exceptionCaught = true;
+    }
+
+    ASSERT_TRUE(exceptionCaught);
 
     for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
     {
