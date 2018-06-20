@@ -7,6 +7,7 @@
 #include "ReadResponseMessage.h"
 #include "UpdateRequestMessage.h"
 #include "UpdateResponseMessage.h"
+#include "key_value_store/Exceptions.h"
 #include "utils/Exceptions.h"
 #include "utils/Utils.h"
 #include <array>
@@ -33,16 +34,28 @@ Node::Node(const network::Address& address,
     , partitioner(std::move(partitioner))
     , messageDispatcher(messageDispatcher)
     , asyncQueue(std::bind(&Node::processMessage, this, std::placeholders::_1))
-    , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })
+    , asyncQueueCallback([this](std::unique_ptr<utils::Message> message) { asyncQueue.push(utils::Utils::downcast<key_value_store::Message, utils::Message>(std::move(message))); })
     , sentMessages()
     , runnable([this]() { run(); })
     , threadPolicy(std::move(threadPolicy))
+    , tokens()
 {
 }
 
 void Node::start()
 {
     logger->log(address, "Starting node");
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<CreateRequestMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<UpdateRequestMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<ReadRequestMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<DeleteRequestMessage>(), asyncQueueCallback));
+
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<CreateResponseMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<UpdateResponseMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<ReadResponseMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<DeleteResponseMessage>(), asyncQueueCallback));
+
+    asyncQueue.start();
     membershipProtocol->start();
 
     runnable.start();
@@ -52,6 +65,12 @@ void Node::stop()
 {
     runnable.stop();
     membershipProtocol->stop();
+    asyncQueue.stop();
+
+    for (auto token : tokens)
+    {
+        messageDispatcher->stopListening(token);
+    }
 
     logger->log(address, "Stopped node");
 }
@@ -98,7 +117,7 @@ Record Node::sendReadMessage(const network::Address& target, const std::string& 
     auto response = sendMessageAndWait(std::move(message), 2s);
     if (!response)
     {
-        throw std::logic_error("TBD");
+        throw std::logic_error("request timed out");
     }
 
     auto readResponse = static_cast<ReadResponseMessage*>(response.get());
@@ -206,8 +225,16 @@ void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
     auto key = message->getKey();
 
     // TODO: make sure it belongs to this node
-    auto record = storage->get(message->getKey());
-    // TODO: handle exceptions
+    Record record;
+    try
+    {
+        record = storage->get(message->getKey());
+    }
+    catch (key_value_store::NotFoundException)
+    {
+        messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), 404, ""), message->getSourceAddress());
+        return;
+    }
 
     messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), 200, record.value), message->getSourceAddress());
 }
@@ -225,7 +252,7 @@ void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
 
 void Node::onResponse(std::unique_ptr<ResponseMessage> message)
 {
-    auto messageId = message->getId();
+    auto messageId = message->getOriginalMessageId();
     std::unique_lock<std::mutex> lock(mutex);
     assert(sentMessages.find(messageId) != sentMessages.end());
 
@@ -234,31 +261,33 @@ void Node::onResponse(std::unique_ptr<ResponseMessage> message)
 
 void Node::processMessage(std::unique_ptr<Message> message)
 {
+    logger->log("Received message ", message->getMsgTypeStr(), " from ", message->getSourceAddress(), message->getId());
+
     switch (message->getMessageType())
     {
     case Message::CREATE_REQUEST:
     {
         std::unique_ptr<CreateRequestMessage> createRequestMessage(dynamic_cast<CreateRequestMessage*>(message.release()));
         onCreateRequest(std::move(createRequestMessage));
-        break;
+        return;
     }
     case Message::UPDATE_REQUEST:
     {
         std::unique_ptr<UpdateRequestMessage> updateRequestMessage(dynamic_cast<UpdateRequestMessage*>(message.release()));
         onUpdateRequest(std::move(updateRequestMessage));
-        break;
+        return;
     }
     case Message::READ_REQUEST:
     {
         std::unique_ptr<ReadRequestMessage> readRequestMessage(dynamic_cast<ReadRequestMessage*>(message.release()));
         onReadRequest(std::move(readRequestMessage));
-        break;
+        return;
     }
     case Message::DELETE_REQUEST:
     {
         std::unique_ptr<DeleteRequestMessage> deleteRequestMessage(dynamic_cast<DeleteRequestMessage*>(message.release()));
         onDeleteRequest(std::move(deleteRequestMessage));
-        break;
+        return;
     }
 
     case Message::CREATE_RESPONSE:
@@ -268,7 +297,7 @@ void Node::processMessage(std::unique_ptr<Message> message)
     {
         std::unique_ptr<ResponseMessage> responseMessage(dynamic_cast<ResponseMessage*>(message.release()));
         onResponse(std::move(responseMessage));
-        break;
+        return;
     }
     }
 

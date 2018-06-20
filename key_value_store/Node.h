@@ -154,7 +154,7 @@ private:
         if (succeeded < 2)
         {
             auto ex = eptr.release();
-            throw ex;
+            throw *ex;
         }
 
         return result;
@@ -205,11 +205,12 @@ private:
     std::unique_ptr<IPartitioner> partitioner;
     std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
     utils::AsyncQueue<Message> asyncQueue;
-    utils::AsyncQueue<Message>::Callback asyncQueueCallback;
+    utils::AsyncQueue<utils::Message>::Callback asyncQueueCallback;
     std::map<std::string, MessageState*> sentMessages;
     std::mutex mutex;
 
     utils::RunnableCallback runnable;
     std::shared_ptr<utils::IThreadPolicy> threadPolicy;
+    std::list<std::string> tokens;
 };
 }

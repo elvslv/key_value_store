@@ -1,32 +1,8 @@
 #include "key_value_store/Storage.h"
+#include "key_value_store/Exceptions.h"
 
 namespace key_value_store
 {
-
-class NotFoundException : public std::exception
-{
-public:
-    NotFoundException(const std::string& key)
-        : key(key)
-    {
-    }
-
-private:
-    std::string key;
-};
-
-class ConflictDetected : public std::exception
-{
-public:
-    ConflictDetected(const std::string& key)
-        : key(key)
-    {
-    }
-
-private:
-    std::string key;
-};
-
 Record Storage::get(const std::string& key)
 {
     std::lock_guard<std::mutex> lock(mutex);

@@ -1,3 +1,4 @@
+#include "key_value_store/Exceptions.h"
 #include "key_value_store/Node.h"
 #include "key_value_store/Partitioner.h"
 #include "key_value_store/Storage.h"
@@ -57,12 +58,15 @@ TEST(NodeTests, OneNode)
 
     std::this_thread::sleep_for(5s);
 
-    logger->log("read start");
-    auto val = nodes[0]->read("key");
-    logger->log("read end");
-
-    std::this_thread::sleep_for(10s);
-
+    std::exception_ptr eptr;
+    try
+    {
+        auto val = nodes[0]->read("key");
+    }
+    catch (const utils::ComplexException& ex)
+    {
+        std::cout << ex.what() << std::endl;
+    }
     for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
     {
         (*it)->stop();
