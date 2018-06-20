@@ -29,10 +29,10 @@
 
 namespace key_value_store
 {
-class Node : INode
+class Node : public INode
 {
 public:
-    Node(const network::Address& address, std::shared_ptr<utils::Log> logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, const std::unique_ptr<IPartitioner>& partitioner, const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher, std::shared_ptr<utils::IThreadPolicy> threadPolicy);
+    Node(const network::Address& address, std::shared_ptr<utils::Log> logger, std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol, std::unique_ptr<IStorage> storage, std::unique_ptr<IPartitioner> partitioner, const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher, std::shared_ptr<utils::IThreadPolicy> threadPolicy);
 
     virtual ~Node() {}
 
@@ -169,10 +169,20 @@ private:
 
         MessageState messageState;
         sentMessages[messageId] = &messageState;
-        messageDispatcher->sendMessage(std::move(message), message->getDestinationAddress());
-        messageState.conditionVariable.wait_for(lock, timeout, [&messageState] {
+        auto destAddress = message->getDestinationAddress();
+
+        logger->log("sending ", message->getMsgTypeStr(), "from ", address, "to ", destAddress, message->getId(), message->getKey());
+        messageDispatcher->sendMessage(std::move(message), destAddress);
+        logger->log("sent from ", address, "to ", destAddress);
+
+        bool result = messageState.conditionVariable.wait_for(lock, timeout, [&messageState] {
             return (bool)messageState.responseMessage;
         });
+
+        if (!result)
+        {
+            logger->log(address, "failed waiting for response from", destAddress);
+        }
 
         sentMessages.erase(messageId);
         return std::move(messageState.responseMessage);
@@ -192,8 +202,8 @@ private:
     std::shared_ptr<utils::Log> logger;
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol;
     std::unique_ptr<IStorage> storage;
-    const std::unique_ptr<IPartitioner>& partitioner;
-    std::shared_ptr<utils::MessageDispatcher<Message>> messageDispatcher;
+    std::unique_ptr<IPartitioner> partitioner;
+    std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
     utils::AsyncQueue<Message> asyncQueue;
     utils::AsyncQueue<Message>::Callback asyncQueueCallback;
     std::map<std::string, MessageState*> sentMessages;

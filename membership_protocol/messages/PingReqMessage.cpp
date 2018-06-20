@@ -15,14 +15,15 @@ PingReqMessage::PingReqMessage(const network::Address& from, const network::Addr
 {
 }
 
-gen::membership_protocol::Message PingReqMessage::serializeToProtobuf() const
+gen::Message PingReqMessage::serializeToProtobuf() const
 {
     auto message = MessageWithGossipsBase::serializeToProtobuf();
+    auto membershipProtocolMessage = getMembershipProtocolMessage(message);
 
     auto addr = targetAddress.serialize();
     auto pingReqFields = std::make_unique<gen::membership_protocol::PingReqFields>();
     pingReqFields->set_allocated_targetaddress(addr.release());
-    message.set_allocated_pingreqfields(pingReqFields.release());
+    membershipProtocolMessage->set_allocated_pingreqfields(pingReqFields.release());
 
     return message;
 }
@@ -35,7 +36,7 @@ gen::membership_protocol::MessageType PingReqMessage::getProtobufMessageType() c
 std::string PingReqMessage::toString() const
 {
     std::stringstream ss;
-    ss << getMsgTypeStr(PING_REQ) << " from " << sourceAddress << " to " << destinationAddress << " id " << getId() << " about " << targetAddress << std::endl;
+    ss << getMsgTypeStr() << " from " << sourceAddress << " to " << destinationAddress << " id " << getId() << " about " << targetAddress << std::endl;
     return ss.str();
 }
 

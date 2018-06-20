@@ -13,7 +13,7 @@ public:
     StopRequestedException() {}
 };
 
-FailureDetector::FailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
+FailureDetector::FailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     : address(addr)
     , logger(logger)
     , messageDispatcher(messageDispatcher)
@@ -23,7 +23,7 @@ FailureDetector::FailureDetector(const network::Address& addr, std::shared_ptr<u
     , threadPolicy(threadPolicy)
     , observers()
     , asyncQueue(std::bind(&FailureDetector::processMessage, this, std::placeholders::_1))
-    , asyncQueueCallback([this](std::unique_ptr<membership_protocol::Message> message) { asyncQueue.push(std::move(message)); })
+    , asyncQueueCallback([this](std::unique_ptr<utils::Message> message) { asyncQueue.push(utils::Utils::downcast<membership_protocol::Message, utils::Message>(std::move(message))); })
     , members()
     , msgIdsMutex()
     , ackReceivedCondVar()
@@ -49,8 +49,8 @@ void FailureDetector::start()
     membershipProtocol->addObserver(this);
     asyncQueue.start();
 
-    tokens[membership_protocol::Message::PING_REQ] = messageDispatcher->listen(membership_protocol::Message::PING_REQ, asyncQueueCallback);
-    tokens[membership_protocol::Message::ACK] = messageDispatcher->listen(membership_protocol::Message::ACK, asyncQueueCallback);
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<membership_protocol::PingReqMessage>(), asyncQueueCallback));
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<membership_protocol::AckMessage>(), asyncQueueCallback));
 
     runnable.start();
 }
@@ -67,7 +67,7 @@ void FailureDetector::stop()
 
     for (auto token : tokens)
     {
-        messageDispatcher->stopListening(token.first, token.second);
+        messageDispatcher->stopListening(token);
     }
 
     // TODO: cleanup when thread finishes
@@ -131,8 +131,9 @@ bool FailureDetector::sendMessage(std::unique_ptr<membership_protocol::Message> 
         msgIds.insert({ msgId, false });
     }
 
+    auto messageDescription = message->toString();
     messageDispatcher->sendMessage(std::move(message), destAddress);
-    logger->log(address, "<FailureDetector> -- Successfully sent ", message->toString());
+    logger->log(address, "<FailureDetector> -- Successfully sent ", messageDescription);
 
     bool receivedResponse = false;
     auto now = std::chrono::steady_clock::now();
@@ -239,7 +240,7 @@ void FailureDetector::onPingReq(std::unique_ptr<membership_protocol::Message> me
 
 void FailureDetector::processMessage(std::unique_ptr<membership_protocol::Message> message)
 {
-    logger->log(address, "<FailureDetector> -- received message ", message->getMessageTypeDescription(), " from ", message->getSourceAddress());
+    logger->log(address, "<FailureDetector> -- received message ", message->getMsgTypeStr(), " from ", message->getSourceAddress());
     switch (message->getMessageType())
     {
     case membership_protocol::Message::ACK:

@@ -14,13 +14,14 @@ MessageWithGossipsBase::MessageWithGossipsBase(MsgTypes msgType, const network::
 {
 }
 
-gen::membership_protocol::Message MessageWithGossipsBase::serializeToProtobuf() const
+gen::Message MessageWithGossipsBase::serializeToProtobuf() const
 {
     auto message = Message::serializeToProtobuf();
+    auto membershipProtocolMessage = getMembershipProtocolMessage(message);
 
     for (auto it = gossips.begin(); it != gossips.end(); ++it)
     {
-        auto gossip = message.add_gossips();
+        auto gossip = membershipProtocolMessage->add_gossips();
         it->serializeTo(gossip);
     }
     return message;
@@ -31,15 +32,18 @@ const std::vector<Gossip>& MessageWithGossipsBase::getGossips() const
     return gossips;
 }
 
-std::vector<Gossip> MessageWithGossipsBase::parseGossips(const gen::membership_protocol::Message& message)
+std::vector<Gossip> MessageWithGossipsBase::parseGossips(const gen::Message& message)
 {
     std::vector<Gossip> result;
-    result.reserve(message.gossips_size());
+    auto membershipProtocolMessage = getMembershipProtocolMessage(message);
 
-    for (int i = 0; i < message.gossips_size(); ++i)
+    result.reserve(membershipProtocolMessage.gossips_size());
+
+    for (int i = 0; i < membershipProtocolMessage.gossips_size(); ++i)
     {
-        auto gossip = message.gossips(i);
-        result.emplace_back(network::Address(gossip.address()), MembershipUpdateType(gossip.event()), gossip.id());
+        auto gossip = membershipProtocolMessage.gossips(i);
+        network::Address address(gossip.address());
+        result.emplace_back(address, MembershipUpdateType(gossip.event()), gossip.id());
     }
 
     return result;

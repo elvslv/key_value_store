@@ -12,7 +12,7 @@ UpdateResponseMessage::UpdateResponseMessage(const network::Address& sourceAddre
 {
 }
 
-gen::key_value_store::Message UpdateResponseMessage::serializeToProtobuf() const
+gen::Message UpdateResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();
 

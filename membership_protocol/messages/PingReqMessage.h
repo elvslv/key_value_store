@@ -14,7 +14,7 @@ public:
 
 protected:
     virtual gen::membership_protocol::MessageType getProtobufMessageType() const;
-    virtual gen::membership_protocol::Message serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const;
 
 private:
     network::Address targetAddress;

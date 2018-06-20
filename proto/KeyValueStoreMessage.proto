@@ -70,13 +70,9 @@ message ResponseMessage {
 }
 
 message Message {
-    Address sourceAddress = 1;
-    Address destinationAddress = 2;
-    string id = 3;
-
     oneof messageInternal {
-        RequestMessage requestMessage = 4;
-        ResponseMessage responseMessage = 5;
+        RequestMessage requestMessage = 1;
+        ResponseMessage responseMessage = 2;
     }
 }
 

@@ -14,7 +14,7 @@ using namespace std::chrono_literals;
 
 class FakeFailureDetectorFactory : public failure_detector::IFailureDetectorFactory
 {
-    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
+    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     {
         return std::make_unique<testing::NiceMock<mock::MockIFailureDetector>>();
     }
@@ -30,7 +30,7 @@ class FakeGossipProtocolFactory : public gossip_protocol::IGossipProtocolFactory
 
 class FailureDetectorFactory : public failure_detector::IFailureDetectorFactory
 {
-    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
+    virtual std::unique_ptr<failure_detector::IFailureDetector> createFailureDetector(const network::Address& addr, std::shared_ptr<utils::Log> logger, std::shared_ptr<utils::MessageDispatcher> messageDispatcher, membership_protocol::IMembershipProtocol* membershipProtocol, gossip_protocol::IGossipProtocol* gossipProtocol, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     {
         return std::make_unique<failure_detector::FailureDetector>(addr, logger, messageDispatcher, membershipProtocol, gossipProtocol, threadPolicy);
     }
@@ -44,52 +44,53 @@ class GossipProtocolFactory : public gossip_protocol::IGossipProtocolFactory
     }
 };
 
-class FakeMessageDispatcher : public utils::MessageDispatcher<membership_protocol::Message>
+class FakeMessageDispatcher : public utils::MessageDispatcher
 {
 public:
     FakeMessageDispatcher(const network::Address& address, std::shared_ptr<utils::Log> logger)
-        : utils::MessageDispatcher<membership_protocol::Message>(address, logger)
+        : utils::MessageDispatcher(address, logger)
     {
     }
 
-    virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
+    virtual void sendMessage(std::unique_ptr<utils::Message> message, const network::Address& destAddress)
     {
-        if (message->getMessageType() == membership_protocol::Message::ACK || message->getMessageType() == membership_protocol::Message::PING || message->getMessageType() == membership_protocol::Message::JOINREQ)
+        auto membershipProtocolMessage = utils::Utils::downcast<membership_protocol::Message, utils::Message>(std::move(message));
+        if (membershipProtocolMessage->getMessageType() == membership_protocol::Message::ACK || membershipProtocolMessage->getMessageType() == membership_protocol::Message::PING || membershipProtocolMessage->getMessageType() == membership_protocol::Message::JOINREQ)
         {
             return;
         }
 
-        utils::MessageDispatcher<membership_protocol::Message>::sendMessage(message, destAddress);
+        utils::MessageDispatcher::sendMessage(std::move(message), destAddress);
     }
 
-    virtual std::string listen(membership_protocol::Message::MsgTypes msgType, const Callback& callback)
+    virtual std::string listen(const std::string& msgType, const Callback& callback)
     {
         return utils::Utils::getRandomString(8);
     }
 
-    virtual void stopListening(membership_protocol::Message::MsgTypes msgType, const std::string& token)
+    virtual void stopListening( const std::string& token)
     {
         return;
     }
 };
 
-class BrokenLinkMessageDispatcher : public utils::MessageDispatcher<membership_protocol::Message>
+class BrokenLinkMessageDispatcher : public utils::MessageDispatcher
 {
 public:
     BrokenLinkMessageDispatcher(const network::Address& address, const network::Address& otherAddress, std::shared_ptr<utils::Log> logger)
-        : utils::MessageDispatcher<membership_protocol::Message>(address, logger)
+        : utils::MessageDispatcher(address, logger)
         , otherAddress(otherAddress)
     {
     }
 
-    virtual void sendMessage(const std::unique_ptr<membership_protocol::Message>& message, const network::Address& destAddress)
+    virtual void sendMessage(std::unique_ptr<utils::Message> message, const network::Address& destAddress)
     {
         if (destAddress == otherAddress)
         {
             return;
         }
 
-        utils::MessageDispatcher<membership_protocol::Message>::sendMessage(message, destAddress);
+        utils::MessageDispatcher::sendMessage(std::move(message), destAddress);
     }
 
 private:
@@ -108,7 +109,7 @@ void test_n_nodes(unsigned char n, const std::chrono::duration<Rep, Period>& tim
     for (unsigned char i = 0; i < n; ++i)
     {
         network::Address addr(std::array<unsigned char, 4>{ { static_cast<unsigned char>(i + 1), 0, 0, 0 } }, (i + 1) * 100);
-        std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
         membershipProtocols.push_back(std::make_unique<membership_protocol::MembershipProtocol>(addr, logger, membership_protocol::Config(1), messageDispatcher, failureDetectorFactory, goossipProtocolFactory, threadPolicy));
     }
 
@@ -142,7 +143,7 @@ TEST(MembershipProtocolTests, Consructor)
     auto logger = std::make_shared<utils::Log>();
     std::unique_ptr<failure_detector::IFailureDetectorFactory> failureDetectorFactory = std::make_unique<FailureDetectorFactory>();
     std::unique_ptr<gossip_protocol::IGossipProtocolFactory> goossipProtocolFactory = std::make_unique<GossipProtocolFactory>();
-    std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
+    std::shared_ptr<utils::MessageDispatcher> messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
 
     auto threadPolicy = std::make_shared<utils::ThreadPolicy>();
 
@@ -176,10 +177,10 @@ void test_n_nodes_one_failed(int n, const std::chrono::duration<Rep, Period>& ti
     for (unsigned char i = 0; i < n; ++i)
     {
         network::Address addr(std::array<unsigned char, 4>{ { static_cast<unsigned char>(i + 1), 0, 0, 0 } }, (i + 1) * 100);
-        std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher;
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
         if (i < n - 1)
         {
-            messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
+            messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
         }
         else
         {
@@ -243,10 +244,10 @@ void test_broken_link(int n, const std::chrono::duration<Rep, Period>& timeout)
     for (unsigned char i = 0; i < n; ++i)
     {
         network::Address addr(std::array<unsigned char, 4>{ { static_cast<unsigned char>(i + 1), 0, 0, 0 } }, (i + 1) * 100);
-        std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher;
+        std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
         if (i < n - 1)
         {
-            messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
+            messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
         }
         else
         {

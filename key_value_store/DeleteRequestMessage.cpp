@@ -12,7 +12,7 @@ DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress
 {
 }
 
-gen::key_value_store::Message DeleteRequestMessage::serializeToProtobuf() const
+gen::Message DeleteRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 

@@ -12,7 +12,7 @@ CreateResponseMessage::CreateResponseMessage(const network::Address& sourceAddre
 {
 }
 
-gen::key_value_store::Message CreateResponseMessage::serializeToProtobuf() const
+gen::Message CreateResponseMessage::serializeToProtobuf() const
 {
     auto message = ResponseMessage::serializeToProtobuf();
 

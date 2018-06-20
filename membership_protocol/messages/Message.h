@@ -26,18 +26,17 @@ public:
     virtual ~Message(){};
 
     MsgTypes getMessageType() const;
-    virtual std::string getMessageTypeDescription() const;
-
-    static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage);
     virtual std::string toString() const;
-    virtual network::Message serialize() const;
 
 protected:
     Message(MsgTypes messageType, const network::Address& srcAddress, const network::Address& destAddress);
     Message(MsgTypes messageType, const network::Address& srcAddress, const network::Address& destAddress, const std::string& id);
-    virtual gen::membership_protocol::Message serializeToProtobuf() const;
     virtual gen::membership_protocol::MessageType getProtobufMessageType() const = 0;
-    static std::string getMsgTypeStr(MsgTypes msgType);
+
+    static gen::membership_protocol::Message* getMembershipProtocolMessage(gen::Message& message);
+    static const gen::membership_protocol::Message& getMembershipProtocolMessage(const gen::Message& message);
+
+    virtual gen::Message serializeToProtobuf() const;
 
 private:
     MsgTypes messageType;

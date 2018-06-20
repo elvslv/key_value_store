@@ -14,7 +14,7 @@
     {
     }
 
-    gen::membership_protocol::Message GossipMessage::serializeToProtobuf() const
+    gen::Message GossipMessage::serializeToProtobuf() const
     {
         auto message = Message::serializeToProtobuf();
 

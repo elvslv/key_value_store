@@ -5,13 +5,13 @@
 
 namespace network
 {
-    class Network
-    {
-    public:
-        Network(const Address& addr);
+class Network
+{
+public:
+    Network(const Address& addr);
 
-        void send(const Address& destAddr, const Message& message) const;
-        Message receive() const;
+    void send(const Address& destAddr, const Message& message) const;
+    Message receive() const;
 
     private:
         const Address address;

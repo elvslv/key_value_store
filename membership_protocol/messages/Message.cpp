@@ -31,137 +31,41 @@ Message::MsgTypes Message::getMessageType() const
     return messageType;
 }
 
-std::string Message::getMessageTypeDescription() const
-{
-    switch (messageType)
-    {
-    case JOINREQ:
-        return "JOINREQ";
-
-    case JOINREP:
-        return "JOINREP";
-
-    case PING:
-        return "PING";
-
-    case ACK:
-        return "ACK";
-
-    case PING_REQ:
-        return "PING_REQ";
-
-    default:
-        throw utils::NotImplementedException();
-    }
-}
-
-std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMessage)
-{
-    gen::membership_protocol::Message message;
-    message.ParseFromArray(networkMessage.content.get(), networkMessage.size);
-
-    auto srcAddress = network::Address(message.sourceaddress());
-    auto destAddress = network::Address(message.destinationaddress());
-
-    switch (message.messagetype())
-    {
-    case gen::membership_protocol::JOINREQ:
-    {
-        return std::make_unique<JoinReqMessage>(srcAddress, destAddress, message.id());
-    }
-
-    case gen::membership_protocol::JOINREP:
-    {
-        auto gossips = MessageWithGossipsBase::parseGossips(message);
-        return std::make_unique<JoinRepMessage>(srcAddress, destAddress, gossips, message.id());
-    }
-
-    case gen::membership_protocol::PING:
-    {
-        auto gossips = MessageWithGossipsBase::parseGossips(message);
-        return std::make_unique<PingMessage>(srcAddress, destAddress, gossips, message.id());
-    }
-
-    case gen::membership_protocol::ACK:
-    {
-        if (!message.has_ackfields())
-        {
-            throw std::logic_error("AckFields are expected");
-        }
-
-        auto ackFields = message.ackfields();
-        auto gossips = MessageWithGossipsBase::parseGossips(message);
-        return std::make_unique<AckMessage>(srcAddress, destAddress, gossips, message.id(), ackFields.originalid());
-    }
-
-    case gen::membership_protocol::PING_REQ:
-    {
-        if (!message.has_pingreqfields())
-        {
-            throw std::logic_error("PingReq fields are expected");
-        }
-
-        auto pingReqFields = message.pingreqfields();
-        auto gossips = MessageWithGossipsBase::parseGossips(message);
-        return std::make_unique<PingReqMessage>(srcAddress, destAddress, message.id(), gossips, pingReqFields.targetaddress());
-    }
-    }
-
-    throw std::logic_error("not impelemnted");
-}
-
-network::Message Message::serialize() const
-{
-    gen::membership_protocol::Message message = serializeToProtobuf();
-
-    unsigned int size = message.ByteSize();
-    char* data = new char[size];
-    message.SerializeToArray(data, size);
-
-    return network::Message(data, size);
-}
-
-gen::membership_protocol::Message Message::serializeToProtobuf() const
-{
-    auto srcAddress = sourceAddress.serialize();
-    auto destAddress = destinationAddress.serialize();
-
-    gen::membership_protocol::Message message;
-    message.set_messagetype(getProtobufMessageType());
-    message.set_allocated_sourceaddress(srcAddress.release());
-    message.set_allocated_destinationaddress(destAddress.release());
-    message.set_id(id);
-
-    return message;
-}
-
 std::string Message::toString() const
 {
     std::stringstream ss;
-    ss << getMsgTypeStr(messageType) << " from " << sourceAddress.toString() << " to " << destinationAddress.toString() << "id " << id << std::endl;
+    ss << getMsgTypeStr() << " from " << sourceAddress.toString() << " to " << destinationAddress.toString() << "id " << id << std::endl;
     return ss.str();
 }
 
-std::string Message::getMsgTypeStr(MsgTypes msgType)
+gen::membership_protocol::Message* Message::getMembershipProtocolMessage(gen::Message& message)
 {
-    switch (msgType)
+    if (message.has_membershipprotocolmessage())
     {
-    case JOINREQ:
-        return "JOINREQ";
-
-    case JOINREP:
-        return "JOINREP";
-
-    case PING:
-        return "PING";
-
-    case ACK:
-        return "ACK";
-
-    case PING_REQ:
-        return "PING_REQ";
+        return message.mutable_membershipprotocolmessage();
     }
 
-    throw std::logic_error("not impelemnted");
+    throw std::logic_error("membershipt protocol message is not set");
+}
+
+const gen::membership_protocol::Message& Message::getMembershipProtocolMessage(const gen::Message& message)
+{
+    if (message.has_membershipprotocolmessage())
+    {
+        return message.membershipprotocolmessage();
+    }
+
+    throw std::logic_error("membershipt protocol message is not set");
+}
+
+gen::Message Message::serializeToProtobuf() const
+{
+    auto message = utils::Message::serializeToProtobuf();
+
+    auto membershipProtocolMessage = std::make_unique<gen::membership_protocol::Message>();
+    membershipProtocolMessage->set_messagetype(getProtobufMessageType());
+    message.set_allocated_membershipprotocolmessage(membershipProtocolMessage.release());
+
+    return message;
 }
 }

@@ -9,73 +9,25 @@
 #include "Log.h"
 #include "network/Message.h"
 #include "network/Network.h"
-#include "utils/MessageDispatcher.h"
+#include "utils/Message.h"
 #include "utils/Runnable.h"
 #include "utils/Utils.h"
 
 namespace utils
 {
-template <typename MessageT>
 class MessageDispatcher : public Runnable
 {
 public:
-    typedef std::function<void(std::unique_ptr<MessageT>)> Callback;
+    typedef std::function<void(std::unique_ptr<Message>)> Callback;
 
-    MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger)
-        : network(address)
-        , logger(logger)
-        , callbacks()
-    {
-    }
+    MessageDispatcher(const network::Address& address, const std::shared_ptr<Log>& logger);
 
-    virtual std::string listen(typename MessageT::MsgTypes msgType, const Callback& callback)
-    {
-        std::lock_guard<std::mutex> lock(mutex);
+    virtual ~MessageDispatcher(){}
+    virtual std::string listen(const std::string& msgType, const Callback& callback);
+    virtual void stopListening(const std::string& token);
 
-        if (callbacks.find(msgType) != callbacks.end())
-        {
-            std::stringstream ss;
-            ss << "Listener to message " << msgType << " already exists";
-            throw std::logic_error(ss.str());
-        }
-
-        std::string token = Utils::getRandomString(TOKEN_LENGTH);
-        callbacks[msgType] = callback;
-        tokens[msgType] = token;
-
-        return token;
-    }
-
-    virtual void stopListening(typename MessageT::MsgTypes msgType, const std::string& token)
-    {
-        std::lock_guard<std::mutex> lock(mutex);
-
-        auto it = callbacks.find(msgType);
-        if (it == callbacks.end())
-        {
-            std::stringstream ss;
-            ss << "Listener to message " << msgType << " not found";
-            throw std::logic_error(ss.str());
-        }
-
-        if (tokens[msgType] != token)
-        {
-            std::stringstream ss;
-            ss << "Given listener " << token << " of message " << msgType << " doesn't match registered listener " << tokens[msgType];
-            throw std::logic_error(ss.str());
-        }
-
-        callbacks.erase(it);
-        tokens.erase(msgType);
-    }
-
-    virtual void sendMessage(const std::unique_ptr<MessageT>& message, const network::Address& destAddress)
-    {
-        auto msg = message->serialize();
-        logger->log("Sending message to ", destAddress.toString());
-
-        network.send(destAddress, msg);
-    }
+    virtual void sendMessage(std::unique_ptr<Message> message, const network::Address& destAddress);
+    virtual void run();
 
 private:
     static const int TOKEN_LENGTH = 10;
@@ -84,47 +36,9 @@ private:
     network::Network network;
     std::shared_ptr<Log> logger;
     std::mutex mutex;
-    std::unordered_map<typename MessageT::MsgTypes, Callback> callbacks;
-    std::unordered_map<typename MessageT::MsgTypes, std::string> tokens;
-
-    virtual void run()
-    {
-        logger->log("<MessageDispatcher::run> -- start");
-
-        while (isRunning)
-        {
-            auto message = network.receive();
-            if (message.empty())
-            {
-                using namespace std::chrono_literals;
-                std::this_thread::sleep_for(MessageDispatcher::SLEEP_DELAY);
-                continue;
-            }
-
-            auto parsedMessage = MessageT::parseMessage(message);
-            logger->log("<MessageDispatcher> -- Received msg ", parsedMessage->getMessageTypeDescription(), " from ", parsedMessage->getSourceAddress().toString(), " to ", parsedMessage->getDestinationAddress(), " id ", parsedMessage->getId());
-
-            Callback callback;
-            {
-                std::lock_guard<std::mutex> lock(mutex);
-
-                auto it = callbacks.find(parsedMessage->getMessageType());
-                if (it == callbacks.end())
-                {
-                    logger->log("<MessageDispatcher> -- listeners of ", parsedMessage->getMessageTypeDescription(), " not found. Discarding this message");
-                    continue;
-                }
-
-                callback = it->second;
-            }
-
-            callback(std::move(parsedMessage));
-        }
-
-        logger->log("<MessageDispatcher::run> -- stop");
-    }
+    std::unordered_map<std::string, Callback> callbacks;
+    std::unordered_map<std::string, std::string> typeToToken;
+    std::unordered_map<std::string, std::string> tokenToType;
 };
 
-template <typename MessageT>
-constexpr std::chrono::duration<long long, std::milli> MessageDispatcher<MessageT>::SLEEP_DELAY;
 }

@@ -26,7 +26,7 @@ public:
         , logger(std::make_shared<utils::Log>())
     {
         network::Address addr("1.0.0.0:100");
-        auto messageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(addr, logger);
+        auto messageDispatcher = std::make_shared<utils::MessageDispatcher>(addr, logger);
         gossipProtocol = std::make_unique<gossip_protocol::GossipProtocol>(addr, logger, &membershipProtocol, threadPolicy);
     }
 

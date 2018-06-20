@@ -24,11 +24,11 @@ public:
     network::Address producerAddress;
     network::Address consumerAddress;
     std::shared_ptr<utils::Log> logger;
-    std::queue<std::unique_ptr<membership_protocol::Message>> queue;
+    std::queue<std::unique_ptr<utils::Message>> queue;
 
     void producer()
     {
-        utils::MessageDispatcher<membership_protocol::Message> messageDispatcher(producerAddress, logger);
+        utils::MessageDispatcher messageDispatcher(producerAddress, logger);
         messageDispatcher.start();
 
         int i = 0;
@@ -46,7 +46,7 @@ public:
                 message = std::make_unique<membership_protocol::AckMessage>(producerAddress, consumerAddress, std::vector<membership_protocol::Gossip>(), "str");
             }
 
-            messageDispatcher.sendMessage(message, consumerAddress);
+            messageDispatcher.sendMessage(std::move(message), consumerAddress);
 
             int sleepTimeout = std::rand() % 50;
             std::this_thread::sleep_for(std::chrono::milliseconds(sleepTimeout));
@@ -57,12 +57,12 @@ public:
 
     void consumer()
     {
-        utils::MessageDispatcher<membership_protocol::Message> messageDispatcher(consumerAddress, logger);
+        utils::MessageDispatcher messageDispatcher(consumerAddress, logger);
         std::mutex mutex;
         std::condition_variable cv;
         volatile int receivedCnt = 0;
 
-        auto token = messageDispatcher.listen(membership_protocol::Message::PING, [this, &mutex, &receivedCnt, &cv](std::unique_ptr<membership_protocol::Message> message) {
+        auto token = messageDispatcher.listen(utils::Message::getTypeName<membership_protocol::PingMessage>(), [this, &mutex, &receivedCnt, &cv](std::unique_ptr<utils::Message> message) {
             queue.push(std::move(message));
 
             std::lock_guard<std::mutex> lock(mutex);
@@ -77,25 +77,24 @@ public:
             cv.wait(lock, [this, &receivedCnt] { return receivedCnt == totalCnt; });
         }
 
-        messageDispatcher.stopListening(membership_protocol::Message::PING, token);
+        messageDispatcher.stopListening(token);
         messageDispatcher.stop();
     }
 };
 
 TEST_F(MessageDispatcherTests, Constructor)
 {
-    utils::MessageDispatcher<membership_protocol::Message> messageDispatcher(producerAddress, logger);
+    utils::MessageDispatcher messageDispatcher(producerAddress, logger);
 }
 
 TEST_F(MessageDispatcherTests, GetToken)
 {
-    utils::MessageDispatcher<membership_protocol::Message> messageDispatcher(producerAddress, logger);
+    utils::MessageDispatcher messageDispatcher(producerAddress, logger);
 
-    auto token = messageDispatcher.listen(membership_protocol::Message::ACK, [](std::unique_ptr<membership_protocol::Message> message) {});
+    auto token = messageDispatcher.listen(utils::Message::getTypeName<membership_protocol::AckMessage>(), [](std::unique_ptr<utils::Message> message) {});
 
-    ASSERT_THROW(messageDispatcher.stopListening(membership_protocol::Message::PING, token), std::logic_error);
-    messageDispatcher.stopListening(membership_protocol::Message::ACK, token);
-    ASSERT_THROW(messageDispatcher.stopListening(membership_protocol::Message::ACK, token), std::logic_error);
+    messageDispatcher.stopListening(token);
+    ASSERT_THROW(messageDispatcher.stopListening(token), std::logic_error);
 }
 
 TEST_F(MessageDispatcherTests, Listen)

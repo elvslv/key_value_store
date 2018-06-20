@@ -6,6 +6,7 @@
 #include "key_value_store/ReadResponseMessage.h"
 #include "key_value_store/UpdateRequestMessage.h"
 #include "key_value_store/UpdateResponseMessage.h"
+#include "utils/Utils.h"
 
 #include "gtest/gtest.h"
 
@@ -22,7 +23,8 @@ public:
         ASSERT_EQ(message.getKey(), key);
 
         auto networkMessage = message.serialize();
-        auto parsedMessage = key_value_store::Message::parseMessage(networkMessage);
+        auto parsedBaseMessage = key_value_store::Message::parseMessage(networkMessage);
+        auto parsedMessage = utils::Utils::downcast<T, utils::Message>(std::move(parsedBaseMessage));
         ASSERT_EQ(parsedMessage->getMessageType(), expectedType);
 
         parsedCastedMessage.reset(dynamic_cast<T*>(parsedMessage.release()));
@@ -41,7 +43,8 @@ public:
         ASSERT_EQ(message.getResponseCode(), responseCode);
 
         auto networkMessage = message.serialize();
-        auto parsedMessage = key_value_store::Message::parseMessage(networkMessage);
+        auto parsedBaseMessage = key_value_store::Message::parseMessage(networkMessage);
+        auto parsedMessage = utils::Utils::downcast<T, utils::Message>(std::move(parsedBaseMessage));
         ASSERT_EQ(parsedMessage->getMessageType(), expectedType);
 
         parsedCastedMessage.reset(dynamic_cast<T*>(parsedMessage.release()));

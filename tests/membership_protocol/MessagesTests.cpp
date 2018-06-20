@@ -17,7 +17,8 @@ TEST(MessagesTests, PingMessage)
     auto id = pingMessage->getId();
 
     auto networkMessage = pingMessage->serialize();
-    auto deserializedMessage = membership_protocol::Message::parseMessage(networkMessage);
+    auto deserializedBaseMessage = utils::Message::parseMessage(networkMessage);
+    auto deserializedMessage = std::unique_ptr<membership_protocol::Message>(dynamic_cast<membership_protocol::Message*>(deserializedBaseMessage.release()));
 
     ASSERT_EQ(deserializedMessage->getMessageType(), membership_protocol::Message::PING);
     ASSERT_EQ(deserializedMessage->getSourceAddress(), from);

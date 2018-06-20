@@ -1,0 +1,17 @@
+syntax = "proto3";
+package gen;
+
+import "Address.proto";
+import "KeyValueStoreMessage.proto";
+import "MembershipProtocolMessage.proto";
+
+message Message {
+    Address sourceAddress = 1;
+    Address destinationAddress = 2;
+    string id = 3;
+
+    oneof messageInternal {
+        gen.key_value_store.Message keyValueStoreMessage = 4;
+        gen.membership_protocol.Message membershipProtocolMessage = 5;
+    }
+}

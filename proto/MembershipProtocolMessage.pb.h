@@ -494,9 +494,9 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   static const Message& default_instance();
 
   enum CustomFieldsCase {
-    kPingReqFields = 5,
-    kAckFields = 6,
-    kPingFields = 7,
+    kPingReqFields = 2,
+    kAckFields = 3,
+    kPingFields = 4,
     CUSTOMFIELDS_NOT_SET = 0,
   };
 
@@ -549,10 +549,10 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // repeated .gen.membership_protocol.Gossip gossips = 8;
+  // repeated .gen.membership_protocol.Gossip gossips = 5;
   int gossips_size() const;
   void clear_gossips();
-  static const int kGossipsFieldNumber = 8;
+  static const int kGossipsFieldNumber = 5;
   const ::gen::membership_protocol::Gossip& gossips(int index) const;
   ::gen::membership_protocol::Gossip* mutable_gossips(int index);
   ::gen::membership_protocol::Gossip* add_gossips();
@@ -561,66 +561,34 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   const ::google::protobuf::RepeatedPtrField< ::gen::membership_protocol::Gossip >&
       gossips() const;
 
-  // string id = 4;
-  void clear_id();
-  static const int kIdFieldNumber = 4;
-  const ::std::string& id() const;
-  void set_id(const ::std::string& value);
-  #if LANG_CXX11
-  void set_id(::std::string&& value);
-  #endif
-  void set_id(const char* value);
-  void set_id(const char* value, size_t size);
-  ::std::string* mutable_id();
-  ::std::string* release_id();
-  void set_allocated_id(::std::string* id);
-
-  // .gen.Address sourceAddress = 2;
-  bool has_sourceaddress() const;
-  void clear_sourceaddress();
-  static const int kSourceAddressFieldNumber = 2;
-  const ::gen::Address& sourceaddress() const;
-  ::gen::Address* mutable_sourceaddress();
-  ::gen::Address* release_sourceaddress();
-  void set_allocated_sourceaddress(::gen::Address* sourceaddress);
-
-  // .gen.Address destinationAddress = 3;
-  bool has_destinationaddress() const;
-  void clear_destinationaddress();
-  static const int kDestinationAddressFieldNumber = 3;
-  const ::gen::Address& destinationaddress() const;
-  ::gen::Address* mutable_destinationaddress();
-  ::gen::Address* release_destinationaddress();
-  void set_allocated_destinationaddress(::gen::Address* destinationaddress);
-
   // .gen.membership_protocol.MessageType messageType = 1;
   void clear_messagetype();
   static const int kMessageTypeFieldNumber = 1;
   ::gen::membership_protocol::MessageType messagetype() const;
   void set_messagetype(::gen::membership_protocol::MessageType value);
 
-  // .gen.membership_protocol.PingReqFields pingReqFields = 5;
+  // .gen.membership_protocol.PingReqFields pingReqFields = 2;
   bool has_pingreqfields() const;
   void clear_pingreqfields();
-  static const int kPingReqFieldsFieldNumber = 5;
+  static const int kPingReqFieldsFieldNumber = 2;
   const ::gen::membership_protocol::PingReqFields& pingreqfields() const;
   ::gen::membership_protocol::PingReqFields* mutable_pingreqfields();
   ::gen::membership_protocol::PingReqFields* release_pingreqfields();
   void set_allocated_pingreqfields(::gen::membership_protocol::PingReqFields* pingreqfields);
 
-  // .gen.membership_protocol.AckFields ackFields = 6;
+  // .gen.membership_protocol.AckFields ackFields = 3;
   bool has_ackfields() const;
   void clear_ackfields();
-  static const int kAckFieldsFieldNumber = 6;
+  static const int kAckFieldsFieldNumber = 3;
   const ::gen::membership_protocol::AckFields& ackfields() const;
   ::gen::membership_protocol::AckFields* mutable_ackfields();
   ::gen::membership_protocol::AckFields* release_ackfields();
   void set_allocated_ackfields(::gen::membership_protocol::AckFields* ackfields);
 
-  // .gen.membership_protocol.PingFields pingFields = 7;
+  // .gen.membership_protocol.PingFields pingFields = 4;
   bool has_pingfields() const;
   void clear_pingfields();
-  static const int kPingFieldsFieldNumber = 7;
+  static const int kPingFieldsFieldNumber = 4;
   const ::gen::membership_protocol::PingFields& pingfields() const;
   ::gen::membership_protocol::PingFields* mutable_pingfields();
   ::gen::membership_protocol::PingFields* release_pingfields();
@@ -639,9 +607,6 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::gen::membership_protocol::Gossip > gossips_;
-  ::google::protobuf::internal::ArenaStringPtr id_;
-  ::gen::Address* sourceaddress_;
-  ::gen::Address* destinationaddress_;
   int messagetype_;
   union CustomFieldsUnion {
     CustomFieldsUnion() {}
@@ -929,138 +894,7 @@ inline void Message::set_messagetype(::gen::membership_protocol::MessageType val
   // @@protoc_insertion_point(field_set:gen.membership_protocol.Message.messageType)
 }
 
-// .gen.Address sourceAddress = 2;
-inline bool Message::has_sourceaddress() const {
-  return this != internal_default_instance() && sourceaddress_ != NULL;
-}
-inline void Message::clear_sourceaddress() {
-  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) delete sourceaddress_;
-  sourceaddress_ = NULL;
-}
-inline const ::gen::Address& Message::sourceaddress() const {
-  // @@protoc_insertion_point(field_get:gen.membership_protocol.Message.sourceAddress)
-  return sourceaddress_ != NULL ? *sourceaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-inline ::gen::Address* Message::mutable_sourceaddress() {
-  
-  if (sourceaddress_ == NULL) {
-    sourceaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.membership_protocol.Message.sourceAddress)
-  return sourceaddress_;
-}
-inline ::gen::Address* Message::release_sourceaddress() {
-  // @@protoc_insertion_point(field_release:gen.membership_protocol.Message.sourceAddress)
-  
-  ::gen::Address* temp = sourceaddress_;
-  sourceaddress_ = NULL;
-  return temp;
-}
-inline void Message::set_allocated_sourceaddress(::gen::Address* sourceaddress) {
-  delete sourceaddress_;
-  sourceaddress_ = sourceaddress;
-  if (sourceaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.membership_protocol.Message.sourceAddress)
-}
-
-// .gen.Address destinationAddress = 3;
-inline bool Message::has_destinationaddress() const {
-  return this != internal_default_instance() && destinationaddress_ != NULL;
-}
-inline void Message::clear_destinationaddress() {
-  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) delete destinationaddress_;
-  destinationaddress_ = NULL;
-}
-inline const ::gen::Address& Message::destinationaddress() const {
-  // @@protoc_insertion_point(field_get:gen.membership_protocol.Message.destinationAddress)
-  return destinationaddress_ != NULL ? *destinationaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-inline ::gen::Address* Message::mutable_destinationaddress() {
-  
-  if (destinationaddress_ == NULL) {
-    destinationaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.membership_protocol.Message.destinationAddress)
-  return destinationaddress_;
-}
-inline ::gen::Address* Message::release_destinationaddress() {
-  // @@protoc_insertion_point(field_release:gen.membership_protocol.Message.destinationAddress)
-  
-  ::gen::Address* temp = destinationaddress_;
-  destinationaddress_ = NULL;
-  return temp;
-}
-inline void Message::set_allocated_destinationaddress(::gen::Address* destinationaddress) {
-  delete destinationaddress_;
-  destinationaddress_ = destinationaddress;
-  if (destinationaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.membership_protocol.Message.destinationAddress)
-}
-
-// string id = 4;
-inline void Message::clear_id() {
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& Message::id() const {
-  // @@protoc_insertion_point(field_get:gen.membership_protocol.Message.id)
-  return id_.GetNoArena();
-}
-inline void Message::set_id(const ::std::string& value) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.membership_protocol.Message.id)
-}
-#if LANG_CXX11
-inline void Message::set_id(::std::string&& value) {
-  
-  id_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.membership_protocol.Message.id)
-}
-#endif
-inline void Message::set_id(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.membership_protocol.Message.id)
-}
-inline void Message::set_id(const char* value, size_t size) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.membership_protocol.Message.id)
-}
-inline ::std::string* Message::mutable_id() {
-  
-  // @@protoc_insertion_point(field_mutable:gen.membership_protocol.Message.id)
-  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Message::release_id() {
-  // @@protoc_insertion_point(field_release:gen.membership_protocol.Message.id)
-  
-  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Message::set_allocated_id(::std::string* id) {
-  if (id != NULL) {
-    
-  } else {
-    
-  }
-  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
-  // @@protoc_insertion_point(field_set_allocated:gen.membership_protocol.Message.id)
-}
-
-// .gen.membership_protocol.PingReqFields pingReqFields = 5;
+// .gen.membership_protocol.PingReqFields pingReqFields = 2;
 inline bool Message::has_pingreqfields() const {
   return customFields_case() == kPingReqFields;
 }
@@ -1108,7 +942,7 @@ inline void Message::set_allocated_pingreqfields(::gen::membership_protocol::Pin
   // @@protoc_insertion_point(field_set_allocated:gen.membership_protocol.Message.pingReqFields)
 }
 
-// .gen.membership_protocol.AckFields ackFields = 6;
+// .gen.membership_protocol.AckFields ackFields = 3;
 inline bool Message::has_ackfields() const {
   return customFields_case() == kAckFields;
 }
@@ -1156,7 +990,7 @@ inline void Message::set_allocated_ackfields(::gen::membership_protocol::AckFiel
   // @@protoc_insertion_point(field_set_allocated:gen.membership_protocol.Message.ackFields)
 }
 
-// .gen.membership_protocol.PingFields pingFields = 7;
+// .gen.membership_protocol.PingFields pingFields = 4;
 inline bool Message::has_pingfields() const {
   return customFields_case() == kPingFields;
 }
@@ -1204,7 +1038,7 @@ inline void Message::set_allocated_pingfields(::gen::membership_protocol::PingFi
   // @@protoc_insertion_point(field_set_allocated:gen.membership_protocol.Message.pingFields)
 }
 
-// repeated .gen.membership_protocol.Gossip gossips = 8;
+// repeated .gen.membership_protocol.Gossip gossips = 5;
 inline int Message::gossips_size() const {
   return gossips_.size();
 }

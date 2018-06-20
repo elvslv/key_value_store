@@ -19,13 +19,14 @@ gen::membership_protocol::MessageType AckMessage::getProtobufMessageType() const
     return gen::membership_protocol::ACK;
 }
 
-gen::membership_protocol::Message AckMessage::serializeToProtobuf() const
+gen::Message AckMessage::serializeToProtobuf() const
 {
     auto message = MessageWithGossipsBase::serializeToProtobuf();
+    auto membershipProtocolMessage = getMembershipProtocolMessage(message);
 
     auto ackFields = std::make_unique<gen::membership_protocol::AckFields>();
     ackFields->set_originalid(pingMessageId);
-    message.set_allocated_ackfields(ackFields.release());
+    membershipProtocolMessage->set_allocated_ackfields(ackFields.release());
 
     return message;
 }

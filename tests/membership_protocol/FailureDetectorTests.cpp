@@ -5,6 +5,7 @@
 
 #include "membership_protocol/failure_detector/FailureDetector.h"
 #include "membership_protocol/messages/AckMessage.h"
+#include "membership_protocol/messages/PingMessage.h"
 
 #include "../mocks/Mocks.h"
 
@@ -19,7 +20,7 @@ class FailureDetectorTests : public testing::Test, public failure_detector::IFai
 public:
     network::Address address;
     std::shared_ptr<utils::Log> logger;
-    std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher;
+    std::shared_ptr<utils::MessageDispatcher> messageDispatcher;
 
     mock::MockIMembershipProtocol membershipProtocol;
     mock::MockIGossipProtocol gossipProtocol;
@@ -31,7 +32,7 @@ public:
     FailureDetectorTests()
         : address("1.0.0.0:100")
         , logger(std::make_shared<utils::Log>())
-        , messageDispatcher(std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(address, logger))
+        , messageDispatcher(std::make_shared<utils::MessageDispatcher>(address, logger))
         , membershipProtocol()
         , gossipProtocol()
         , threadPolicy(new testing::NiceMock<mock::MockIThreadPolicy>())
@@ -107,8 +108,8 @@ TEST_F(FailureDetectorTests, AddNodeAck)
     EXPECT_CALL(gossipProtocol, getGossipsForAddress(_)).Times(AtLeast(1));
 
     network::Address anotherAddr("2.0.0.0:200");
-    auto anotherMessageDispatcher = std::make_shared<utils::MessageDispatcher<membership_protocol::Message>>(anotherAddr, logger);
-    anotherMessageDispatcher->listen(membership_protocol::Message::PING, [anotherMessageDispatcher, anotherAddr, this](std::unique_ptr<membership_protocol::Message> message) {
+    auto anotherMessageDispatcher = std::make_shared<utils::MessageDispatcher>(anotherAddr, logger);
+    anotherMessageDispatcher->listen(utils::Message::getTypeName<membership_protocol::PingMessage>(), [anotherMessageDispatcher, anotherAddr, this](std::unique_ptr<utils::Message> message) {
         anotherMessageDispatcher->sendMessage(std::make_unique<membership_protocol::AckMessage>(anotherAddr, message->getSourceAddress(), std::vector<membership_protocol::Gossip>(), message->getId()), message->getSourceAddress());
     });
 

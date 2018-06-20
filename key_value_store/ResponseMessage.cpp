@@ -50,45 +50,28 @@ gen::key_value_store::ResponseMessageType ResponseMessage::getProtobufMessageTyp
     throw utils::NotImplementedException();
 }
 
-std::string ResponseMessage::getMsgTypeStr() const
+gen::key_value_store::ResponseMessage* ResponseMessage::getResponseMessage(gen::Message& message)
 {
-    switch (getMessageType())
+    auto kvStoreMessage = getKeyValueStoreMessage(message);
+    if (kvStoreMessage->has_responsemessage())
     {
-    case CREATE_RESPONSE:
-        return "CREATE_RESPONSE";
-
-    case UPDATE_RESPONSE:
-        return "UPDATE_RESPONSE";
-
-    case READ_RESPONSE:
-        return "READ_RESPONSE";
-
-    case DELETE_RESPONSE:
-        return "DELETE_RESPONSE";
-    }
-
-    throw utils::NotImplementedException();
-}
-
-gen::key_value_store::ResponseMessage* ResponseMessage::getResponseMessage(gen::key_value_store::Message& message)
-{
-    if (message.has_responsemessage())
-    {
-        return message.mutable_responsemessage();
+        return kvStoreMessage->mutable_responsemessage();
     }
 
     throw std::logic_error("Response message is not set");
 }
 
-gen::key_value_store::Message ResponseMessage::serializeToProtobuf() const
+gen::Message ResponseMessage::serializeToProtobuf() const
 {
     auto message = Message::serializeToProtobuf();
+    auto kvStoreMessage = getKeyValueStoreMessage(message);
+
     auto responseMessage = std::make_unique<gen::key_value_store::ResponseMessage>();
     responseMessage->set_messagetype(getProtobufMessageType());
     responseMessage->set_originalmessageid(originalMessageId);
     responseMessage->set_responsecode(responseCode);
 
-    message.set_allocated_responsemessage(responseMessage.release());
+    kvStoreMessage->set_allocated_responsemessage(responseMessage.release());
     return message;
 }
 }

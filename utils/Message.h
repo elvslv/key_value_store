@@ -2,6 +2,7 @@
 
 #include "network/Address.h"
 #include "network/Message.h"
+#include "proto/WrapperMessage.pb.h"
 
 #include <string>
 
@@ -26,11 +27,21 @@ public:
     std::string getId() const;
 
     virtual std::string toString() const = 0;
-    virtual network::Message serialize() const = 0;
+    network::Message serialize() const;
 
-    virtual std::string getMessageTypeDescription() const = 0;
+    std::string getMsgTypeStr() const;
+
+    template <typename MessageT>
+    static std::string getTypeName()
+    {
+        return typeid(MessageT).name();
+    }
+
+    static std::unique_ptr<Message> parseMessage(const network::Message& networkMessage);
 
 protected:
+    virtual gen::Message serializeToProtobuf() const;
+
     network::Address sourceAddress;
     network::Address destinationAddress;
     std::string id;

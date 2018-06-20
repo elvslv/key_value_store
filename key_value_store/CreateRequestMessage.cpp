@@ -19,7 +19,7 @@ std::string CreateRequestMessage::getValue() const
     return value;
 }
 
-gen::key_value_store::Message CreateRequestMessage::serializeToProtobuf() const
+gen::Message CreateRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 

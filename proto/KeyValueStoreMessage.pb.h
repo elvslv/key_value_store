@@ -1104,8 +1104,8 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   static const Message& default_instance();
 
   enum MessageInternalCase {
-    kRequestMessage = 4,
-    kResponseMessage = 5,
+    kRequestMessage = 1,
+    kResponseMessage = 2,
     MESSAGEINTERNAL_NOT_SET = 0,
   };
 
@@ -1158,51 +1158,19 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // string id = 3;
-  void clear_id();
-  static const int kIdFieldNumber = 3;
-  const ::std::string& id() const;
-  void set_id(const ::std::string& value);
-  #if LANG_CXX11
-  void set_id(::std::string&& value);
-  #endif
-  void set_id(const char* value);
-  void set_id(const char* value, size_t size);
-  ::std::string* mutable_id();
-  ::std::string* release_id();
-  void set_allocated_id(::std::string* id);
-
-  // .gen.Address sourceAddress = 1;
-  bool has_sourceaddress() const;
-  void clear_sourceaddress();
-  static const int kSourceAddressFieldNumber = 1;
-  const ::gen::Address& sourceaddress() const;
-  ::gen::Address* mutable_sourceaddress();
-  ::gen::Address* release_sourceaddress();
-  void set_allocated_sourceaddress(::gen::Address* sourceaddress);
-
-  // .gen.Address destinationAddress = 2;
-  bool has_destinationaddress() const;
-  void clear_destinationaddress();
-  static const int kDestinationAddressFieldNumber = 2;
-  const ::gen::Address& destinationaddress() const;
-  ::gen::Address* mutable_destinationaddress();
-  ::gen::Address* release_destinationaddress();
-  void set_allocated_destinationaddress(::gen::Address* destinationaddress);
-
-  // .gen.key_value_store.RequestMessage requestMessage = 4;
+  // .gen.key_value_store.RequestMessage requestMessage = 1;
   bool has_requestmessage() const;
   void clear_requestmessage();
-  static const int kRequestMessageFieldNumber = 4;
+  static const int kRequestMessageFieldNumber = 1;
   const ::gen::key_value_store::RequestMessage& requestmessage() const;
   ::gen::key_value_store::RequestMessage* mutable_requestmessage();
   ::gen::key_value_store::RequestMessage* release_requestmessage();
   void set_allocated_requestmessage(::gen::key_value_store::RequestMessage* requestmessage);
 
-  // .gen.key_value_store.ResponseMessage responseMessage = 5;
+  // .gen.key_value_store.ResponseMessage responseMessage = 2;
   bool has_responsemessage() const;
   void clear_responsemessage();
-  static const int kResponseMessageFieldNumber = 5;
+  static const int kResponseMessageFieldNumber = 2;
   const ::gen::key_value_store::ResponseMessage& responsemessage() const;
   ::gen::key_value_store::ResponseMessage* mutable_responsemessage();
   ::gen::key_value_store::ResponseMessage* release_responsemessage();
@@ -1219,9 +1187,6 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   inline void clear_has_messageInternal();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr id_;
-  ::gen::Address* sourceaddress_;
-  ::gen::Address* destinationaddress_;
   union MessageInternalUnion {
     MessageInternalUnion() {}
     ::gen::key_value_store::RequestMessage* requestmessage_;
@@ -1989,138 +1954,7 @@ inline ResponseMessage::CustomFieldsCase ResponseMessage::customFields_case() co
 
 // Message
 
-// .gen.Address sourceAddress = 1;
-inline bool Message::has_sourceaddress() const {
-  return this != internal_default_instance() && sourceaddress_ != NULL;
-}
-inline void Message::clear_sourceaddress() {
-  if (GetArenaNoVirtual() == NULL && sourceaddress_ != NULL) delete sourceaddress_;
-  sourceaddress_ = NULL;
-}
-inline const ::gen::Address& Message::sourceaddress() const {
-  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.sourceAddress)
-  return sourceaddress_ != NULL ? *sourceaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-inline ::gen::Address* Message::mutable_sourceaddress() {
-  
-  if (sourceaddress_ == NULL) {
-    sourceaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.sourceAddress)
-  return sourceaddress_;
-}
-inline ::gen::Address* Message::release_sourceaddress() {
-  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.sourceAddress)
-  
-  ::gen::Address* temp = sourceaddress_;
-  sourceaddress_ = NULL;
-  return temp;
-}
-inline void Message::set_allocated_sourceaddress(::gen::Address* sourceaddress) {
-  delete sourceaddress_;
-  sourceaddress_ = sourceaddress;
-  if (sourceaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.sourceAddress)
-}
-
-// .gen.Address destinationAddress = 2;
-inline bool Message::has_destinationaddress() const {
-  return this != internal_default_instance() && destinationaddress_ != NULL;
-}
-inline void Message::clear_destinationaddress() {
-  if (GetArenaNoVirtual() == NULL && destinationaddress_ != NULL) delete destinationaddress_;
-  destinationaddress_ = NULL;
-}
-inline const ::gen::Address& Message::destinationaddress() const {
-  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.destinationAddress)
-  return destinationaddress_ != NULL ? *destinationaddress_
-                         : *::gen::Address::internal_default_instance();
-}
-inline ::gen::Address* Message::mutable_destinationaddress() {
-  
-  if (destinationaddress_ == NULL) {
-    destinationaddress_ = new ::gen::Address;
-  }
-  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.destinationAddress)
-  return destinationaddress_;
-}
-inline ::gen::Address* Message::release_destinationaddress() {
-  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.destinationAddress)
-  
-  ::gen::Address* temp = destinationaddress_;
-  destinationaddress_ = NULL;
-  return temp;
-}
-inline void Message::set_allocated_destinationaddress(::gen::Address* destinationaddress) {
-  delete destinationaddress_;
-  destinationaddress_ = destinationaddress;
-  if (destinationaddress) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.destinationAddress)
-}
-
-// string id = 3;
-inline void Message::clear_id() {
-  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& Message::id() const {
-  // @@protoc_insertion_point(field_get:gen.key_value_store.Message.id)
-  return id_.GetNoArena();
-}
-inline void Message::set_id(const ::std::string& value) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:gen.key_value_store.Message.id)
-}
-#if LANG_CXX11
-inline void Message::set_id(::std::string&& value) {
-  
-  id_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.Message.id)
-}
-#endif
-inline void Message::set_id(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:gen.key_value_store.Message.id)
-}
-inline void Message::set_id(const char* value, size_t size) {
-  
-  id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.Message.id)
-}
-inline ::std::string* Message::mutable_id() {
-  
-  // @@protoc_insertion_point(field_mutable:gen.key_value_store.Message.id)
-  return id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Message::release_id() {
-  // @@protoc_insertion_point(field_release:gen.key_value_store.Message.id)
-  
-  return id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Message::set_allocated_id(::std::string* id) {
-  if (id != NULL) {
-    
-  } else {
-    
-  }
-  id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), id);
-  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.id)
-}
-
-// .gen.key_value_store.RequestMessage requestMessage = 4;
+// .gen.key_value_store.RequestMessage requestMessage = 1;
 inline bool Message::has_requestmessage() const {
   return messageInternal_case() == kRequestMessage;
 }
@@ -2168,7 +2002,7 @@ inline void Message::set_allocated_requestmessage(::gen::key_value_store::Reques
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.Message.requestMessage)
 }
 
-// .gen.key_value_store.ResponseMessage responseMessage = 5;
+// .gen.key_value_store.ResponseMessage responseMessage = 2;
 inline bool Message::has_responsemessage() const {
   return messageInternal_case() == kResponseMessage;
 }

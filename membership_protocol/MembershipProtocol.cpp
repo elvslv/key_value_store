@@ -10,14 +10,14 @@
 
 namespace membership_protocol
 {
-MembershipProtocol::MembershipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger, const Config& config, std::shared_ptr<utils::MessageDispatcher<membership_protocol::Message>> messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
+MembershipProtocol::MembershipProtocol(const network::Address& addr, std::shared_ptr<utils::Log> logger, const Config& config, std::shared_ptr<utils::MessageDispatcher> messageDispatcher, const std::unique_ptr<failure_detector::IFailureDetectorFactory>& failureDetectorFactory, const std::unique_ptr<gossip_protocol::IGossipProtocolFactory>& gossipProtocolFactory, std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     : node(addr)
     , config(config)
     , messageDispatcher(messageDispatcher)
     , tokens()
     , logger(logger)
     , asyncQueue(std::bind(&MembershipProtocol::processMessage, this, std::placeholders::_1))
-    , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })
+    , asyncQueueCallback([this](std::unique_ptr<utils::Message> message) { asyncQueue.push(utils::Utils::downcast<membership_protocol::Message, utils::Message>(std::move(message))); })
     , gossipProtocol(gossipProtocolFactory->createGossipProtocol(addr, logger, this, threadPolicy))
     , failureDetector(failureDetectorFactory->createFailureDetector(addr, logger, messageDispatcher, this, gossipProtocol.get(), threadPolicy))
     , observers()
@@ -46,21 +46,23 @@ void MembershipProtocol::start()
     failureDetector->addObserver(this);
 
     // is it a good place?
-    tokens[Message::PING] = messageDispatcher->listen(Message::PING, asyncQueueCallback);
+    tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<PingMessage>(), asyncQueueCallback));
 
     auto addressesToJoin = config.getAddressesToJoin();
+    bool subscribedToJoinRep = false;
     for (auto it = addressesToJoin.begin(); it != addressesToJoin.end(); ++it)
     {
         if (*it == node)
         {
-            tokens[Message::JOINREQ] = messageDispatcher->listen(Message::JOINREQ, asyncQueueCallback);
+            tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<JoinReqMessage>(), asyncQueueCallback));
             onJoin();
             return;
         }
 
-        if (tokens.find(Message::JOINREP) == tokens.end())
+        if (!subscribedToJoinRep)
         {
-            tokens[Message::JOINREP] = messageDispatcher->listen(Message::JOINREP, asyncQueueCallback);
+            tokens.push_back(messageDispatcher->listen(utils::Message::getTypeName<JoinRepMessage>(), asyncQueueCallback));
+            subscribedToJoinRep = true;
         }
         messageDispatcher->sendMessage(std::make_unique<JoinReqMessage>(node, *it), *it);
     }
@@ -75,7 +77,7 @@ void MembershipProtocol::stop()
 
     for (auto it = tokens.begin(); it != tokens.end(); ++it)
     {
-        messageDispatcher->stopListening(it->first, it->second);
+        messageDispatcher->stopListening(*it);
     }
 
     // finish processing async queue
@@ -234,7 +236,7 @@ void MembershipProtocol::onJoin()
     joined = true;
 }
 
-void MembershipProtocol::processMessage(const std::unique_ptr<Message>& message)
+void MembershipProtocol::processMessage(std::unique_ptr<Message> message)
 {
     auto sourceAddress = message->getSourceAddress();
 

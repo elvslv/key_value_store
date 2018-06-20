@@ -12,7 +12,7 @@ public:
     std::string getValue() const;
 
 protected:
-    virtual gen::key_value_store::Message serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const;
 
 private:
     std::string value;

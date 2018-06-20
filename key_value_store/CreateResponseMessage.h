@@ -11,6 +11,6 @@ public:
     CreateResponseMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& originalMessageId, unsigned int responseCode);
 
 protected:
-    virtual gen::key_value_store::Message serializeToProtobuf() const;
+    virtual gen::Message serializeToProtobuf() const;
 };
 }

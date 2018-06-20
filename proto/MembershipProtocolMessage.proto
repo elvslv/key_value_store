@@ -36,15 +36,12 @@ message AckFields {
 
 message Message {
     MessageType messageType = 1;
-    Address sourceAddress = 2;
-    Address destinationAddress = 3;
-    string id = 4;
 
     oneof customFields {
-        PingReqFields pingReqFields = 5;
-        AckFields ackFields = 6;
-        PingFields pingFields = 7;
+        PingReqFields pingReqFields = 2;
+        AckFields ackFields = 3;
+        PingFields pingFields = 4;
     }
 
-    repeated Gossip gossips = 8;
+    repeated Gossip gossips = 5;
 }

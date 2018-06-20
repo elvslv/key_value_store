@@ -1,17 +1,19 @@
 {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "name": "(lldb) Launch",
-                "type": "cppdbg",
-                "request": "launch",
-                "program": "${workspaceRoot}/tests/key_value_store_tests",
-                "args": ["--gtest_filter=MembershipProtocolTests.BrokenLink"],
-                "stopAtEntry": false,
-                "cwd": "${workspaceRoot}",
-                "environment": [],
-                "externalConsole": true,
-                "MIMode": "lldb"
-            }
-        ]
-    }
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/tests/key_value_store_tests",
+            "args": [
+                "--gtest_filter=*"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }
+    ]
+}

@@ -12,7 +12,7 @@ ReadRequestMessage::ReadRequestMessage(const network::Address& sourceAddress, co
 {
 }
 
-gen::key_value_store::Message ReadRequestMessage::serializeToProtobuf() const
+gen::Message ReadRequestMessage::serializeToProtobuf() const
 {
     auto message = RequestMessage::serializeToProtobuf();
 

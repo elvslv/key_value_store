@@ -27,14 +27,16 @@ std::string RequestMessage::getKey() const
     return key;
 }
 
-gen::key_value_store::Message RequestMessage::serializeToProtobuf() const
+gen::Message RequestMessage::serializeToProtobuf() const
 {
     auto message = Message::serializeToProtobuf();
+    auto kvStoreMessage = getKeyValueStoreMessage(message);
+
     auto requestMessage = std::make_unique<gen::key_value_store::RequestMessage>();
     requestMessage->set_messagetype(getProtobufMessageType());
     requestMessage->set_key(key);
 
-    message.set_allocated_requestmessage(requestMessage.release());
+    kvStoreMessage->set_allocated_requestmessage(requestMessage.release());
     return message;
 }
 
@@ -58,31 +60,12 @@ gen::key_value_store::RequestMessageType RequestMessage::getProtobufMessageType(
     throw utils::NotImplementedException();
 }
 
-std::string RequestMessage::getMsgTypeStr() const
+gen::key_value_store::RequestMessage* RequestMessage::getRequestMessage(gen::Message& message)
 {
-    switch (getMessageType())
+    auto kvStoreMessage = getKeyValueStoreMessage(message);
+    if (kvStoreMessage->has_requestmessage())
     {
-    case CREATE_REQUEST:
-        return "CREATE_REQUEST";
-
-    case UPDATE_REQUEST:
-        return "UPDATE_REQUEST";
-
-    case READ_REQUEST:
-        return "READ_REQUEST";
-
-    case DELETE_REQUEST:
-        return "DELETE_REQUEST";
-    }
-
-    throw utils::NotImplementedException();
-}
-
-gen::key_value_store::RequestMessage* RequestMessage::getRequestMessage(gen::key_value_store::Message& message)
-{
-    if (message.has_requestmessage())
-    {
-        return message.mutable_requestmessage();
+        return kvStoreMessage->mutable_requestmessage();
     }
 
     throw std::logic_error("Request message is not set");

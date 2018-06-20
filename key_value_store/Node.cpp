@@ -23,14 +23,14 @@ Node::Node(const network::Address& address,
     std::shared_ptr<utils::Log> logger,
     std::unique_ptr<membership_protocol::IMembershipProtocol> membershipProtocol,
     std::unique_ptr<IStorage> storage,
-    const std::unique_ptr<IPartitioner>& partitioner,
-    const std::shared_ptr<utils::MessageDispatcher<Message>>& messageDispatcher,
+    std::unique_ptr<IPartitioner> partitioner,
+    const std::shared_ptr<utils::MessageDispatcher>& messageDispatcher,
     std::shared_ptr<utils::IThreadPolicy> threadPolicy)
     : address(address)
     , logger(logger)
     , membershipProtocol(std::move(membershipProtocol))
     , storage(std::move(storage))
-    , partitioner(partitioner)
+    , partitioner(std::move(partitioner))
     , messageDispatcher(messageDispatcher)
     , asyncQueue(std::bind(&Node::processMessage, this, std::placeholders::_1))
     , asyncQueueCallback([this](std::unique_ptr<Message> message) { asyncQueue.push(std::move(message)); })

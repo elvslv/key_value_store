@@ -20,16 +20,16 @@ public:
         return (dynamic_cast<CheckType*>(Instance) != NULL);
     }
 
-    // template <typename TargetType, typename InstanceType>
-    // static std::unique_ptr<TargetType> downcast(std::unique_ptr<InstanceType> instance)
-    // {
-    //     TargetType* tmp = dynamic_cast<TargetType*>(instance.get());
-    //     assert(tmp != nullptr);
-    //     std::unique_ptr<TargetType> result;
-    //     instance.release();
-    //     result.reset(tmp);
+    template <typename TargetType, typename InstanceType>
+    static std::unique_ptr<TargetType> downcast(std::unique_ptr<InstanceType> instance)
+    {
+        TargetType* tmp = dynamic_cast<TargetType*>(instance.get());
+        assert(tmp != nullptr);
+        std::unique_ptr<TargetType> result;
+        instance.release();
+        result.reset(tmp);
 
-    //     return result;
-    // }
+        return result;
+    }
 };
 }

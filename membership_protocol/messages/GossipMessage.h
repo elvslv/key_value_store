@@ -14,7 +14,7 @@
         const std::vector<Gossip>& getGossips() const;
     protected:
         virtual gen::membership_protocol::MessageType getProtobufMessageType() const;
-        virtual gen::membership_protocol::Message serializeToProtobuf() const;
+        virtual gen::Message serializeToProtobuf() const;
         
     private:
         std::vector<Gossip> gossips;
