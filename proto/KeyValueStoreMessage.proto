@@ -8,6 +8,7 @@ enum RequestMessageType {
     UPDATE_REQUEST = 1;
     READ_REQUEST = 2;
     DELETE_REQUEST = 3;
+    REPAIR_REQUEST = 4;
 }
 
 message CreateRequestFields {
@@ -24,15 +25,21 @@ message ReadRequestFields {
 message DeleteRequestFields {
 }
 
+message RepairRequestFields {
+    string value = 1;
+}
+
 message RequestMessage {
     RequestMessageType messageType = 1;
     string key = 2;
+    uint32 timestamp = 3;
 
     oneof customFields {
-        CreateRequestFields createFields = 3;
-        UpdateRequestFields updateFields = 4;
-        ReadRequestFields readFields = 5;
-        DeleteRequestFields deleteFields = 6;
+        CreateRequestFields createFields = 4;
+        UpdateRequestFields updateFields = 5;
+        ReadRequestFields readFields = 6;
+        DeleteRequestFields deleteFields = 7;
+        RepairRequestFields repairFields = 8;
     }
 }
 
@@ -49,11 +56,15 @@ message ReadResponseFields {
 message DeleteResponseFields {
 }
 
+message RepairResponseFields {
+}
+
 enum ResponseMessageType {
     CREATE_RESPONSE = 0;
     UPDATE_RESPONSE = 1;
     READ_RESPONSE = 2;
     DELETE_RESPONSE = 3;
+    REPAIR_RESPONSE = 4;
 }
 
 message ResponseMessage {
@@ -66,6 +77,7 @@ message ResponseMessage {
         UpdateResponseFields updateFields = 5;
         ReadResponseFields readFields = 6;
         DeleteResponseFields deleteFields = 7;
+        RepairResponseFields repairFields = 8;
     }
 }
 

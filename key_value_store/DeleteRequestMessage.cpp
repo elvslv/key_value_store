@@ -2,8 +2,8 @@
 
 namespace key_value_store
 {
-DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id)
-    : RequestMessage(DELETE_REQUEST, sourceAddress, destinationAddress, key, id)
+DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& id, unsigned long timestamp)
+    : RequestMessage(DELETE_REQUEST, sourceAddress, destinationAddress, key, id, timestamp)
 {
 }
 

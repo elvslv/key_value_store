@@ -335,7 +335,7 @@ void Node::runStabilizationProtocol()
                 continue;
             }
 
-            if (nodes.size() > i && !isNodeAlive(nodes[i]))
+            if (nodes.size() > i && isNodeAlive(nodes[i]))
             {
                 sendCreateMessage(nodes[i], it->first, it->second.value);
             }

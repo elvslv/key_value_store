@@ -2,8 +2,8 @@
 
 namespace key_value_store
 {
-CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value, const std::string& id)
-    : RequestMessage(CREATE_REQUEST, sourceAddress, destinationAddress, key, id)
+CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value, const std::string& id, unsigned long timestamp)
+    : RequestMessage(CREATE_REQUEST, sourceAddress, destinationAddress, key, id, timestamp)
     , value(value)
 {
 }

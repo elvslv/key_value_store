@@ -70,6 +70,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
         {
             auto requestMessage = kvStoreMessage.requestmessage();
             auto key = requestMessage.key();
+            auto timestamp = requestMessage.timestamp();
 
             switch (requestMessage.messagetype())
             {
@@ -81,7 +82,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
                 }
 
                 auto createFields = requestMessage.createfields();
-                return std::make_unique<key_value_store::CreateRequestMessage>(srcAddress, destAddress, key, createFields.value(), id);
+                return std::make_unique<key_value_store::CreateRequestMessage>(srcAddress, destAddress, key, createFields.value(), id, timestamp);
             }
 
             case gen::key_value_store::UPDATE_REQUEST:
@@ -92,17 +93,17 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
                 }
 
                 auto updateFields = requestMessage.updatefields();
-                return std::make_unique<key_value_store::UpdateRequestMessage>(srcAddress, destAddress, key, updateFields.value(), id);
+                return std::make_unique<key_value_store::UpdateRequestMessage>(srcAddress, destAddress, key, updateFields.value(), id, timestamp);
             }
 
             case gen::key_value_store::READ_REQUEST:
             {
-                return std::make_unique<key_value_store::ReadRequestMessage>(srcAddress, destAddress, key, id);
+                return std::make_unique<key_value_store::ReadRequestMessage>(srcAddress, destAddress, key, id, timestamp);
             }
 
             case gen::key_value_store::DELETE_REQUEST:
             {
-                return std::make_unique<key_value_store::DeleteRequestMessage>(srcAddress, destAddress, key, id);
+                return std::make_unique<key_value_store::DeleteRequestMessage>(srcAddress, destAddress, key, id, timestamp);
             }
             }
         }

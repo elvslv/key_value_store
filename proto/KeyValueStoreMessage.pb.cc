@@ -27,12 +27,15 @@ class ReadRequestFieldsDefaultTypeInternal : public ::google::protobuf::internal
 } _ReadRequestFields_default_instance_;
 class DeleteRequestFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DeleteRequestFields> {
 } _DeleteRequestFields_default_instance_;
+class RepairRequestFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RepairRequestFields> {
+} _RepairRequestFields_default_instance_;
 class RequestMessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RequestMessage> {
   public:
   const ::gen::key_value_store::CreateRequestFields* createfields_;
   const ::gen::key_value_store::UpdateRequestFields* updatefields_;
   const ::gen::key_value_store::ReadRequestFields* readfields_;
   const ::gen::key_value_store::DeleteRequestFields* deletefields_;
+  const ::gen::key_value_store::RepairRequestFields* repairfields_;
 } _RequestMessage_default_instance_;
 class CreateResponseFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<CreateResponseFields> {
 } _CreateResponseFields_default_instance_;
@@ -42,12 +45,15 @@ class ReadResponseFieldsDefaultTypeInternal : public ::google::protobuf::interna
 } _ReadResponseFields_default_instance_;
 class DeleteResponseFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DeleteResponseFields> {
 } _DeleteResponseFields_default_instance_;
+class RepairResponseFieldsDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RepairResponseFields> {
+} _RepairResponseFields_default_instance_;
 class ResponseMessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ResponseMessage> {
   public:
   const ::gen::key_value_store::CreateResponseFields* createfields_;
   const ::gen::key_value_store::UpdateResponseFields* updatefields_;
   const ::gen::key_value_store::ReadResponseFields* readfields_;
   const ::gen::key_value_store::DeleteResponseFields* deletefields_;
+  const ::gen::key_value_store::RepairResponseFields* repairfields_;
 } _ResponseMessage_default_instance_;
 class MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Message> {
   public:
@@ -60,7 +66,7 @@ namespace protobuf_KeyValueStoreMessage_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[11];
+::google::protobuf::Metadata file_level_metadata[13];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 }  // namespace
@@ -76,6 +82,8 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
 };
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
     TableStruct::schema[] = {
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
@@ -113,16 +121,24 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RepairRequestFields, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RepairRequestFields, value_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, _internal_metadata_),
   ~0u,  // no _extensions_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, messagetype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, key_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, timestamp_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), createfields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), updatefields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), readfields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), deletefields_),
+  GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_RequestMessage_default_instance_), repairfields_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RequestMessage, customFields_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CreateResponseFields, _internal_metadata_),
@@ -146,6 +162,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RepairResponseFields, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, _internal_metadata_),
   ~0u,  // no _extensions_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, _oneof_case_[0]),
@@ -157,6 +178,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), updatefields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), readfields_),
   GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), deletefields_),
+  GOOGLE_PROTOBUF_GENERATED_DEFAULT_ONEOF_FIELD_OFFSET((&_ResponseMessage_default_instance_), repairfields_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ResponseMessage, customFields_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, _internal_metadata_),
@@ -173,13 +195,15 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 6, -1, sizeof(UpdateRequestFields)},
   { 12, -1, sizeof(ReadRequestFields)},
   { 17, -1, sizeof(DeleteRequestFields)},
-  { 22, -1, sizeof(RequestMessage)},
-  { 34, -1, sizeof(CreateResponseFields)},
-  { 39, -1, sizeof(UpdateResponseFields)},
-  { 44, -1, sizeof(ReadResponseFields)},
-  { 50, -1, sizeof(DeleteResponseFields)},
-  { 55, -1, sizeof(ResponseMessage)},
-  { 68, -1, sizeof(Message)},
+  { 22, -1, sizeof(RepairRequestFields)},
+  { 28, -1, sizeof(RequestMessage)},
+  { 42, -1, sizeof(CreateResponseFields)},
+  { 47, -1, sizeof(UpdateResponseFields)},
+  { 52, -1, sizeof(ReadResponseFields)},
+  { 58, -1, sizeof(DeleteResponseFields)},
+  { 63, -1, sizeof(RepairResponseFields)},
+  { 68, -1, sizeof(ResponseMessage)},
+  { 82, -1, sizeof(Message)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -187,11 +211,13 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_UpdateRequestFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ReadRequestFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_DeleteRequestFields_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_RepairRequestFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_RequestMessage_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_CreateResponseFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_UpdateResponseFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ReadResponseFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_DeleteResponseFields_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_RepairResponseFields_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ResponseMessage_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Message_default_instance_),
 };
@@ -214,7 +240,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 11);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 13);
 }
 
 }  // namespace
@@ -228,20 +254,24 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[2].reflection;
   _DeleteRequestFields_default_instance_.Shutdown();
   delete file_level_metadata[3].reflection;
-  _RequestMessage_default_instance_.Shutdown();
+  _RepairRequestFields_default_instance_.Shutdown();
   delete file_level_metadata[4].reflection;
-  _CreateResponseFields_default_instance_.Shutdown();
+  _RequestMessage_default_instance_.Shutdown();
   delete file_level_metadata[5].reflection;
-  _UpdateResponseFields_default_instance_.Shutdown();
+  _CreateResponseFields_default_instance_.Shutdown();
   delete file_level_metadata[6].reflection;
-  _ReadResponseFields_default_instance_.Shutdown();
+  _UpdateResponseFields_default_instance_.Shutdown();
   delete file_level_metadata[7].reflection;
-  _DeleteResponseFields_default_instance_.Shutdown();
+  _ReadResponseFields_default_instance_.Shutdown();
   delete file_level_metadata[8].reflection;
-  _ResponseMessage_default_instance_.Shutdown();
+  _DeleteResponseFields_default_instance_.Shutdown();
   delete file_level_metadata[9].reflection;
-  _Message_default_instance_.Shutdown();
+  _RepairResponseFields_default_instance_.Shutdown();
   delete file_level_metadata[10].reflection;
+  _ResponseMessage_default_instance_.Shutdown();
+  delete file_level_metadata[11].reflection;
+  _Message_default_instance_.Shutdown();
+  delete file_level_metadata[12].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -253,11 +283,13 @@ void TableStruct::InitDefaultsImpl() {
   _UpdateRequestFields_default_instance_.DefaultConstruct();
   _ReadRequestFields_default_instance_.DefaultConstruct();
   _DeleteRequestFields_default_instance_.DefaultConstruct();
+  _RepairRequestFields_default_instance_.DefaultConstruct();
   _RequestMessage_default_instance_.DefaultConstruct();
   _CreateResponseFields_default_instance_.DefaultConstruct();
   _UpdateResponseFields_default_instance_.DefaultConstruct();
   _ReadResponseFields_default_instance_.DefaultConstruct();
   _DeleteResponseFields_default_instance_.DefaultConstruct();
+  _RepairResponseFields_default_instance_.DefaultConstruct();
   _ResponseMessage_default_instance_.DefaultConstruct();
   _Message_default_instance_.DefaultConstruct();
   _RequestMessage_default_instance_.createfields_ = const_cast< ::gen::key_value_store::CreateRequestFields*>(
@@ -268,6 +300,8 @@ void TableStruct::InitDefaultsImpl() {
       ::gen::key_value_store::ReadRequestFields::internal_default_instance());
   _RequestMessage_default_instance_.deletefields_ = const_cast< ::gen::key_value_store::DeleteRequestFields*>(
       ::gen::key_value_store::DeleteRequestFields::internal_default_instance());
+  _RequestMessage_default_instance_.repairfields_ = const_cast< ::gen::key_value_store::RepairRequestFields*>(
+      ::gen::key_value_store::RepairRequestFields::internal_default_instance());
   _ResponseMessage_default_instance_.createfields_ = const_cast< ::gen::key_value_store::CreateResponseFields*>(
       ::gen::key_value_store::CreateResponseFields::internal_default_instance());
   _ResponseMessage_default_instance_.updatefields_ = const_cast< ::gen::key_value_store::UpdateResponseFields*>(
@@ -276,6 +310,8 @@ void TableStruct::InitDefaultsImpl() {
       ::gen::key_value_store::ReadResponseFields::internal_default_instance());
   _ResponseMessage_default_instance_.deletefields_ = const_cast< ::gen::key_value_store::DeleteResponseFields*>(
       ::gen::key_value_store::DeleteResponseFields::internal_default_instance());
+  _ResponseMessage_default_instance_.repairfields_ = const_cast< ::gen::key_value_store::RepairResponseFields*>(
+      ::gen::key_value_store::RepairResponseFields::internal_default_instance());
   _Message_default_instance_.requestmessage_ = const_cast< ::gen::key_value_store::RequestMessage*>(
       ::gen::key_value_store::RequestMessage::internal_default_instance());
   _Message_default_instance_.responsemessage_ = const_cast< ::gen::key_value_store::ResponseMessage*>(
@@ -293,42 +329,48 @@ void AddDescriptorsImpl() {
       "lue_store\032\rAddress.proto\"$\n\023CreateReques"
       "tFields\022\r\n\005value\030\001 \001(\t\"$\n\023UpdateRequestF"
       "ields\022\r\n\005value\030\001 \001(\t\"\023\n\021ReadRequestField"
-      "s\"\025\n\023DeleteRequestFields\"\357\002\n\016RequestMess"
-      "age\022<\n\013messageType\030\001 \001(\0162\'.gen.key_value"
-      "_store.RequestMessageType\022\013\n\003key\030\002 \001(\t\022@"
-      "\n\014createFields\030\003 \001(\0132(.gen.key_value_sto"
-      "re.CreateRequestFieldsH\000\022@\n\014updateFields"
-      "\030\004 \001(\0132(.gen.key_value_store.UpdateReque"
-      "stFieldsH\000\022<\n\nreadFields\030\005 \001(\0132&.gen.key"
-      "_value_store.ReadRequestFieldsH\000\022@\n\014dele"
-      "teFields\030\006 \001(\0132(.gen.key_value_store.Del"
-      "eteRequestFieldsH\000B\016\n\014customFields\"\026\n\024Cr"
-      "eateResponseFields\"\026\n\024UpdateResponseFiel"
-      "ds\"#\n\022ReadResponseFields\022\r\n\005value\030\001 \001(\t\""
-      "\026\n\024DeleteResponseFields\"\231\003\n\017ResponseMess"
-      "age\022=\n\013messageType\030\001 \001(\0162(.gen.key_value"
-      "_store.ResponseMessageType\022\031\n\021originalMe"
-      "ssageId\030\002 \001(\t\022\024\n\014responseCode\030\003 \001(\005\022A\n\014c"
-      "reateFields\030\004 \001(\0132).gen.key_value_store."
-      "CreateResponseFieldsH\000\022A\n\014updateFields\030\005"
-      " \001(\0132).gen.key_value_store.UpdateRespons"
-      "eFieldsH\000\022=\n\nreadFields\030\006 \001(\0132\'.gen.key_"
-      "value_store.ReadResponseFieldsH\000\022A\n\014dele"
-      "teFields\030\007 \001(\0132).gen.key_value_store.Del"
-      "eteResponseFieldsH\000B\016\n\014customFields\"\234\001\n\007"
-      "Message\022=\n\016requestMessage\030\001 \001(\0132#.gen.ke"
-      "y_value_store.RequestMessageH\000\022\?\n\017respon"
-      "seMessage\030\002 \001(\0132$.gen.key_value_store.Re"
-      "sponseMessageH\000B\021\n\017messageInternal*b\n\022Re"
-      "questMessageType\022\022\n\016CREATE_REQUEST\020\000\022\022\n\016"
-      "UPDATE_REQUEST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n\016DE"
-      "LETE_REQUEST\020\003*g\n\023ResponseMessageType\022\023\n"
-      "\017CREATE_RESPONSE\020\000\022\023\n\017UPDATE_RESPONSE\020\001\022"
-      "\021\n\rREAD_RESPONSE\020\002\022\023\n\017DELETE_RESPONSE\020\003b"
-      "\006proto3"
+      "s\"\025\n\023DeleteRequestFields\"$\n\023RepairReques"
+      "tFields\022\r\n\005value\030\001 \001(\t\"\304\003\n\016RequestMessag"
+      "e\022<\n\013messageType\030\001 \001(\0162\'.gen.key_value_s"
+      "tore.RequestMessageType\022\013\n\003key\030\002 \001(\t\022\021\n\t"
+      "timestamp\030\003 \001(\r\022@\n\014createFields\030\004 \001(\0132(."
+      "gen.key_value_store.CreateRequestFieldsH"
+      "\000\022@\n\014updateFields\030\005 \001(\0132(.gen.key_value_"
+      "store.UpdateRequestFieldsH\000\022<\n\nreadField"
+      "s\030\006 \001(\0132&.gen.key_value_store.ReadReques"
+      "tFieldsH\000\022@\n\014deleteFields\030\007 \001(\0132(.gen.ke"
+      "y_value_store.DeleteRequestFieldsH\000\022@\n\014r"
+      "epairFields\030\010 \001(\0132(.gen.key_value_store."
+      "RepairRequestFieldsH\000B\016\n\014customFields\"\026\n"
+      "\024CreateResponseFields\"\026\n\024UpdateResponseF"
+      "ields\"#\n\022ReadResponseFields\022\r\n\005value\030\001 \001"
+      "(\t\"\026\n\024DeleteResponseFields\"\026\n\024RepairResp"
+      "onseFields\"\334\003\n\017ResponseMessage\022=\n\013messag"
+      "eType\030\001 \001(\0162(.gen.key_value_store.Respon"
+      "seMessageType\022\031\n\021originalMessageId\030\002 \001(\t"
+      "\022\024\n\014responseCode\030\003 \001(\005\022A\n\014createFields\030\004"
+      " \001(\0132).gen.key_value_store.CreateRespons"
+      "eFieldsH\000\022A\n\014updateFields\030\005 \001(\0132).gen.ke"
+      "y_value_store.UpdateResponseFieldsH\000\022=\n\n"
+      "readFields\030\006 \001(\0132\'.gen.key_value_store.R"
+      "eadResponseFieldsH\000\022A\n\014deleteFields\030\007 \001("
+      "\0132).gen.key_value_store.DeleteResponseFi"
+      "eldsH\000\022A\n\014repairFields\030\010 \001(\0132).gen.key_v"
+      "alue_store.RepairResponseFieldsH\000B\016\n\014cus"
+      "tomFields\"\234\001\n\007Message\022=\n\016requestMessage\030"
+      "\001 \001(\0132#.gen.key_value_store.RequestMessa"
+      "geH\000\022\?\n\017responseMessage\030\002 \001(\0132$.gen.key_"
+      "value_store.ResponseMessageH\000B\021\n\017message"
+      "Internal*v\n\022RequestMessageType\022\022\n\016CREATE"
+      "_REQUEST\020\000\022\022\n\016UPDATE_REQUEST\020\001\022\020\n\014READ_R"
+      "EQUEST\020\002\022\022\n\016DELETE_REQUEST\020\003\022\022\n\016REPAIR_R"
+      "EQUEST\020\004*|\n\023ResponseMessageType\022\023\n\017CREAT"
+      "E_RESPONSE\020\000\022\023\n\017UPDATE_RESPONSE\020\001\022\021\n\rREA"
+      "D_RESPONSE\020\002\022\023\n\017DELETE_RESPONSE\020\003\022\023\n\017REP"
+      "AIR_RESPONSE\020\004b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1447);
+      descriptor, 1702);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KeyValueStoreMessage.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -358,6 +400,7 @@ bool RequestMessageType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -374,6 +417,7 @@ bool ResponseMessageType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -1318,12 +1362,305 @@ void DeleteRequestFields::InternalSwap(DeleteRequestFields* other) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RepairRequestFields::kValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+RepairRequestFields::RepairRequestFields()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:gen.key_value_store.RepairRequestFields)
+}
+RepairRequestFields::RepairRequestFields(const RepairRequestFields& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.value().size() > 0) {
+    value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
+  }
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.RepairRequestFields)
+}
+
+void RepairRequestFields::SharedCtor() {
+  value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+RepairRequestFields::~RepairRequestFields() {
+  // @@protoc_insertion_point(destructor:gen.key_value_store.RepairRequestFields)
+  SharedDtor();
+}
+
+void RepairRequestFields::SharedDtor() {
+  value_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void RepairRequestFields::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RepairRequestFields::descriptor() {
+  protobuf_KeyValueStoreMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_KeyValueStoreMessage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RepairRequestFields& RepairRequestFields::default_instance() {
+  protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+RepairRequestFields* RepairRequestFields::New(::google::protobuf::Arena* arena) const {
+  RepairRequestFields* n = new RepairRequestFields;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void RepairRequestFields::Clear() {
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.RepairRequestFields)
+  value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool RepairRequestFields::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.RepairRequestFields)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string value = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_value()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->value().data(), this->value().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "gen.key_value_store.RepairRequestFields.value"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.RepairRequestFields)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.RepairRequestFields)
+  return false;
+#undef DO_
+}
+
+void RepairRequestFields::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.RepairRequestFields)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string value = 1;
+  if (this->value().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->value().data(), this->value().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.key_value_store.RepairRequestFields.value");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->value(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.RepairRequestFields)
+}
+
+::google::protobuf::uint8* RepairRequestFields::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.RepairRequestFields)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string value = 1;
+  if (this->value().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->value().data(), this->value().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "gen.key_value_store.RepairRequestFields.value");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->value(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.RepairRequestFields)
+  return target;
+}
+
+size_t RepairRequestFields::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.RepairRequestFields)
+  size_t total_size = 0;
+
+  // string value = 1;
+  if (this->value().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->value());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RepairRequestFields::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.RepairRequestFields)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RepairRequestFields* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RepairRequestFields>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.RepairRequestFields)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.RepairRequestFields)
+    MergeFrom(*source);
+  }
+}
+
+void RepairRequestFields::MergeFrom(const RepairRequestFields& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.RepairRequestFields)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.value().size() > 0) {
+
+    value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
+  }
+}
+
+void RepairRequestFields::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.RepairRequestFields)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RepairRequestFields::CopyFrom(const RepairRequestFields& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.RepairRequestFields)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RepairRequestFields::IsInitialized() const {
+  return true;
+}
+
+void RepairRequestFields::Swap(RepairRequestFields* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void RepairRequestFields::InternalSwap(RepairRequestFields* other) {
+  value_.Swap(&other->value_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata RepairRequestFields::GetMetadata() const {
+  protobuf_KeyValueStoreMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_KeyValueStoreMessage_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// RepairRequestFields
+
+// string value = 1;
+void RepairRequestFields::clear_value() {
+  value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RepairRequestFields::value() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RepairRequestFields.value)
+  return value_.GetNoArena();
+}
+void RepairRequestFields::set_value(const ::std::string& value) {
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:gen.key_value_store.RepairRequestFields.value)
+}
+#if LANG_CXX11
+void RepairRequestFields::set_value(::std::string&& value) {
+  
+  value_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:gen.key_value_store.RepairRequestFields.value)
+}
+#endif
+void RepairRequestFields::set_value(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:gen.key_value_store.RepairRequestFields.value)
+}
+void RepairRequestFields::set_value(const char* value, size_t size) {
+  
+  value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:gen.key_value_store.RepairRequestFields.value)
+}
+::std::string* RepairRequestFields::mutable_value() {
+  
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RepairRequestFields.value)
+  return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RepairRequestFields::release_value() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RepairRequestFields.value)
+  
+  return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RepairRequestFields::set_allocated_value(::std::string* value) {
+  if (value != NULL) {
+    
+  } else {
+    
+  }
+  value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RepairRequestFields.value)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RequestMessage::kMessageTypeFieldNumber;
 const int RequestMessage::kKeyFieldNumber;
+const int RequestMessage::kTimestampFieldNumber;
 const int RequestMessage::kCreateFieldsFieldNumber;
 const int RequestMessage::kUpdateFieldsFieldNumber;
 const int RequestMessage::kReadFieldsFieldNumber;
 const int RequestMessage::kDeleteFieldsFieldNumber;
+const int RequestMessage::kRepairFieldsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RequestMessage::RequestMessage()
@@ -1343,7 +1680,9 @@ RequestMessage::RequestMessage(const RequestMessage& from)
   if (from.key().size() > 0) {
     key_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.key_);
   }
-  messagetype_ = from.messagetype_;
+  ::memcpy(&messagetype_, &from.messagetype_,
+    reinterpret_cast<char*>(&timestamp_) -
+    reinterpret_cast<char*>(&messagetype_) + sizeof(timestamp_));
   clear_has_customFields();
   switch (from.customFields_case()) {
     case kCreateFields: {
@@ -1362,6 +1701,10 @@ RequestMessage::RequestMessage(const RequestMessage& from)
       mutable_deletefields()->::gen::key_value_store::DeleteRequestFields::MergeFrom(from.deletefields());
       break;
     }
+    case kRepairFields: {
+      mutable_repairfields()->::gen::key_value_store::RepairRequestFields::MergeFrom(from.repairfields());
+      break;
+    }
     case CUSTOMFIELDS_NOT_SET: {
       break;
     }
@@ -1371,7 +1714,8 @@ RequestMessage::RequestMessage(const RequestMessage& from)
 
 void RequestMessage::SharedCtor() {
   key_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  messagetype_ = 0;
+  ::memset(&messagetype_, 0, reinterpret_cast<char*>(&timestamp_) -
+    reinterpret_cast<char*>(&messagetype_) + sizeof(timestamp_));
   clear_has_customFields();
   _cached_size_ = 0;
 }
@@ -1430,6 +1774,10 @@ void RequestMessage::clear_customFields() {
       delete customFields_.deletefields_;
       break;
     }
+    case kRepairFields: {
+      delete customFields_.repairfields_;
+      break;
+    }
     case CUSTOMFIELDS_NOT_SET: {
       break;
     }
@@ -1441,7 +1789,8 @@ void RequestMessage::clear_customFields() {
 void RequestMessage::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.key_value_store.RequestMessage)
   key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  messagetype_ = 0;
+  ::memset(&messagetype_, 0, reinterpret_cast<char*>(&timestamp_) -
+    reinterpret_cast<char*>(&messagetype_) + sizeof(timestamp_));
   clear_customFields();
 }
 
@@ -1486,10 +1835,24 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.key_value_store.CreateRequestFields createFields = 3;
+      // uint32 timestamp = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(24u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &timestamp_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .gen.key_value_store.CreateRequestFields createFields = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_createfields()));
         } else {
@@ -1498,10 +1861,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.key_value_store.UpdateRequestFields updateFields = 4;
-      case 4: {
+      // .gen.key_value_store.UpdateRequestFields updateFields = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_updatefields()));
         } else {
@@ -1510,10 +1873,10 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.key_value_store.ReadRequestFields readFields = 5;
-      case 5: {
+      // .gen.key_value_store.ReadRequestFields readFields = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_readfields()));
         } else {
@@ -1522,12 +1885,24 @@ bool RequestMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
-      case 6: {
+      // .gen.key_value_store.DeleteRequestFields deleteFields = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(50u)) {
+            static_cast< ::google::protobuf::uint8>(58u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_deletefields()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .gen.key_value_store.RepairRequestFields repairFields = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(66u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_repairfields()));
         } else {
           goto handle_unusual;
         }
@@ -1577,28 +1952,39 @@ void RequestMessage::SerializeWithCachedSizes(
       2, this->key(), output);
   }
 
-  // .gen.key_value_store.CreateRequestFields createFields = 3;
+  // uint32 timestamp = 3;
+  if (this->timestamp() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->timestamp(), output);
+  }
+
+  // .gen.key_value_store.CreateRequestFields createFields = 4;
   if (has_createfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *customFields_.createfields_, output);
+      4, *customFields_.createfields_, output);
   }
 
-  // .gen.key_value_store.UpdateRequestFields updateFields = 4;
+  // .gen.key_value_store.UpdateRequestFields updateFields = 5;
   if (has_updatefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *customFields_.updatefields_, output);
+      5, *customFields_.updatefields_, output);
   }
 
-  // .gen.key_value_store.ReadRequestFields readFields = 5;
+  // .gen.key_value_store.ReadRequestFields readFields = 6;
   if (has_readfields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, *customFields_.readfields_, output);
+      6, *customFields_.readfields_, output);
   }
 
-  // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
+  // .gen.key_value_store.DeleteRequestFields deleteFields = 7;
   if (has_deletefields()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, *customFields_.deletefields_, output);
+      7, *customFields_.deletefields_, output);
+  }
+
+  // .gen.key_value_store.RepairRequestFields repairFields = 8;
+  if (has_repairfields()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      8, *customFields_.repairfields_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:gen.key_value_store.RequestMessage)
@@ -1627,32 +2013,44 @@ void RequestMessage::SerializeWithCachedSizes(
         2, this->key(), target);
   }
 
-  // .gen.key_value_store.CreateRequestFields createFields = 3;
+  // uint32 timestamp = 3;
+  if (this->timestamp() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->timestamp(), target);
+  }
+
+  // .gen.key_value_store.CreateRequestFields createFields = 4;
   if (has_createfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *customFields_.createfields_, deterministic, target);
+        4, *customFields_.createfields_, deterministic, target);
   }
 
-  // .gen.key_value_store.UpdateRequestFields updateFields = 4;
+  // .gen.key_value_store.UpdateRequestFields updateFields = 5;
   if (has_updatefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *customFields_.updatefields_, deterministic, target);
+        5, *customFields_.updatefields_, deterministic, target);
   }
 
-  // .gen.key_value_store.ReadRequestFields readFields = 5;
+  // .gen.key_value_store.ReadRequestFields readFields = 6;
   if (has_readfields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *customFields_.readfields_, deterministic, target);
+        6, *customFields_.readfields_, deterministic, target);
   }
 
-  // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
+  // .gen.key_value_store.DeleteRequestFields deleteFields = 7;
   if (has_deletefields()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, *customFields_.deletefields_, deterministic, target);
+        7, *customFields_.deletefields_, deterministic, target);
+  }
+
+  // .gen.key_value_store.RepairRequestFields repairFields = 8;
+  if (has_repairfields()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        8, *customFields_.repairfields_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.RequestMessage)
@@ -1676,33 +2074,47 @@ size_t RequestMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->messagetype());
   }
 
+  // uint32 timestamp = 3;
+  if (this->timestamp() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->timestamp());
+  }
+
   switch (customFields_case()) {
-    // .gen.key_value_store.CreateRequestFields createFields = 3;
+    // .gen.key_value_store.CreateRequestFields createFields = 4;
     case kCreateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.createfields_);
       break;
     }
-    // .gen.key_value_store.UpdateRequestFields updateFields = 4;
+    // .gen.key_value_store.UpdateRequestFields updateFields = 5;
     case kUpdateFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.updatefields_);
       break;
     }
-    // .gen.key_value_store.ReadRequestFields readFields = 5;
+    // .gen.key_value_store.ReadRequestFields readFields = 6;
     case kReadFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.readfields_);
       break;
     }
-    // .gen.key_value_store.DeleteRequestFields deleteFields = 6;
+    // .gen.key_value_store.DeleteRequestFields deleteFields = 7;
     case kDeleteFields: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.deletefields_);
+      break;
+    }
+    // .gen.key_value_store.RepairRequestFields repairFields = 8;
+    case kRepairFields: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *customFields_.repairfields_);
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -1745,6 +2157,9 @@ void RequestMessage::MergeFrom(const RequestMessage& from) {
   if (from.messagetype() != 0) {
     set_messagetype(from.messagetype());
   }
+  if (from.timestamp() != 0) {
+    set_timestamp(from.timestamp());
+  }
   switch (from.customFields_case()) {
     case kCreateFields: {
       mutable_createfields()->::gen::key_value_store::CreateRequestFields::MergeFrom(from.createfields());
@@ -1760,6 +2175,10 @@ void RequestMessage::MergeFrom(const RequestMessage& from) {
     }
     case kDeleteFields: {
       mutable_deletefields()->::gen::key_value_store::DeleteRequestFields::MergeFrom(from.deletefields());
+      break;
+    }
+    case kRepairFields: {
+      mutable_repairfields()->::gen::key_value_store::RepairRequestFields::MergeFrom(from.repairfields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -1793,6 +2212,7 @@ void RequestMessage::Swap(RequestMessage* other) {
 void RequestMessage::InternalSwap(RequestMessage* other) {
   key_.Swap(&other->key_);
   std::swap(messagetype_, other->messagetype_);
+  std::swap(timestamp_, other->timestamp_);
   std::swap(customFields_, other->customFields_);
   std::swap(_oneof_case_[0], other->_oneof_case_[0]);
   std::swap(_cached_size_, other->_cached_size_);
@@ -1873,7 +2293,21 @@ void RequestMessage::set_allocated_key(::std::string* key) {
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.key)
 }
 
-// .gen.key_value_store.CreateRequestFields createFields = 3;
+// uint32 timestamp = 3;
+void RequestMessage::clear_timestamp() {
+  timestamp_ = 0u;
+}
+::google::protobuf::uint32 RequestMessage::timestamp() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.timestamp)
+  return timestamp_;
+}
+void RequestMessage::set_timestamp(::google::protobuf::uint32 value) {
+  
+  timestamp_ = value;
+  // @@protoc_insertion_point(field_set:gen.key_value_store.RequestMessage.timestamp)
+}
+
+// .gen.key_value_store.CreateRequestFields createFields = 4;
 bool RequestMessage::has_createfields() const {
   return customFields_case() == kCreateFields;
 }
@@ -1921,7 +2355,7 @@ void RequestMessage::set_allocated_createfields(::gen::key_value_store::CreateRe
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.createFields)
 }
 
-// .gen.key_value_store.UpdateRequestFields updateFields = 4;
+// .gen.key_value_store.UpdateRequestFields updateFields = 5;
 bool RequestMessage::has_updatefields() const {
   return customFields_case() == kUpdateFields;
 }
@@ -1969,7 +2403,7 @@ void RequestMessage::set_allocated_updatefields(::gen::key_value_store::UpdateRe
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.updateFields)
 }
 
-// .gen.key_value_store.ReadRequestFields readFields = 5;
+// .gen.key_value_store.ReadRequestFields readFields = 6;
 bool RequestMessage::has_readfields() const {
   return customFields_case() == kReadFields;
 }
@@ -2017,7 +2451,7 @@ void RequestMessage::set_allocated_readfields(::gen::key_value_store::ReadReques
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.readFields)
 }
 
-// .gen.key_value_store.DeleteRequestFields deleteFields = 6;
+// .gen.key_value_store.DeleteRequestFields deleteFields = 7;
 bool RequestMessage::has_deletefields() const {
   return customFields_case() == kDeleteFields;
 }
@@ -2063,6 +2497,54 @@ void RequestMessage::set_allocated_deletefields(::gen::key_value_store::DeleteRe
     customFields_.deletefields_ = deletefields;
   }
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.deleteFields)
+}
+
+// .gen.key_value_store.RepairRequestFields repairFields = 8;
+bool RequestMessage::has_repairfields() const {
+  return customFields_case() == kRepairFields;
+}
+void RequestMessage::set_has_repairfields() {
+  _oneof_case_[0] = kRepairFields;
+}
+void RequestMessage::clear_repairfields() {
+  if (has_repairfields()) {
+    delete customFields_.repairfields_;
+    clear_has_customFields();
+  }
+}
+ const ::gen::key_value_store::RepairRequestFields& RequestMessage::repairfields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.RequestMessage.repairFields)
+  return has_repairfields()
+      ? *customFields_.repairfields_
+      : ::gen::key_value_store::RepairRequestFields::default_instance();
+}
+::gen::key_value_store::RepairRequestFields* RequestMessage::mutable_repairfields() {
+  if (!has_repairfields()) {
+    clear_customFields();
+    set_has_repairfields();
+    customFields_.repairfields_ = new ::gen::key_value_store::RepairRequestFields;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.RequestMessage.repairFields)
+  return customFields_.repairfields_;
+}
+::gen::key_value_store::RepairRequestFields* RequestMessage::release_repairfields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.RequestMessage.repairFields)
+  if (has_repairfields()) {
+    clear_has_customFields();
+    ::gen::key_value_store::RepairRequestFields* temp = customFields_.repairfields_;
+    customFields_.repairfields_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void RequestMessage::set_allocated_repairfields(::gen::key_value_store::RepairRequestFields* repairfields) {
+  clear_customFields();
+  if (repairfields) {
+    set_has_repairfields();
+    customFields_.repairfields_ = repairfields;
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.RequestMessage.repairFields)
 }
 
 bool RequestMessage::has_customFields() const {
@@ -2898,6 +3380,182 @@ void DeleteResponseFields::InternalSwap(DeleteResponseFields* other) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+RepairResponseFields::RepairResponseFields()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:gen.key_value_store.RepairResponseFields)
+}
+RepairResponseFields::RepairResponseFields(const RepairResponseFields& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:gen.key_value_store.RepairResponseFields)
+}
+
+void RepairResponseFields::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+RepairResponseFields::~RepairResponseFields() {
+  // @@protoc_insertion_point(destructor:gen.key_value_store.RepairResponseFields)
+  SharedDtor();
+}
+
+void RepairResponseFields::SharedDtor() {
+}
+
+void RepairResponseFields::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RepairResponseFields::descriptor() {
+  protobuf_KeyValueStoreMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_KeyValueStoreMessage_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const RepairResponseFields& RepairResponseFields::default_instance() {
+  protobuf_KeyValueStoreMessage_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+RepairResponseFields* RepairResponseFields::New(::google::protobuf::Arena* arena) const {
+  RepairResponseFields* n = new RepairResponseFields;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void RepairResponseFields::Clear() {
+// @@protoc_insertion_point(message_clear_start:gen.key_value_store.RepairResponseFields)
+}
+
+bool RepairResponseFields::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:gen.key_value_store.RepairResponseFields)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0 ||
+        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:gen.key_value_store.RepairResponseFields)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:gen.key_value_store.RepairResponseFields)
+  return false;
+#undef DO_
+}
+
+void RepairResponseFields::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:gen.key_value_store.RepairResponseFields)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // @@protoc_insertion_point(serialize_end:gen.key_value_store.RepairResponseFields)
+}
+
+::google::protobuf::uint8* RepairResponseFields::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:gen.key_value_store.RepairResponseFields)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.RepairResponseFields)
+  return target;
+}
+
+size_t RepairResponseFields::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:gen.key_value_store.RepairResponseFields)
+  size_t total_size = 0;
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RepairResponseFields::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:gen.key_value_store.RepairResponseFields)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RepairResponseFields* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RepairResponseFields>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:gen.key_value_store.RepairResponseFields)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:gen.key_value_store.RepairResponseFields)
+    MergeFrom(*source);
+  }
+}
+
+void RepairResponseFields::MergeFrom(const RepairResponseFields& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:gen.key_value_store.RepairResponseFields)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void RepairResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:gen.key_value_store.RepairResponseFields)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RepairResponseFields::CopyFrom(const RepairResponseFields& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:gen.key_value_store.RepairResponseFields)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RepairResponseFields::IsInitialized() const {
+  return true;
+}
+
+void RepairResponseFields::Swap(RepairResponseFields* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void RepairResponseFields::InternalSwap(RepairResponseFields* other) {
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata RepairResponseFields::GetMetadata() const {
+  protobuf_KeyValueStoreMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_KeyValueStoreMessage_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// RepairResponseFields
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ResponseMessage::kMessageTypeFieldNumber;
 const int ResponseMessage::kOriginalMessageIdFieldNumber;
 const int ResponseMessage::kResponseCodeFieldNumber;
@@ -2905,6 +3563,7 @@ const int ResponseMessage::kCreateFieldsFieldNumber;
 const int ResponseMessage::kUpdateFieldsFieldNumber;
 const int ResponseMessage::kReadFieldsFieldNumber;
 const int ResponseMessage::kDeleteFieldsFieldNumber;
+const int ResponseMessage::kRepairFieldsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ResponseMessage::ResponseMessage()
@@ -2943,6 +3602,10 @@ ResponseMessage::ResponseMessage(const ResponseMessage& from)
     }
     case kDeleteFields: {
       mutable_deletefields()->::gen::key_value_store::DeleteResponseFields::MergeFrom(from.deletefields());
+      break;
+    }
+    case kRepairFields: {
+      mutable_repairfields()->::gen::key_value_store::RepairResponseFields::MergeFrom(from.repairfields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -3012,6 +3675,10 @@ void ResponseMessage::clear_customFields() {
     }
     case kDeleteFields: {
       delete customFields_.deletefields_;
+      break;
+    }
+    case kRepairFields: {
+      delete customFields_.repairfields_;
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -3133,6 +3800,18 @@ bool ResponseMessage::MergePartialFromCodedStream(
         break;
       }
 
+      // .gen.key_value_store.RepairResponseFields repairFields = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(66u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_repairfields()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -3205,6 +3884,12 @@ void ResponseMessage::SerializeWithCachedSizes(
       7, *customFields_.deletefields_, output);
   }
 
+  // .gen.key_value_store.RepairResponseFields repairFields = 8;
+  if (has_repairfields()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      8, *customFields_.repairfields_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:gen.key_value_store.ResponseMessage)
 }
 
@@ -3264,6 +3949,13 @@ void ResponseMessage::SerializeWithCachedSizes(
         7, *customFields_.deletefields_, deterministic, target);
   }
 
+  // .gen.key_value_store.RepairResponseFields repairFields = 8;
+  if (has_repairfields()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        8, *customFields_.repairfields_, deterministic, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.ResponseMessage)
   return target;
 }
@@ -3319,6 +4011,13 @@ size_t ResponseMessage::ByteSizeLong() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *customFields_.deletefields_);
+      break;
+    }
+    // .gen.key_value_store.RepairResponseFields repairFields = 8;
+    case kRepairFields: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *customFields_.repairfields_);
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -3379,6 +4078,10 @@ void ResponseMessage::MergeFrom(const ResponseMessage& from) {
     }
     case kDeleteFields: {
       mutable_deletefields()->::gen::key_value_store::DeleteResponseFields::MergeFrom(from.deletefields());
+      break;
+    }
+    case kRepairFields: {
+      mutable_repairfields()->::gen::key_value_store::RepairResponseFields::MergeFrom(from.repairfields());
       break;
     }
     case CUSTOMFIELDS_NOT_SET: {
@@ -3697,6 +4400,54 @@ void ResponseMessage::set_allocated_deletefields(::gen::key_value_store::DeleteR
     customFields_.deletefields_ = deletefields;
   }
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.deleteFields)
+}
+
+// .gen.key_value_store.RepairResponseFields repairFields = 8;
+bool ResponseMessage::has_repairfields() const {
+  return customFields_case() == kRepairFields;
+}
+void ResponseMessage::set_has_repairfields() {
+  _oneof_case_[0] = kRepairFields;
+}
+void ResponseMessage::clear_repairfields() {
+  if (has_repairfields()) {
+    delete customFields_.repairfields_;
+    clear_has_customFields();
+  }
+}
+ const ::gen::key_value_store::RepairResponseFields& ResponseMessage::repairfields() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ResponseMessage.repairFields)
+  return has_repairfields()
+      ? *customFields_.repairfields_
+      : ::gen::key_value_store::RepairResponseFields::default_instance();
+}
+::gen::key_value_store::RepairResponseFields* ResponseMessage::mutable_repairfields() {
+  if (!has_repairfields()) {
+    clear_customFields();
+    set_has_repairfields();
+    customFields_.repairfields_ = new ::gen::key_value_store::RepairResponseFields;
+  }
+  // @@protoc_insertion_point(field_mutable:gen.key_value_store.ResponseMessage.repairFields)
+  return customFields_.repairfields_;
+}
+::gen::key_value_store::RepairResponseFields* ResponseMessage::release_repairfields() {
+  // @@protoc_insertion_point(field_release:gen.key_value_store.ResponseMessage.repairFields)
+  if (has_repairfields()) {
+    clear_has_customFields();
+    ::gen::key_value_store::RepairResponseFields* temp = customFields_.repairfields_;
+    customFields_.repairfields_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void ResponseMessage::set_allocated_repairfields(::gen::key_value_store::RepairResponseFields* repairfields) {
+  clear_customFields();
+  if (repairfields) {
+    set_has_repairfields();
+    customFields_.repairfields_ = repairfields;
+  }
+  // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ResponseMessage.repairFields)
 }
 
 bool ResponseMessage::has_customFields() const {

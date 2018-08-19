@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/tests/key_value_store_tests",
             "args": [
-                "--gtest_filter=NodeTests.OneNode"
+                "--gtest_filter=NodeTests.*"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

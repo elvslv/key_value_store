@@ -5,9 +5,9 @@
 
 namespace utils
 {
-    struct Time
-    {
-        static std::string getCurrentTime();
-        static long getTimestamp();
-    };
+struct Time
+{
+    static std::string getCurrentTime();
+    static unsigned long getTimestamp();
+};
 }
