@@ -14,7 +14,7 @@ public:
     virtual Record get(const std::string& key);
     virtual void insert(const std::string& key, const Record& value);
     virtual void update(const std::string& key, const Record& value);
-    virtual void remove(const std::string& key);
+    virtual void remove(const std::string& key, unsigned long timestamp);
 
     virtual std::vector<std::pair<std::string, Record>> getRecords();
 

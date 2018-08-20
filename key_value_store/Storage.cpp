@@ -7,7 +7,7 @@ Record Storage::get(const std::string& key)
 {
     std::lock_guard<std::mutex> lock(mutex);
     auto it = map.find(key);
-    if (it == map.end())
+    if (it == map.end() || it->second.removed)
     {
         throw NotFoundException(key);
     }
@@ -19,29 +19,43 @@ void Storage::insert(const std::string& key, const Record& value)
 {
     std::lock_guard<std::mutex> lock(mutex);
     auto it = map.find(key);
-    if (it != map.end())
+    if (it != map.end() && !it->second.removed)
     {
         throw ConflictDetected(key);
     }
 
-    map[key] = value;
+    if (it == map.end() || value.timestamp > map[key].timestamp)
+    {
+        map[key] = value;
+    }
 }
 
 void Storage::update(const std::string& key, const Record& value)
 {
     std::lock_guard<std::mutex> lock(mutex);
-    map[key] = value;
-}
-
-void Storage::remove(const std::string& key)
-{
-    std::lock_guard<std::mutex> lock(mutex);
-    if (map.find(key) == map.end())
+    auto it = map.find(key);
+    if (it == map.end() || it->second.removed)
     {
         throw NotFoundException(key);
     }
 
-    map.erase(key);
+    if (value.timestamp > map[key].timestamp)
+    {
+        map[key] = value;
+    }
+}
+
+void Storage::remove(const std::string& key, unsigned long timestamp)
+{
+    std::lock_guard<std::mutex> lock(mutex);
+    auto it = map.find(key);
+    if (it == map.end() || it->second.removed)
+    {
+        throw NotFoundException(key);
+    }
+
+    map[key].removed = true;
+    map[key].timestamp = timestamp;
 }
 
 std::vector<std::pair<std::string, Record>> Storage::getRecords()

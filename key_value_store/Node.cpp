@@ -23,6 +23,7 @@ enum ResponseCode
 {
     OK = 200,
     NOT_FOUND = 404,
+    CONFLICT = 409,
 };
 
 using namespace std::chrono_literals;
@@ -170,8 +171,7 @@ void Node::remove(const std::string& key)
 
 bool Node::removeLocally(const std::string& key, unsigned long timestamp)
 {
-    // todo: check timestamps
-    storage->remove(key);
+    storage->remove(key, timestamp);
     return true;
 }
 
@@ -223,10 +223,18 @@ std::vector<network::Address> Node::getTargetNodes(const std::string& key)
 void Node::onCreateRequest(std::unique_ptr<CreateRequestMessage> message)
 {
     auto key = message->getKey();
-
-    // TODO: make sure it belongs to this node
-    storage->insert(message->getKey(), Record(message->getValue(), message->getTimestamp()));
-    // TODO: handle exceptions
+    Record record;
+    try
+    {
+        // TODO: make sure it belongs to this node
+        auto timestamp = message->getTimestamp();
+        storage->insert(key, Record(message->getValue(), timestamp));
+    }
+    catch (ConflictDetected)
+    {
+        messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), CONFLICT), message->getSourceAddress());
+        return;
+    }
 
     messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
 }
@@ -234,10 +242,17 @@ void Node::onCreateRequest(std::unique_ptr<CreateRequestMessage> message)
 void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
 {
     auto key = message->getKey();
-
-    // TODO: make sure it belongs to this node
-    storage->update(message->getKey(), Record(message->getValue(), message->getTimestamp()));
-    // TODO: handle exceptions
+    try
+    {
+        // TODO: make sure it belongs to this node
+        auto timestamp = message->getTimestamp();
+        storage->update(key, Record(message->getValue(), timestamp));
+    }
+    catch (NotFoundException)
+    {
+        messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND), message->getSourceAddress());
+        return;
+    }
 
     messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
 }
@@ -245,12 +260,11 @@ void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
 void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
 {
     auto key = message->getKey();
-
-    // TODO: make sure it belongs to this node
     Record record;
     try
     {
-        record = storage->get(message->getKey());
+        // TODO: make sure it belongs to this node
+        record = storage->get(key);
     }
     catch (key_value_store::NotFoundException)
     {
@@ -264,13 +278,101 @@ void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
 void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
 {
     auto key = message->getKey();
-
-    // TODO: make sure it belongs to this node
-    storage->remove(message->getKey());
-    // TODO: handle exceptions
+    try
+    {
+        // TODO: make sure it belongs to this node
+        auto timestamp = message->getTimestamp();
+        storage->remove(key, timestamp);
+    }
+    catch (key_value_store::NotFoundException)
+    {
+        messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND), message->getSourceAddress());
+        return;
+    }
 
     messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
 }
+
+// void Node::onCreateRequest(std::unique_ptr<CreateRequestMessage> message)
+// {
+//     auto key = message->getKey();
+//     Record record;
+//     bool found = getFromStorage(key, record);
+//     auto timestamp = message->getTimestamp();
+//     if (found && (!record.removed || record.timestamp >= timestamp))
+//     {
+//         messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), CONFLICT), message->getSourceAddress());
+//         return;
+//     }
+
+//     // TODO: make sure it belongs to this node
+//     storage->insert(message->getKey(), Record(message->getValue(), message->getTimestamp()));
+//     messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
+// }
+
+// void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
+// {
+//     auto key = message->getKey();
+//     Record record;
+//     bool found = getFromStorage(key, record);
+//     auto timestamp = message->getTimestamp();
+//     if (!found || record.removed && record.timestamp < timestamp)
+//     {
+//         messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND), message->getSourceAddress());
+//         return;
+//     }
+
+//     if (record.timestamp >= timestamp)
+//     {
+//         messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), CONFLICT), message->getSourceAddress());
+//         return;
+//     }
+
+//     // TODO: make sure it belongs to this node
+//     storage->update(key, Record(message->getValue(), timestamp));
+//     messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
+// }
+
+// void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
+// {
+//     auto key = message->getKey();
+
+//     // TODO: make sure it belongs to this node
+//     Record record;
+//     bool found = getFromStorage(key, record);
+//     if (!found || record.removed)
+//     {
+//         messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND, "", 0), message->getSourceAddress());
+//         return;
+//     }
+
+//     messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), OK, record.value, record.timestamp), message->getSourceAddress());
+// }
+
+// void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
+// {
+//     auto key = message->getKey();
+//     Record record;
+//     bool found = getFromStorage(key, record);
+//     if (!found || record.removed)
+//     {
+//         messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND, "", 0), message->getSourceAddress());
+//         return
+//     }
+
+//     auto timestamp = message->getTimestamp();
+//     if (record.timestamp >= timestamp)
+//     {
+//         messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), CONFLICT), message->getSourceAddress());
+//         return;
+//     }
+
+//     // TODO: make sure it belongs to this node
+//     storage->remove(message->getKey());
+//     // TODO: handle exceptions
+
+//     messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
+// }
 
 void Node::onRepairRequest(std::unique_ptr<RepairRequestMessage> message)
 {
