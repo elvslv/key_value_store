@@ -1,4 +1,4 @@
-set(key_value_store_src_files Node Partitioner Message ResponseMessage RequestMessage CreateRequestMessage DeleteRequestMessage ReadRequestMessage UpdateRequestMessage CreateResponseMessage DeleteResponseMessage UpdateResponseMessage ReadResponseMessage Storage Exceptions)
+set(key_value_store_src_files Node Partitioner Message ResponseMessage RequestMessage CreateRequestMessage DeleteRequestMessage ReadRequestMessage RepairRequestMessage UpdateRequestMessage CreateResponseMessage DeleteResponseMessage UpdateResponseMessage ReadResponseMessage Storage Exceptions)
 
 foreach(key_value_store_src_file ${key_value_store_src_files})
   target_sources(key_value_store_lib PRIVATE "key_value_store/${key_value_store_src_file}.cpp")

@@ -7,6 +7,11 @@ DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress
 {
 }
 
+DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, unsigned long timestamp)
+    : RequestMessage(DELETE_REQUEST, sourceAddress, destinationAddress, key, timestamp)
+{
+}
+
 DeleteRequestMessage::DeleteRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
     : RequestMessage(DELETE_REQUEST, sourceAddress, destinationAddress, key)
 {

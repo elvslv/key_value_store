@@ -7,6 +7,7 @@
 #include "key_value_store/DeleteResponseMessage.h"
 #include "key_value_store/ReadRequestMessage.h"
 #include "key_value_store/ReadResponseMessage.h"
+#include "key_value_store/RepairRequestMessage.h"
 #include "key_value_store/UpdateRequestMessage.h"
 #include "key_value_store/UpdateResponseMessage.h"
 #include "membership_protocol/messages/AckMessage.h"
@@ -105,6 +106,11 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
             {
                 return std::make_unique<key_value_store::DeleteRequestMessage>(srcAddress, destAddress, key, id, timestamp);
             }
+
+            case gen::key_value_store::REPAIR_REQUEST:
+            {
+                return std::make_unique<key_value_store::RepairRequestMessage>(srcAddress, destAddress, key, id, timestamp);
+            }
             }
         }
         else
@@ -130,7 +136,7 @@ std::unique_ptr<Message> Message::parseMessage(const network::Message& networkMe
                 }
 
                 auto readFields = responseMessage.readfields();
-                return std::make_unique<key_value_store::ReadResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), readFields.value(), id);
+                return std::make_unique<key_value_store::ReadResponseMessage>(srcAddress, destAddress, responseMessage.originalmessageid(), responseMessage.responsecode(), readFields.value(), readFields.timestamp(), id);
             }
             case gen::key_value_store::DELETE_RESPONSE:
             {

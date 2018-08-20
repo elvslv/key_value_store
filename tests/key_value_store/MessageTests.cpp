@@ -32,6 +32,7 @@ public:
         ASSERT_EQ(parsedCastedMessage->getDestinationAddress(), destAddress);
         ASSERT_EQ(parsedCastedMessage->getKey(), key);
         ASSERT_EQ(parsedCastedMessage->getId(), message.getId());
+        ASSERT_EQ(parsedCastedMessage->getTimestamp(), message.getTimestamp());
     }
 
     template <typename T>
@@ -140,13 +141,16 @@ TEST_F(KeyValueStoreMessagesTests, ReadResponseMessage)
     std::string originalMessageId = "originalMessageId";
     std::string value = "value";
     int responseCode = 200;
+    unsigned long timestamp = 1;
 
-    key_value_store::ReadResponseMessage readResponseMessage(sourceAddress, destAddress, originalMessageId, responseCode, value);
+    key_value_store::ReadResponseMessage readResponseMessage(sourceAddress, destAddress, originalMessageId, responseCode, value, timestamp);
     ASSERT_EQ(readResponseMessage.getValue(), value);
+    ASSERT_EQ(readResponseMessage.getTimestamp(), timestamp);
 
     std::unique_ptr<key_value_store::ReadResponseMessage> parsedCastedMessage;
     testResponseMessage<>(readResponseMessage, sourceAddress, destAddress, originalMessageId, responseCode, key_value_store::Message::READ_RESPONSE, parsedCastedMessage);
     ASSERT_EQ(parsedCastedMessage->getValue(), value);
+    ASSERT_EQ(parsedCastedMessage->getTimestamp(), timestamp);
 }
 
 TEST_F(KeyValueStoreMessagesTests, UpdateResponseMessage)

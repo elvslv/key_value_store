@@ -18,6 +18,7 @@ public:
         UPDATE_REQUEST,
         READ_REQUEST,
         DELETE_REQUEST,
+        REPAIR_REQUEST,
 
         CREATE_RESPONSE = 200,
         UPDATE_RESPONSE,

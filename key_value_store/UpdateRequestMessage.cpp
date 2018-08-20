@@ -8,6 +8,12 @@ UpdateRequestMessage::UpdateRequestMessage(const network::Address& sourceAddress
 {
 }
 
+UpdateRequestMessage::UpdateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value, unsigned long timestamp)
+    : RequestMessage(UPDATE_REQUEST, sourceAddress, destinationAddress, key, timestamp)
+    , value(value)
+{
+}
+
 UpdateRequestMessage::UpdateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value)
     : RequestMessage(UPDATE_REQUEST, sourceAddress, destinationAddress, key)
     , value(value)

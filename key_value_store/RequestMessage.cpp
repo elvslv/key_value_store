@@ -18,6 +18,13 @@ RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sou
 {
 }
 
+RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, unsigned long timestamp)
+    : Message(messageType, sourceAddress, destinationAddress)
+    , key(key)
+    , timestamp(timestamp)
+{
+}
+
 RequestMessage::RequestMessage(MsgTypes messageType, const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key)
     : Message(messageType, sourceAddress, destinationAddress)
     , key(key)
@@ -64,6 +71,9 @@ gen::key_value_store::RequestMessageType RequestMessage::getProtobufMessageType(
 
     case DELETE_REQUEST:
         return gen::key_value_store::DELETE_REQUEST;
+
+    case REPAIR_REQUEST:
+        return gen::key_value_store::REPAIR_REQUEST;
     }
 
     throw utils::NotImplementedException();

@@ -9,6 +9,7 @@
 #include "IStorage.h"
 #include "ReadRequestMessage.h"
 #include "ReadResponseMessage.h"
+#include "RepairRequestMessage.h"
 #include "RequestMessage.h"
 #include "ResponseMessage.h"
 #include "UpdateRequestMessage.h"
@@ -59,17 +60,19 @@ private:
 
     void run();
 
-    bool createLocally(const std::string& key, const std::string& value);
-    bool sendCreateMessage(const network::Address& target, const std::string& key, const std::string& value);
+    bool createLocally(const std::string& key, const std::string& value, unsigned long timestamp);
+    bool sendCreateMessage(const network::Address& target, const std::string& key, const std::string& value, unsigned long timestamp);
 
     Record readLocally(const std::string& key);
     Record sendReadMessage(const network::Address& target, const std::string& key);
 
-    bool updateLocally(const std::string& key, const std::string& value);
-    bool sendUpdateMessage(const network::Address& target, const std::string& key, const std::string& value);
+    bool updateLocally(const std::string& key, const std::string& value, unsigned long timestamp);
+    bool sendUpdateMessage(const network::Address& target, const std::string& key, const std::string& value, unsigned long timestamp);
 
-    bool removeLocally(const std::string& key);
-    bool sendRemoveMessage(const network::Address& target, const std::string& key);
+    bool removeLocally(const std::string& key, unsigned long timestamp);
+    bool sendRemoveMessage(const network::Address& target, const std::string& key, unsigned long timestamp);
+
+    bool sendRepairMessage(const network::Address& target, const std::string& key, const std::string& value, unsigned long timestamp);
 
     std::vector<network::Address> getTargetNodes(const std::string& key);
 
@@ -193,6 +196,7 @@ private:
     void onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message);
     void onReadRequest(std::unique_ptr<ReadRequestMessage> message);
     void onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message);
+    void onRepairRequest(std::unique_ptr<RepairRequestMessage> message);
     void onResponse(std::unique_ptr<ResponseMessage> message);
 
     void runStabilizationProtocol();

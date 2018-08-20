@@ -5,6 +5,7 @@
 #include "DeleteResponseMessage.h"
 #include "ReadRequestMessage.h"
 #include "ReadResponseMessage.h"
+#include "RepairRequestMessage.h"
 #include "UpdateRequestMessage.h"
 #include "UpdateResponseMessage.h"
 #include "key_value_store/Exceptions.h"
@@ -83,18 +84,19 @@ void Node::stop()
 
 void Node::create(const std::string& key, const std::string& value)
 {
-    processClientRequest<bool>(key, [this, key, value]() -> bool { return createLocally(key, value); }, [this, key, value](const network::Address& node) -> bool { return sendCreateMessage(node, key, value); });
+    auto timestamp = utils::Time::getTimestamp();
+    processClientRequest<bool>(key, [this, key, value, timestamp]() -> bool { return createLocally(key, value, timestamp); }, [this, key, value, timestamp](const network::Address& node) -> bool { return sendCreateMessage(node, key, value, timestamp); });
 }
 
-bool Node::createLocally(const std::string& key, const std::string& value)
+bool Node::createLocally(const std::string& key, const std::string& value, unsigned long timestamp)
 {
-    storage->insert(key, Record(value));
+    storage->insert(key, Record(value, timestamp));
     return true;
 }
 
-bool Node::sendCreateMessage(const network::Address& target, const std::string& key, const std::string& value)
+bool Node::sendCreateMessage(const network::Address& target, const std::string& key, const std::string& value, unsigned long timestamp)
 {
-    auto message = std::make_unique<CreateRequestMessage>(address, target, key, value);
+    auto message = std::make_unique<CreateRequestMessage>(address, target, key, value, timestamp);
     auto response = sendMessageAndWait(std::move(message), 2s);
     if (!response)
     {
@@ -132,23 +134,24 @@ Record Node::sendReadMessage(const network::Address& target, const std::string& 
         throw std::logic_error("TBD");
     }
 
-    return Record(readResponse->getValue());
+    return Record(readResponse->getValue(), readResponse->getTimestamp());
 }
 
 void Node::update(const std::string& key, const std::string& value)
 {
-    processClientRequest<bool>(key, [this, key, value]() -> bool { return updateLocally(key, value); }, [this, key, value](const network::Address& node) -> bool { return sendUpdateMessage(node, key, value); });
+    auto timestamp = utils::Time::getTimestamp();
+    processClientRequest<bool>(key, [this, key, value, timestamp]() -> bool { return updateLocally(key, value, timestamp); }, [this, key, value, timestamp](const network::Address& node) -> bool { return sendUpdateMessage(node, key, value, timestamp); });
 }
 
-bool Node::updateLocally(const std::string& key, const std::string& value)
+bool Node::updateLocally(const std::string& key, const std::string& value, unsigned long timestamp)
 {
-    storage->update(key, Record(value));
+    storage->update(key, Record(value, timestamp));
     return true;
 }
 
-bool Node::sendUpdateMessage(const network::Address& target, const std::string& key, const std::string& value)
+bool Node::sendUpdateMessage(const network::Address& target, const std::string& key, const std::string& value, unsigned long timestamp)
 {
-    auto message = std::make_unique<UpdateRequestMessage>(address, target, key, value);
+    auto message = std::make_unique<UpdateRequestMessage>(address, target, key, value, timestamp);
     auto response = sendMessageAndWait(std::move(message), 2s);
     if (!response)
     {
@@ -161,18 +164,20 @@ bool Node::sendUpdateMessage(const network::Address& target, const std::string& 
 
 void Node::remove(const std::string& key)
 {
-    processClientRequest<bool>(key, [this, key]() -> bool { return removeLocally(key); }, [this, key](const network::Address& node) -> bool { return sendRemoveMessage(node, key); });
+    auto timestamp = utils::Time::getTimestamp();
+    processClientRequest<bool>(key, [this, key, timestamp]() -> bool { return removeLocally(key, timestamp); }, [this, key, timestamp](const network::Address& node) -> bool { return sendRemoveMessage(node, key, timestamp); });
 }
 
-bool Node::removeLocally(const std::string& key)
+bool Node::removeLocally(const std::string& key, unsigned long timestamp)
 {
+    // todo: check timestamps
     storage->remove(key);
     return true;
 }
 
-bool Node::sendRemoveMessage(const network::Address& target, const std::string& key)
+bool Node::sendRemoveMessage(const network::Address& target, const std::string& key, unsigned long timestamp)
 {
-    auto message = std::make_unique<DeleteRequestMessage>(address, target, key);
+    auto message = std::make_unique<DeleteRequestMessage>(address, target, key, timestamp);
     auto response = sendMessageAndWait(std::move(message), 2s);
     if (!response)
     {
@@ -181,6 +186,17 @@ bool Node::sendRemoveMessage(const network::Address& target, const std::string& 
 
     auto deleteResponse = static_cast<DeleteResponseMessage*>(response.get());
     return deleteResponse->getResponseCode() == OK;
+}
+
+bool Node::sendRepairMessage(const network::Address& target, const std::string& key, const std::string& value, unsigned long timestamp)
+{
+    auto message = std::make_unique<RepairRequestMessage>(address, target, key, value, timestamp);
+    logger->log("sending ", message->getMsgTypeStr(), "from ", address, "to ", target, message->getId(), message->getKey());
+    messageDispatcher->sendMessage(std::move(message), target);
+    logger->log("sent from ", address, "to ", target);
+
+    // todo: wait for response?
+    return true;
 }
 
 void Node::run()
@@ -209,7 +225,7 @@ void Node::onCreateRequest(std::unique_ptr<CreateRequestMessage> message)
     auto key = message->getKey();
 
     // TODO: make sure it belongs to this node
-    storage->insert(message->getKey(), Record(message->getValue()));
+    storage->insert(message->getKey(), Record(message->getValue(), message->getTimestamp()));
     // TODO: handle exceptions
 
     messageDispatcher->sendMessage(std::make_unique<CreateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
@@ -220,7 +236,7 @@ void Node::onUpdateRequest(std::unique_ptr<UpdateRequestMessage> message)
     auto key = message->getKey();
 
     // TODO: make sure it belongs to this node
-    storage->update(message->getKey(), Record(message->getValue()));
+    storage->update(message->getKey(), Record(message->getValue(), message->getTimestamp()));
     // TODO: handle exceptions
 
     messageDispatcher->sendMessage(std::make_unique<UpdateResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
@@ -238,11 +254,11 @@ void Node::onReadRequest(std::unique_ptr<ReadRequestMessage> message)
     }
     catch (key_value_store::NotFoundException)
     {
-        messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND, ""), message->getSourceAddress());
+        messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), NOT_FOUND, "", 0), message->getSourceAddress());
         return;
     }
 
-    messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), OK, record.value), message->getSourceAddress());
+    messageDispatcher->sendMessage(std::make_unique<ReadResponseMessage>(address, message->getSourceAddress(), message->getId(), OK, record.value, record.timestamp), message->getSourceAddress());
 }
 
 void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
@@ -254,6 +270,41 @@ void Node::onDeleteRequest(std::unique_ptr<DeleteRequestMessage> message)
     // TODO: handle exceptions
 
     messageDispatcher->sendMessage(std::make_unique<DeleteResponseMessage>(address, message->getSourceAddress(), message->getId(), OK), message->getSourceAddress());
+}
+
+void Node::onRepairRequest(std::unique_ptr<RepairRequestMessage> message)
+{
+    auto key = message->getKey();
+    auto value = message->getValue();
+    auto timestamp = message->getTimestamp();
+    logger->log("Received repair request from ", message->getSourceAddress(), "for ", key, "value: ", value);
+
+    Record record;
+    try
+    {
+        record = storage->get(message->getKey());
+    }
+    catch (key_value_store::NotFoundException)
+    {
+        logger->log("Couldn't find ", key, "in local storage, storing value", value, "timestamp", message->getTimestamp());
+        storage->insert(key, Record(value, timestamp));
+        return;
+    }
+
+    if (record.timestamp == timestamp && record.value != value)
+    {
+        logger->log("Conflict found, ", key, " has a value ", record.value, "trying to set it to", value);
+        return;
+    }
+    else if (record.timestamp > timestamp)
+    {
+        logger->log(key, " has a newer value ", record.value, "vs", value);
+        return;
+    }
+
+    // TODO: make sure it belongs to this node
+    storage->update(key, Record(value, timestamp));
+    // TODO: handle exceptions
 }
 
 void Node::onResponse(std::unique_ptr<ResponseMessage> message)
@@ -296,6 +347,13 @@ void Node::processMessage(std::unique_ptr<Message> message)
         return;
     }
 
+    case Message::REPAIR_REQUEST:
+    {
+        std::unique_ptr<RepairRequestMessage> repairRequestMessage(dynamic_cast<RepairRequestMessage*>(message.release()));
+        onRepairRequest(std::move(repairRequestMessage));
+        return;
+    }
+
     case Message::CREATE_RESPONSE:
     case Message::UPDATE_RESPONSE:
     case Message::READ_RESPONSE:
@@ -315,13 +373,14 @@ void Node::runStabilizationProtocol()
     auto records = storage->getRecords();
     for (auto it = records.begin(); it != records.end(); ++it)
     {
+        auto timestamp = utils::Time::getTimestamp();
         auto nodes = getTargetNodes(it->first);
         auto curNodeIt = std::find_if(nodes.begin(), nodes.end(), [this](const network::Address& addr) -> bool { return addr == address; });
         if (curNodeIt == nodes.end())
         {
             for (auto nodeIt = nodes.begin(); nodeIt != nodes.end(); ++nodeIt)
             {
-                sendCreateMessage(*nodeIt, it->first, it->second.value);
+                sendRepairMessage(*nodeIt, it->first, it->second.value, timestamp);
             }
 
             continue;
@@ -337,7 +396,7 @@ void Node::runStabilizationProtocol()
 
             if (nodes.size() > i && isNodeAlive(nodes[i]))
             {
-                sendCreateMessage(nodes[i], it->first, it->second.value);
+                sendRepairMessage(nodes[i], it->first, it->second.value, timestamp);
             }
         }
     }

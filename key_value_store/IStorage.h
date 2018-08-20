@@ -12,11 +12,13 @@ struct Record
     {
     }
 
-    Record(const std::string& value)
+    Record(const std::string& value, unsigned long timestamp)
         : value(value)
+        , timestamp(timestamp)
     {
     }
     std::string value;
+    unsigned long timestamp;
 };
 
 class IStorage

@@ -956,11 +956,18 @@ class ReadResponseFields : public ::google::protobuf::Message /* @@protoc_insert
   ::std::string* release_value();
   void set_allocated_value(::std::string* value);
 
+  // uint32 timestamp = 2;
+  void clear_timestamp();
+  static const int kTimestampFieldNumber = 2;
+  ::google::protobuf::uint32 timestamp() const;
+  void set_timestamp(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:gen.key_value_store.ReadResponseFields)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr value_;
+  ::google::protobuf::uint32 timestamp_;
   mutable int _cached_size_;
   friend struct protobuf_KeyValueStoreMessage_2eproto::TableStruct;
 };
@@ -1977,6 +1984,20 @@ inline void ReadResponseFields::set_allocated_value(::std::string* value) {
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ReadResponseFields.value)
+}
+
+// uint32 timestamp = 2;
+inline void ReadResponseFields::clear_timestamp() {
+  timestamp_ = 0u;
+}
+inline ::google::protobuf::uint32 ReadResponseFields::timestamp() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ReadResponseFields.timestamp)
+  return timestamp_;
+}
+inline void ReadResponseFields::set_timestamp(::google::protobuf::uint32 value) {
+  
+  timestamp_ = value;
+  // @@protoc_insertion_point(field_set:gen.key_value_store.ReadResponseFields.timestamp)
 }
 
 // -------------------------------------------------------------------

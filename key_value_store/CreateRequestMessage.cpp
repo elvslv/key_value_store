@@ -8,6 +8,12 @@ CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress
 {
 }
 
+CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value, unsigned long timestamp)
+    : RequestMessage(CREATE_REQUEST, sourceAddress, destinationAddress, key, timestamp)
+    , value(value)
+{
+}
+
 CreateRequestMessage::CreateRequestMessage(const network::Address& sourceAddress, const network::Address& destinationAddress, const std::string& key, const std::string& value)
     : RequestMessage(CREATE_REQUEST, sourceAddress, destinationAddress, key)
     , value(value)

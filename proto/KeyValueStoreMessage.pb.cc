@@ -156,6 +156,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReadResponseFields, value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReadResponseFields, timestamp_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteResponseFields, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -200,10 +201,10 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 42, -1, sizeof(CreateResponseFields)},
   { 47, -1, sizeof(UpdateResponseFields)},
   { 52, -1, sizeof(ReadResponseFields)},
-  { 58, -1, sizeof(DeleteResponseFields)},
-  { 63, -1, sizeof(RepairResponseFields)},
-  { 68, -1, sizeof(ResponseMessage)},
-  { 82, -1, sizeof(Message)},
+  { 59, -1, sizeof(DeleteResponseFields)},
+  { 64, -1, sizeof(RepairResponseFields)},
+  { 69, -1, sizeof(ResponseMessage)},
+  { 83, -1, sizeof(Message)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -343,34 +344,35 @@ void AddDescriptorsImpl() {
       "epairFields\030\010 \001(\0132(.gen.key_value_store."
       "RepairRequestFieldsH\000B\016\n\014customFields\"\026\n"
       "\024CreateResponseFields\"\026\n\024UpdateResponseF"
-      "ields\"#\n\022ReadResponseFields\022\r\n\005value\030\001 \001"
-      "(\t\"\026\n\024DeleteResponseFields\"\026\n\024RepairResp"
-      "onseFields\"\334\003\n\017ResponseMessage\022=\n\013messag"
-      "eType\030\001 \001(\0162(.gen.key_value_store.Respon"
-      "seMessageType\022\031\n\021originalMessageId\030\002 \001(\t"
-      "\022\024\n\014responseCode\030\003 \001(\005\022A\n\014createFields\030\004"
-      " \001(\0132).gen.key_value_store.CreateRespons"
-      "eFieldsH\000\022A\n\014updateFields\030\005 \001(\0132).gen.ke"
-      "y_value_store.UpdateResponseFieldsH\000\022=\n\n"
-      "readFields\030\006 \001(\0132\'.gen.key_value_store.R"
-      "eadResponseFieldsH\000\022A\n\014deleteFields\030\007 \001("
-      "\0132).gen.key_value_store.DeleteResponseFi"
-      "eldsH\000\022A\n\014repairFields\030\010 \001(\0132).gen.key_v"
-      "alue_store.RepairResponseFieldsH\000B\016\n\014cus"
-      "tomFields\"\234\001\n\007Message\022=\n\016requestMessage\030"
-      "\001 \001(\0132#.gen.key_value_store.RequestMessa"
-      "geH\000\022\?\n\017responseMessage\030\002 \001(\0132$.gen.key_"
-      "value_store.ResponseMessageH\000B\021\n\017message"
-      "Internal*v\n\022RequestMessageType\022\022\n\016CREATE"
-      "_REQUEST\020\000\022\022\n\016UPDATE_REQUEST\020\001\022\020\n\014READ_R"
-      "EQUEST\020\002\022\022\n\016DELETE_REQUEST\020\003\022\022\n\016REPAIR_R"
-      "EQUEST\020\004*|\n\023ResponseMessageType\022\023\n\017CREAT"
-      "E_RESPONSE\020\000\022\023\n\017UPDATE_RESPONSE\020\001\022\021\n\rREA"
-      "D_RESPONSE\020\002\022\023\n\017DELETE_RESPONSE\020\003\022\023\n\017REP"
-      "AIR_RESPONSE\020\004b\006proto3"
+      "ields\"6\n\022ReadResponseFields\022\r\n\005value\030\001 \001"
+      "(\t\022\021\n\ttimestamp\030\002 \001(\r\"\026\n\024DeleteResponseF"
+      "ields\"\026\n\024RepairResponseFields\"\334\003\n\017Respon"
+      "seMessage\022=\n\013messageType\030\001 \001(\0162(.gen.key"
+      "_value_store.ResponseMessageType\022\031\n\021orig"
+      "inalMessageId\030\002 \001(\t\022\024\n\014responseCode\030\003 \001("
+      "\005\022A\n\014createFields\030\004 \001(\0132).gen.key_value_"
+      "store.CreateResponseFieldsH\000\022A\n\014updateFi"
+      "elds\030\005 \001(\0132).gen.key_value_store.UpdateR"
+      "esponseFieldsH\000\022=\n\nreadFields\030\006 \001(\0132\'.ge"
+      "n.key_value_store.ReadResponseFieldsH\000\022A"
+      "\n\014deleteFields\030\007 \001(\0132).gen.key_value_sto"
+      "re.DeleteResponseFieldsH\000\022A\n\014repairField"
+      "s\030\010 \001(\0132).gen.key_value_store.RepairResp"
+      "onseFieldsH\000B\016\n\014customFields\"\234\001\n\007Message"
+      "\022=\n\016requestMessage\030\001 \001(\0132#.gen.key_value"
+      "_store.RequestMessageH\000\022\?\n\017responseMessa"
+      "ge\030\002 \001(\0132$.gen.key_value_store.ResponseM"
+      "essageH\000B\021\n\017messageInternal*v\n\022RequestMe"
+      "ssageType\022\022\n\016CREATE_REQUEST\020\000\022\022\n\016UPDATE_"
+      "REQUEST\020\001\022\020\n\014READ_REQUEST\020\002\022\022\n\016DELETE_RE"
+      "QUEST\020\003\022\022\n\016REPAIR_REQUEST\020\004*|\n\023ResponseM"
+      "essageType\022\023\n\017CREATE_RESPONSE\020\000\022\023\n\017UPDAT"
+      "E_RESPONSE\020\001\022\021\n\rREAD_RESPONSE\020\002\022\023\n\017DELET"
+      "E_RESPONSE\020\003\022\023\n\017REPAIR_RESPONSE\020\004b\006proto"
+      "3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1702);
+      descriptor, 1721);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "KeyValueStoreMessage.proto", &protobuf_RegisterTypes);
   ::gen::protobuf_Address_2eproto::AddDescriptors();
@@ -2914,6 +2916,7 @@ void UpdateResponseFields::InternalSwap(UpdateResponseFields* other) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ReadResponseFields::kValueFieldNumber;
+const int ReadResponseFields::kTimestampFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ReadResponseFields::ReadResponseFields()
@@ -2933,11 +2936,13 @@ ReadResponseFields::ReadResponseFields(const ReadResponseFields& from)
   if (from.value().size() > 0) {
     value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
+  timestamp_ = from.timestamp_;
   // @@protoc_insertion_point(copy_constructor:gen.key_value_store.ReadResponseFields)
 }
 
 void ReadResponseFields::SharedCtor() {
   value_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  timestamp_ = 0u;
   _cached_size_ = 0;
 }
 
@@ -2976,6 +2981,7 @@ ReadResponseFields* ReadResponseFields::New(::google::protobuf::Arena* arena) co
 void ReadResponseFields::Clear() {
 // @@protoc_insertion_point(message_clear_start:gen.key_value_store.ReadResponseFields)
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  timestamp_ = 0u;
 }
 
 bool ReadResponseFields::MergePartialFromCodedStream(
@@ -2998,6 +3004,20 @@ bool ReadResponseFields::MergePartialFromCodedStream(
             this->value().data(), this->value().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "gen.key_value_store.ReadResponseFields.value"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 timestamp = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &timestamp_)));
         } else {
           goto handle_unusual;
         }
@@ -3041,6 +3061,11 @@ void ReadResponseFields::SerializeWithCachedSizes(
       1, this->value(), output);
   }
 
+  // uint32 timestamp = 2;
+  if (this->timestamp() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->timestamp(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:gen.key_value_store.ReadResponseFields)
 }
 
@@ -3061,6 +3086,11 @@ void ReadResponseFields::SerializeWithCachedSizes(
         1, this->value(), target);
   }
 
+  // uint32 timestamp = 2;
+  if (this->timestamp() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->timestamp(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:gen.key_value_store.ReadResponseFields)
   return target;
 }
@@ -3074,6 +3104,13 @@ size_t ReadResponseFields::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->value());
+  }
+
+  // uint32 timestamp = 2;
+  if (this->timestamp() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->timestamp());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -3109,6 +3146,9 @@ void ReadResponseFields::MergeFrom(const ReadResponseFields& from) {
 
     value_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.value_);
   }
+  if (from.timestamp() != 0) {
+    set_timestamp(from.timestamp());
+  }
 }
 
 void ReadResponseFields::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3135,6 +3175,7 @@ void ReadResponseFields::Swap(ReadResponseFields* other) {
 }
 void ReadResponseFields::InternalSwap(ReadResponseFields* other) {
   value_.Swap(&other->value_);
+  std::swap(timestamp_, other->timestamp_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -3197,6 +3238,20 @@ void ReadResponseFields::set_allocated_value(::std::string* value) {
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set_allocated:gen.key_value_store.ReadResponseFields.value)
+}
+
+// uint32 timestamp = 2;
+void ReadResponseFields::clear_timestamp() {
+  timestamp_ = 0u;
+}
+::google::protobuf::uint32 ReadResponseFields::timestamp() const {
+  // @@protoc_insertion_point(field_get:gen.key_value_store.ReadResponseFields.timestamp)
+  return timestamp_;
+}
+void ReadResponseFields::set_timestamp(::google::protobuf::uint32 value) {
+  
+  timestamp_ = value;
+  // @@protoc_insertion_point(field_set:gen.key_value_store.ReadResponseFields.timestamp)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

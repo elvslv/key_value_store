@@ -51,6 +51,7 @@ message UpdateResponseFields {
 
 message ReadResponseFields {
     string value = 1;
+    uint32 timestamp = 2;
 }
 
 message DeleteResponseFields {

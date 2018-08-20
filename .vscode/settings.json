@@ -71,6 +71,7 @@
         "future": "cpp",
         "string_view": "cpp",
         "__nullptr": "cpp",
-        "__string": "cpp"
+        "__string": "cpp",
+        "regex": "cpp"
     }
 }
