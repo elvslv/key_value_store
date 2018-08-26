@@ -98,7 +98,7 @@ private:
     }
 
     template <typename ResultT>
-    ResultT processClientRequest(const std::string& key, std::function<ResultT()> localFunc, std::function<ResultT(const network::Address&)> remoteFunc)
+    std::vector<std::pair<network::Address, ResultT>> processClientRequest(const std::string& key, std::function<ResultT()> localFunc, std::function<ResultT(const network::Address&)> remoteFunc)
     {
         auto nodes = getTargetNodes(key);
         if (nodes.size() < 3)
@@ -112,23 +112,27 @@ private:
         std::mutex mutex;
         std::condition_variable cv;
 
-        std::array<std::future<ResultT>, 3> futures;
+        std::array<std::pair<network::Address, std::future<ResultT>>, 3> futures;
         for (int i = 0; i < nodes.size(); ++i)
         {
             auto node = nodes[i];
             if (node == address)
             {
-                futures[i] = std::async(std::launch::async, [this, localFunc](std::atomic<int>& count, std::atomic<int>& succeeded, std::condition_variable& cv) {
-                    return performActionAndWait<ResultT>([this, localFunc]() -> ResultT { return localFunc(); }, count, succeeded, cv);
-                },
-                    std::ref(count), std::ref(succeeded), std::ref(cv));
+                futures[i] = std::make_pair(
+                    node,
+                    std::async(std::launch::async, [this, localFunc](std::atomic<int>& count, std::atomic<int>& succeeded, std::condition_variable& cv) {
+                        return performActionAndWait<ResultT>([this, localFunc]() -> ResultT { return localFunc(); }, count, succeeded, cv);
+                    },
+                        std::ref(count), std::ref(succeeded), std::ref(cv)));
             }
             else
             {
-                futures[i] = std::async(std::launch::async, [this, remoteFunc, node](std::atomic<int>& count, std::atomic<int>& succeeded, std::condition_variable& cv) {
-                    return performActionAndWait<ResultT>([this, remoteFunc, node]() -> ResultT { return remoteFunc(node); }, count, succeeded, cv);
-                },
-                    std::ref(count), std::ref(succeeded), std::ref(cv));
+                futures[i] = std::make_pair(
+                    node,
+                    std::async(std::launch::async, [this, remoteFunc, node](std::atomic<int>& count, std::atomic<int>& succeeded, std::condition_variable& cv) {
+                        return performActionAndWait<ResultT>([this, remoteFunc, node]() -> ResultT { return remoteFunc(node); }, count, succeeded, cv);
+                    },
+                        std::ref(count), std::ref(succeeded), std::ref(cv)));
             }
         }
 
@@ -140,13 +144,14 @@ private:
             cv.wait_for(lock, 2s, [&count, &succeeded]() -> bool { return count == 3 || succeeded == 2; });
         }
 
-        ResultT result;
+        std::vector<std::pair<network::Address, ResultT>> result;
         std::unique_ptr<utils::ComplexException> eptr = std::make_unique<utils::ComplexException>();
         for (auto it = futures.begin(); it != futures.end(); ++it)
         {
             try
             {
-                result = it->get();
+                auto res = it->second.get();
+                result.push_back(std::make_pair(it->first, res));
             }
             catch (...)
             {
@@ -154,7 +159,7 @@ private:
             }
         }
 
-        if (succeeded < 2)
+        if (result.size() == 0)
         {
             auto ex = eptr.release();
             throw *ex;
@@ -199,6 +204,7 @@ private:
     void onRepairRequest(std::unique_ptr<RepairRequestMessage> message);
     void onResponse(std::unique_ptr<ResponseMessage> message);
 
+    void repairRecord(const std::string& key, const std::string& value, unsigned long timestamp);
     void runStabilizationProtocol();
     bool isNodeAlive(const network::Address& addr);
 

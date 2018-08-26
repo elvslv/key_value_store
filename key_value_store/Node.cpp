@@ -110,8 +110,32 @@ bool Node::sendCreateMessage(const network::Address& target, const std::string& 
 
 std::string Node::read(const std::string& key)
 {
-    Record result = processClientRequest<Record>(key, [this, key]() -> Record { return readLocally(key); }, [this, key](const network::Address& node) -> Record { return sendReadMessage(node, key); });
-    return result.value;
+    auto result = processClientRequest<Record>(key, [this, key]() -> Record { return readLocally(key); }, [this, key](const network::Address& node) -> Record { return sendReadMessage(node, key); });
+    Record latestResult("", 0);
+    for (auto res : result)
+    {
+        if (res.second.timestamp > latestResult.timestamp)
+        {
+            latestResult = res.second;
+        }
+    }
+
+    for (auto res : result)
+    {
+        if (res.second.value != latestResult.value)
+        {
+            if (res.first == address)
+            {
+                repairRecord(key, latestResult.value, latestResult.timestamp);
+            }
+            else
+            {
+                sendRepairMessage(res.first, key, latestResult.value, latestResult.timestamp);
+            }
+        }
+    }
+
+    return latestResult.value;
 }
 
 Record Node::readLocally(const std::string& key)
@@ -381,14 +405,19 @@ void Node::onRepairRequest(std::unique_ptr<RepairRequestMessage> message)
     auto timestamp = message->getTimestamp();
     logger->log("Received repair request from ", message->getSourceAddress(), "for ", key, "value: ", value);
 
+    repairRecord(key, value, timestamp);
+}
+
+void Node::repairRecord(const std::string& key, const std::string& value, unsigned long timestamp)
+{
     Record record;
     try
     {
-        record = storage->get(message->getKey());
+        record = storage->get(key);
     }
     catch (key_value_store::NotFoundException)
     {
-        logger->log("Couldn't find ", key, "in local storage, storing value", value, "timestamp", message->getTimestamp());
+        logger->log("Couldn't find ", key, "in local storage, storing value", value, "timestamp", timestamp);
         storage->insert(key, Record(value, timestamp));
         return;
     }
